@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: strings-pkg
+Version: 0.0.1
+Summary: string extension package
+Home-page: https://github.com/lpe234/strings_pkg
+Author: lpe234
+Author-email: lpe234@qq.com
+License: UNKNOWN
+Description: # strings package
+        
+        This is a simple demo package.
+        
+        demo:
+        
+        ```bash
+        >>> import strings
+        >>> strings.reverse("hello world")
+        'dlrow olleh'
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
