@@ -7,6 +7,8 @@ For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSe
 ### General
 :white_check_mark: Create domain with SSL (codemonkey.tk)
 
+:x: Submit code from front end to back end without refreshing the page. Also send the backend information to the front end without refreshing the page.
+
 ### Front End
 
 :x: Create admin page
@@ -35,6 +37,8 @@ For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSe
 :x: Store user information in a database instead of a text file
 
 :x: Use threading to remove inactive sessions every minute.
+
+:x: Fix the #TODO in sessions.py
 
 ## Expected Functionality of Pages
 
