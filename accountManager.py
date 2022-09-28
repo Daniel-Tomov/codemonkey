@@ -16,6 +16,8 @@ def removeAccount(username, password):
 
 def checkAccount(username, password):
   for i in accounts:
+    # TODO fix this print
+    print(i)
     if i[0] == username and i[1] == password:
       return True
   return False

@@ -1,14 +1,23 @@
 <html>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
     <head>
-
+    <title>CodeMonkey</title>
+    
     </head>
 
     <body>
       
         <header>
-          
+          <p class="title">Welcome to Code Monkey</p>
           <nav>
-
+            <div class="topnav">
+              <a class="active" href="#home">Home</a>
+              {%if login == True%}
+              <a href="login">Login</a>
+              {%endif%}
+              <a href="challenge">Challenges</a>
+              <a href="#about">About</a>
+            </div>
           </nav>
           
         </header>

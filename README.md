@@ -1,8 +1,11 @@
 # Code Monkey
 
-For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSeWqrl5Fv2bUUb8hKgddbWtL_wgjdhOrIMJ5EPcReuUGyQniA/viewform
+For me and other people in my group: 
+<ul>
+  <li>Submission Form: https://docs.google.com/forms/d/e/1FAIpQLSeWqrl5Fv2bUUb8hKgddbWtL_wgjdhOrIMJ5EPcReuUGyQniA/viewform</li>
+  <li>Shared Document: https://docs.google.com/document/d/1VxrSXIrScJ1PQG0PVCgcN-ZDyvmENHpNuVRCk0shqvc/edit</li>
+</ul>
 
-## Todo
 
 ### General
 :white_check_mark: Create domain with SSL (codemonkey.tk)
@@ -11,11 +14,13 @@ For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSe
 
 ### Front End
 
-:x: Create admin page
+:white_check_mark: Create admin page
 
-:x: Make it look pretty
+:x: Make admin page look pretty
 
-:x: Create login page
+:white_check_mark: Create login page
+
+:x: Make login page pretty
 
 :x: Create default page
 
@@ -38,7 +43,7 @@ For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSe
 
 :x: Use threading to remove inactive sessions every minute.
 
-:x: Fix the #TODO in sessions.py
+:white_check_mark: Fix the #TODO in sessions.py
 
 ## Expected Functionality of Pages
 
@@ -52,7 +57,16 @@ For me and other people in my group: https://docs.google.com/forms/d/e/1FAIpQLSe
 ### Loading a Normal Webpage 
 <ol>
   <li>Session token, and any other information is sent to back end</li>
-  <li>Backend checks if token is not expired. Yes -> log the user out. No -> Continue</li>
+  <li>Backend checks if token is expired. Yes -> log the user out. No -> Continue</li>
   <li>Determine the next page that needs to be loaded.</li>
   <li>Send information about the next page to the front end or redirect the user to the correct page</li>
 </ol>
+
+
+## Todo
+
+:x: Fix TODO in accountManger under checkAccount; printing login info
+
+:x: Fix printing token in login function
+
+:x: Fix printing of post request information in login function

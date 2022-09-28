@@ -7,7 +7,7 @@ userSessions = []
 
 
 class sessions:
-  def __init__(self, username):
+  def __init__(self, username, ip):
     self.username = username
     
     currentTime = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
@@ -18,7 +18,9 @@ class sessions:
     #print(token)
     self.token = token
 
-    userSessions.append({'username':username, 'timeCreated':currentTime, 'token':token})
+    self.ipAddress = ip
+
+    userSessions.append({'username':username, 'timeCreated':currentTime, 'token':token, 'ipAddress':ip})
 
 
     def refreshSession(self, username, token):
@@ -31,6 +33,13 @@ class sessions:
       for i in userSessions:
         if i['token'] == token and i['username'] == username:
           return [i['username'], i['token']]
+
+    def isActiveSession(self, username, token):
+      currentTime = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+      for i in userSessions:
+        if i['token'] == token and i['username'] == username and i['timeCreated'] + 3000 < currentTime:
+          return True
+      return False
     
 
 def removeInactiveSessions():
