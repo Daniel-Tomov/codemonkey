@@ -65,8 +65,6 @@ For me and other people in my group:
 
 ## Todo
 
-:x: Fix TODO in accountManger under checkAccount; printing login info
-
 :x: Fix printing token in login function
 
 :x: Fix printing of post request information in login function

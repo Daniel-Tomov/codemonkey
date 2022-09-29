@@ -1,41 +1,62 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, make_response
 import time
-from sessions import sessions, userSessions  #, removeInactiveSessions
+from sessions import isSession, sessions, userSessions, getSession, removeInactiveSessions
 import accountManager
+import personalFunctions
 
 app = Flask(__name__)
 
 
-
-
+@app.route('/index', methods=["POST", "GET"])
+@app.route('/home', methods=["POST", "GET"])
 @app.route('/', methods=["POST", "GET"])
 def index():
-  
-  
 
-  return render_template('index.html', login=True, ipAddress=request.remote_addr)
+  token = request.cookies.get('token')
+  
+  if isSession(token) and request.method == "GET" and token != None:
+    currentSession = getSession(token)
+    #print('token is valid')
+
+    resp = make_response(render_template('index.html', login=True))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+  return render_template('index.html')
 
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
+  # Get token from response
+  token = request.cookies.get('token')
+
+  if isSession(token) and request.method == "GET" and token != None:
+    currentSession = getSession(token)
+    # Since the user has a valid token, redirect them to the challenges page
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = "challenge"))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+
   if request.method == "POST":
-    print(request.form)
     username = request.form['uname']
     password = request.form['psw']
-    ipAddress = request.form['ipAddress']
 
     # Check if account information is correct
     if accountManager.checkAccount(username, password) == False:
       return "Stupid"
-      #return render_template('wrongLogin.html')
+      return render_template('wrongLogin.html')
       
     # Create a new session with the username
-    currentSession = sessions(username, ipAddress)
-    print(currentSession.token)
-    userSessions.append(currentSession)
+    currentSession = sessions(username)
+    userSessions.append(currentSession) 
+    
+    #resp = make_response(render_template('challenge.html', login=True))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = 'challenge'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
 
-    return render_template('challenge.html', login=True, ipAddress=ipAddress)
-  return render_template('login.html', login=True, ipAddress=request.remote_addr)
+  return render_template('login.html', login=True)
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -57,10 +78,26 @@ def admin():
 @app.route('/challenge', methods=["POST", "GET"])
 def challenge():
 
+  token = request.cookies.get('token')
+  if isSession(token) == False:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = "login"))
+    resp.set_cookie('token', '')
+    return resp
 
   return render_template('challenge.html')
 
-  
+
+@app.route('/logout', methods=["POST", "GET"])
+def logout():
+  token = request.cookies.get('token')
+  currentSession = getSession(token)
+  currentSession.removeSession()
+
+  resp = make_response(render_template('redirect.html', login=True, redirect_location = "login"))
+  resp.set_cookie('token', '')
+  return resp 
+
+
 accountManager.getAccounts()
 
 #print(accountManager.accounts)

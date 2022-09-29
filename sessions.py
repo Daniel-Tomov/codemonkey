@@ -1,16 +1,16 @@
-from datetime import datetime
 import random
 import string
 import json
+import personalFunctions
 
 userSessions = []
 
 
 class sessions:
-  def __init__(self, username, ip):
+  def __init__(self, username):
     self.username = username
     
-    currentTime = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+    currentTime = personalFunctions.time
     #print(currentTime)
     self.timeCreated = currentTime
 
@@ -18,34 +18,49 @@ class sessions:
     #print(token)
     self.token = token
 
-    self.ipAddress = ip
 
-    userSessions.append({'username':username, 'timeCreated':currentTime, 'token':token, 'ipAddress':ip})
+  def refreshSession(self):
+    for i in userSessions:
+      if i.token == self.token and i.username == self.username:
+        currentTime = personalFunctions.time
+        self.token = currentTime
 
+  def isActiveSession(self):
+    currentTime = personalFunctions.time
+    for i in userSessions:
+      if i.token == self.token and i.username == self.username and i.timeCreated + 3000 < currentTime:
+        return True
+    return False
 
-    def refreshSession(self, username, token):
-      for i in userSessions:
-        if i['token'] == token and i['username'] == username:
-          print('Token for ' + i['username'] + ' is correct')
+  def removeSession(self):
+    for i in userSessions:
+      if i.token == self.token and i.username == self.username:
+        userSessions.remove(i)
 
-    
-    def getSession(self, username, token):
-      for i in userSessions:
-        if i['token'] == token and i['username'] == username:
-          return [i['username'], i['token']]
+def isSession(token):
+  if token == None:
+    return False
 
-    def isActiveSession(self, username, token):
-      currentTime = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
-      for i in userSessions:
-        if i['token'] == token and i['username'] == username and i['timeCreated'] + 3000 < currentTime:
-          return True
-      return False
-    
+  for i in userSessions:
+    if i.token == token:
+      return True
+
+  print("Cookie " + token + " is not in the list")
+  return False
+
+def getSession(token):
+  if token == None:
+    return False
+
+  for i in userSessions:
+    if i.token == token:
+      return i
+
 
 def removeInactiveSessions():
-  currentTime = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+  currentTime = personalFunctions.time
   for i in userSessions:
     # Remove sessions that have not been refreshed for at least 30 minutes
-    if i['timeCreated'] > (currentTime + 3000):
-      print('removed ' + i['username'])
+    if i.timeCreated > (currentTime + 3000):
+      print('removed ' + i.username)
       userSessions.remove(i)
