@@ -1,8 +1,11 @@
+from concurrent.futures import thread
 from flask import Flask, jsonify, render_template, request, make_response
 import time
 from sessions import isSession, sessions, userSessions, getSession, removeInactiveSessions
 import accountManager
 import personalFunctions
+import threading
+
 
 app = Flask(__name__)
 
@@ -16,7 +19,8 @@ def index():
   
   if isSession(token) and request.method == "GET" and token != None:
     currentSession = getSession(token)
-    #print('token is valid')
+    currentSession.refreshSession()
+    print('token is valid')
 
     resp = make_response(render_template('index.html', login=True))
     resp.set_cookie('token', currentSession.token)
@@ -66,19 +70,53 @@ def login():
 @app.route('/register', methods=["POST", "GET"])
 def register():
   if request.method == "POST":
-    username = request.form['login']
-    password = request.form['login']
-  return render_template('register.html')
+    username = request.form['uname']
+    password = request.form['psw']
+
+    accountManager.addAccount(username, password)
+    
+    # Create a new session with the username
+    currentSession = sessions(username)
+    userSessions.append(currentSession)
+    
+    #resp = make_response(render_template('challenge.html', login=True))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = 'challenge'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+  return render_template('login.html')
 
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
-  if request.method == "POST":
-    if (request.form['button'] == 'shutdown'):
-      accountManager.saveAccounts()
-      exit(0)
 
-  return render_template('admin.html')
+  token = request.cookies.get('token')
+
+  
+
+  if isSession(token) == False:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = "login"))
+    resp.set_cookie('token', '')
+    return resp
+  
+  if isSession(token) == True:
+    session = getSession(token)
+
+    if accountManager.isAdmin(session.username) == False:
+      resp = make_response(render_template('redirect.html', login=True, redirect_location = "admin"))
+      resp.set_cookie('token', session.token)
+      return "You are not an admin"
+
+    resp = make_response(render_template('admin.html', login=True))
+    resp.set_cookie('token', session.token)
+    return resp
+
+  if request.method == "POST":
+    if (request.form['shutdown'] == 'True'):
+      accountManager.saveAccounts()
+
+  resp = make_response(render_template('redirect.html', login=True, redirect_location = "challenge"))
+  resp.set_cookie('token', session.token)
+  return resp
   
 @app.route('/challenges', methods=["POST", "GET"])
 @app.route('/challenge', methods=["POST", "GET"])
@@ -108,5 +146,7 @@ accountManager.getAccounts()
 
 #print(accountManager.accounts)
 
+threading.Thread(target=removeInactiveSessions).start()
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
+  app.run(host="0.0.0.0", port=80, debug=True)

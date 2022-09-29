@@ -15,12 +15,12 @@
 
         <main>
           <p>Add questions:</p>
-          <form>
+          <form action="#" method="post">
             <div class="container">
-              <label for="uname"><b>Question:</b></label>
-              <input type="text" placeholder="Question" name="newQuestions" required>
+              <label for="newQuestions"><b>Question:</b></label>
+              <input type="text" placeholder="Question" name="newQuestions">
               <button type="submit">Submit</button>
-          
+              <button type="submit" name="shutdown" value="True">Shutdown</button>
             </div>
           </form>
         </main>

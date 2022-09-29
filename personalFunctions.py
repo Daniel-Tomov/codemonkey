@@ -6,5 +6,6 @@ def time():
 
 
 def encrypt(password):
-  key = hashlib.sha256(password).digest()
-  return key
+  password = hashlib.md5(password.encode()).hexdigest()
+  return password
+
