@@ -2,8 +2,8 @@
 
 For me and other people in my group: 
 <ul>
-  <li>Submission Form: https://docs.google.com/forms/d/e/1FAIpQLSeWqrl5Fv2bUUb8hKgddbWtL_wgjdhOrIMJ5EPcReuUGyQniA/viewform</li>
-  <li>Shared Document: https://docs.google.com/document/d/1VxrSXIrScJ1PQG0PVCgcN-ZDyvmENHpNuVRCk0shqvc/edit</li>
+  <li>Submission Form: <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWqrl5Fv2bUUb8hKgddbWtL_wgjdhOrIMJ5EPcReuUGyQniA/viewform"> Google Pre-Proposal Form</a></li>
+  <li>Shared Document: <a href="https://docs.google.com/document/d/1VxrSXIrScJ1PQG0PVCgcN-ZDyvmENHpNuVRCk0shqvc/edit">Google Document</a></li>
 </ul>
 
 
@@ -22,7 +22,13 @@ For me and other people in my group:
 
 :x: Make login page pretty
 
-:x: Create default page
+:white_check_mark: Create default page
+
+:x: Make default page look pretty
+
+:white_check_mark: Create register page
+
+:x: Make register page look pretty
 
 ### Backend
 

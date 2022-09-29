@@ -39,6 +39,11 @@ def login():
 
 
   if request.method == "POST":
+    if request.form['uname'] == "loginCancel":
+      resp = make_response(render_template('redirect.html', login=True, redirect_location = 'home'))
+      resp.set_cookie('token', '')
+      return resp
+    
     username = request.form['uname']
     password = request.form['psw']
 
@@ -49,7 +54,7 @@ def login():
       
     # Create a new session with the username
     currentSession = sessions(username)
-    userSessions.append(currentSession) 
+    userSessions.append(currentSession)
     
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location = 'challenge'))
@@ -74,7 +79,8 @@ def admin():
       exit(0)
 
   return render_template('admin.html')
-
+  
+@app.route('/challenges', methods=["POST", "GET"])
 @app.route('/challenge', methods=["POST", "GET"])
 def challenge():
 
