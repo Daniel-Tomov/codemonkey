@@ -98,13 +98,11 @@ def admin():
     resp.set_cookie('token', '')
     return resp
   
-  if isSession(token) == True:
-    session = getSession(token)
-
-    if accountManager.isAdmin(session.username) == False:
-      resp = make_response(render_template('redirect.html', login=True, redirect_location = "admin"))
-      resp.set_cookie('token', session.token)
-      return "You are not an admin"
+  session = getSession(token)
+  if accountManager.isAdmin(session.username) == False:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location = "admin"))
+    resp.set_cookie('token', session.token)
+    return "You are not an admin"
 
     resp = make_response(render_template('admin.html', login=True))
     resp.set_cookie('token', session.token)
@@ -114,7 +112,7 @@ def admin():
     if (request.form['shutdown'] == 'True'):
       accountManager.saveAccounts()
 
-  resp = make_response(render_template('redirect.html', login=True, redirect_location = "challenge"))
+  resp = make_response(render_template('admin.html', login=True))
   resp.set_cookie('token', session.token)
   return resp
   
@@ -128,7 +126,7 @@ def challenge():
     resp.set_cookie('token', '')
     return resp
 
-  return render_template('challenge.html')
+  return render_template('challenge.html', login=True)
 
 
 @app.route('/logout', methods=["POST", "GET"])

@@ -83,6 +83,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "numpy"
+version = "1.23.3"
+description = "NumPy is the fundamental package for array computing with Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "strings-pkg"
 version = "0.0.1"
 description = "string extension package"
@@ -119,7 +127,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b80e05b49aa2d57e0cb093bb56190f74be7cf8e539c6e0aef94e8fb306ba14c0"
+content-hash = "d32ce6eb978bc720bdde1f3706dfbe6e04db9c7b5b098272b2d4549426a41ee3"
 
 [metadata.files]
 click = []
@@ -129,6 +137,7 @@ importlib-metadata = []
 itsdangerous = []
 jinja2 = []
 markupsafe = []
+numpy = []
 strings-pkg = []
 werkzeug = []
 zipp = []

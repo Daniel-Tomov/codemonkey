@@ -8,6 +8,7 @@ authors = ["Replit user <<>>"]
 python = "^3.8"
 Flask = "^2.2.2"
 strings-pkg = "^0.0.1"
+numpy = "^1.23.3"
 
 [tool.poetry.dev-dependencies]
 
