@@ -139,6 +139,10 @@ def logout():
   resp.set_cookie('token', '')
   return resp 
 
+@app.route('/saveaccounts', methods=["POST", "GET"])
+def saveAccounts():
+  accountManager.saveAccounts()
+  return "done"
 
 accountManager.getAccounts()
 

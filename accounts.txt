@@ -1,2 +1,1 @@
-Daniel,202cb962ac59075b964b07152d234b70,admin
-ChrisMz,5f4dcc3b5aa765d61d8327deb882cf99,standard
+Daniel,30cd2f99101cdd52cc5fda1e996ee137,admin
