@@ -7,8 +7,6 @@ import time
 userSessions = []
 sessionTimeout = 3000 # Thirty minutes
 
-
-
 class sessions:
   def __init__(self, username):
     self.username = username
@@ -23,22 +21,16 @@ class sessions:
 
 
   def refreshSession(self):
-    for i in userSessions:
-      if i.token == self.token and i.username == self.username:
-        currentTime = personalFunctions.time()
-        self.timeCreated = currentTime
+    self.timeCreated = personalFunctions.time()
 
   def isActiveSession(self):
     currentTime = personalFunctions.time()
-    for i in userSessions:
-      if i.token == self.token and i.username == self.username and i.timeCreated + sessionTimeout < currentTime:
-        return True
+    if self.timeCreated + sessionTimeout < currentTime:
+      return True
     return False
 
   def removeSession(self):
-    for i in userSessions:
-      if i.token == self.token and i.username == self.username:
-        userSessions.remove(i)
+    userSessions.remove(self)
 
 def isSession(token):
   if token == None:
