@@ -9,6 +9,14 @@ import threading
 
 app = Flask(__name__)
 
+def refreshSession(token):
+  currentSession = getSession(token)
+  currentSession.refreshSession()
+  return currentSession
+
+def runPeriodically():
+  accountManager.saveAccounts()
+  removeInactiveSessions()
 
 @app.route('/index', methods=["POST", "GET"])
 @app.route('/home', methods=["POST", "GET"])
@@ -18,9 +26,9 @@ def index():
   token = request.cookies.get('token')
   
   if isSession(token) and request.method == "GET" and token != None:
-    currentSession = getSession(token)
-    currentSession.refreshSession()
-    print('token is valid')
+
+    #print('token is valid')
+    currentSession = refreshSession(token)
 
     resp = make_response(render_template('index.html', login=True))
     resp.set_cookie('token', currentSession.token)
@@ -148,7 +156,7 @@ accountManager.getAccounts()
 
 #print(accountManager.accounts)
 
-threading.Thread(target=removeInactiveSessions).start()
+threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=80, debug=True)

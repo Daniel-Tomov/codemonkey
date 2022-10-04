@@ -6,11 +6,14 @@ For me and other people in my group:
   <li>Shared Document: <a href="https://docs.google.com/document/d/1VxrSXIrScJ1PQG0PVCgcN-ZDyvmENHpNuVRCk0shqvc/edit">Google Document</a></li>
 </ul>
 
+## To Do List
 
 ### General
 :white_check_mark: Create domain with SSL (codemonkey.tk)
 
-:x: Submit code from front end to back end without refreshing the page. Also send the backend information to the front end without refreshing the page.
+:x: Submit code from front end to back end without refreshing the page. Also send the backend information to the front end without refreshing the page. This will mostly be used for submitting code to the server to run and check against the reqirements.
+
+:white_check_mark: Use session tokens stored in a cookie to authenticate users
 
 ### Front End
 
@@ -26,38 +29,46 @@ For me and other people in my group:
 
 :x: Make default page look pretty
 
-:white_check_mark: Create register page
+:x: Create register page
 
 :x: Make register page look pretty
 
+:x: Create a function to submit code to the backend
+
+:x: Receive code execution details from the backend
+
 ### Backend
 
-:x: Use tokens to authenticate users
+:white_check_mark: Use tokens to authenticate users
 <ul>
   <li>Should have an expiration date</li>
-  <li>Should be kept in a json string</li>
   <li>Should refresh every time a user reloads a page</li>
 </ul>
 
 :x: Use json for formating data
 
-:x: Put the session token into a cookie instead of plainly in the HTML. Also means the cookie has to be accessed by the backend.
+:white_check_mark: Put the session token into a cookie instead of plainly in the HTML. Also means the cookie has to be accessed by the backend.
 
 :x: Track course completion for each user
 
 :x: Store user information in a database instead of a text file
 
-:x: Use threading to remove inactive sessions every minute.
+:white_check_mark: Use threading to remove inactive sessions every minute.
 
-:white_check_mark: Fix the #TODO in sessions.py
+:x: Accept code submit requests from the frontend
 
-## Expected Functionality of Pages
+:x: Execute code from the frontend
+
+:x: Send code back to the frontend
+
+## Functionality of Pages
 
 ### Login
 <ol>
   <li>User enters login credentials</li>
-  <li>Backend hashes password with the password as the key, creates a session token, and an expiration date for the token.</li>
-  <li>Token (and only the token) is sent back to the front end to be part of the front-end HTML</li>
+  <li>Backend hashes the password five times, creates a session token, and an expiration date for the token.</li>
+  <li>Token (and only the token) is sent back to the front end to be part of the front-end HTML through a cookie</li>
+  <li>The user is sent to the challenges page</li>
 </ol>
 
 ### Loading a Normal Webpage 
@@ -67,10 +78,3 @@ For me and other people in my group:
   <li>Determine the next page that needs to be loaded.</li>
   <li>Send information about the next page to the front end or redirect the user to the correct page</li>
 </ol>
-
-
-## Todo
-
-:x: Fix printing token in login function
-
-:x: Fix printing of post request information in login function

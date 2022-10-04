@@ -37,11 +37,8 @@ def getAccounts():
     accounts.append(i.split(','))
 
 def saveAccounts():
-  print('saving accounts')
   file = open('accounts.txt', 'w')
-  print(accounts)
   for f in accounts:
-    print(f)
     file.write(f'{f[0]},{f[1]},{f[2]}\n')
 
 

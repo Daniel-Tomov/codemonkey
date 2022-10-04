@@ -58,17 +58,28 @@ span.psw {
   padding-top: 16px;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .cancelbtn {
-    width: 100%;
-  }
-}
+
 .title {
   text-align: center;
   font-size: 40px;
+  margin: 5px
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  color: black;
+}
+
+.active{color:red}
+
+a  {
+  color:black;
+  list-style-type: none;
+  text-decoration: none;
+  padding: 0px 10px;
 }
