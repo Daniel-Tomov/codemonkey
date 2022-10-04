@@ -109,12 +109,12 @@ def admin():
   
   session = getSession(token)
   if accountManager.isAdmin(session.username) == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location = "admin"))
-    resp.set_cookie('token', session.token)
-    return "You are not an admin"
+    resp = make_response("You are not an admin")
+    resp.set_cookie('token', "")
+    return resp
 
     resp = make_response(render_template('admin.html', login=True))
-    resp.set_cookie('token', session.token)
+    resp.set_cookie('token', "")
     return resp
 
   if request.method == "POST":
