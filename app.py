@@ -5,6 +5,7 @@ from sessions import isSession, sessions, userSessions, getSession, removeInacti
 import accountManager
 import personalFunctions
 import threading
+import yml
 
 
 app = Flask(__name__)
@@ -156,7 +157,7 @@ accountManager.getAccounts()
 
 #print(accountManager.accounts)
 
-threading.Thread(target=runPeriodically).start()
+#threading.Thread(target=removeInactiveSessions).start()
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=80, debug=True)
