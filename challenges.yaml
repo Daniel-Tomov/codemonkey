@@ -1,8 +1,11 @@
 firstCode:
   name: "First Code"
   text: "In this module, you will learn the basics with Python! Your first challenge will be to print the text \"Hello World!\""
-  page: 
-    - "This will be displayed on the actual page of the module"
-    - "^textbox^"
-    - "^firstCode^"
-    - "^submit^"
+  page:
+    text: "This will be on the actual page of the module"
+    question:
+      text: 'For your first challenge, you will print "Hello World!"'
+      type: "textbox"
+      skeleton: "print('Put your string in here')"
+      button: "submit"
+

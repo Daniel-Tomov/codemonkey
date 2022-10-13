@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Test page for Code Monkey</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    {{ data[page]['name'] }}
+
+    {% for i in data[page]['page'] %}
+      {% if i != "question" %}
+        <p>{{ data[page]['page'][i] }}</p>
+      {% endif %}
+    
+      {% if i == "question" %}
+    
+        {% for n in data[page]['page']['question'] %}
+          {% if n == 'text' %}
+            <p>{{ data[page]['page']['question']['text'] }}</p>
+          {% endif %}
+    
+          <form action="#" method="post">
+            {%   if data[page]['page']['question'][n] == 'textbox' %}
+              <textarea id="code" style="width:400px;">{{ data[page]['page']['question']['skeleton'] }}</textarea>
+            {% endif %}
+      
+            {% if data[page]['page']['question'][n] == 'submit' %}
+                <button id="submitButton" type="button">Submit</button>
+            {% endif %}
+           </form>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <div id="response""></div>
+  </body>
+  <script>
+   $(document).ready(function() {
+      $("button").click(function(event){
+        var the_id = event.target.id;
+        var the_code = document.getElementById("code").value;
+        document.getElementById("response").innerHTML = "Running your code...";
+        $.ajax({
+          url: "/recieve_data",
+          type: "get",
+          data: {button_id: btoa(the_id), code: btoa(the_code)},
+          success: function(response) {
+          $("#response").html(atob(response));
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+       });
+     });
+   });
+  </script>
+
+  
+</html>

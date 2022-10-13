@@ -1,5 +1,7 @@
 { pkgs }: {
   deps = [
+    pkgs.sudo
+    pkgs.iputils
     pkgs.python38Full
   ];
   env = {

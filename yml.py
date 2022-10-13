@@ -7,10 +7,10 @@ from yaml.loader import SafeLoader
 
 items = []
 data = yaml.load(open('challenges.yaml'), Loader=SafeLoader)
-print(data)
+#print(data)
 
 
 for item in data:
-    items.append([item, data[item]['name'], data[item]['text'], [i for i in data[item]['page']]])
+  items.append([item, data[item]['name'], data[item]['text'], [i for i in data[item]['page']]])
 
-print(items)
+#print(items)
