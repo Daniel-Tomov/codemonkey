@@ -3,6 +3,8 @@ import hashlib
 import base64
 import subprocess
 import os
+from os import listdir
+from os.path import isfile, join
 
 def time():
     return int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
@@ -33,3 +35,12 @@ def runCode(inputCode, cookie):
 
 def replaceNewlines(input):
   return input.replace("\n", "<br>")
+
+def getFiles(input):
+  return [f for f in listdir(input) if isfile(join(input, f))]
+
+def getModifiedTime(path):
+  return os.path.getmtime(path)
+
+def deleteFile(path):
+  os.system("rm -Rf " + path)

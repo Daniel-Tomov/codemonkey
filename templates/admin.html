@@ -18,9 +18,10 @@
           <form action="#" method="post">
             <div class="container">
               <label for="newQuestions"><b>Question:</b></label>
-              <textarea>{{ challenges }}</textarea>
-              <button type="submit">Submit</button>
-              <button type="submit" name="saveAccounts" value="True">Save Accounts</button>
+              <textarea name="challengeQuestions">{{ challenges }}</textarea>
+              <button type="submit" name="button" value="challengeSubmit">Submit</button>
+              <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
+              <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
             </div>
           </form>
         </main>

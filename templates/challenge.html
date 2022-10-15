@@ -5,11 +5,12 @@
     <header>
       <div class="topnav">
               <a class="active" href="index">Home</a>
-              {% if login != True %}
-              <a href="login">Login</a>
-              {% endif %}
               <a href="challenge">Challenges</a>
               <a href="#about">About</a>
+              {% if admin == True %}
+                <a href="admin">Admin</a>
+                <a href="test">Test</a>
+              {% endif %}
             </div>
     </header>
     <p>This is the challenge page</p>

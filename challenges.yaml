@@ -8,3 +8,5 @@ firstCode:
       type: "textbox"
       skeleton: "print('Put your string in here')"
       button: "submit"
+      correct: "Hello World!"
+      chal_id: "0004"

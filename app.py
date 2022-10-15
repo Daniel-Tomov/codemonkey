@@ -4,6 +4,7 @@ import accountManager
 import personalFunctions
 import threading
 import yml
+from time import sleep
 
 app = Flask(__name__)
 
@@ -13,16 +14,25 @@ def refreshSession(token):
   currentSession.refreshSession()
   return currentSession
 
-def invalidSession(token):
+def invalidSession():
   resp = make_response(render_template('redirect.html', login=True, redirect_location="login"))
   resp.set_cookie('token', '')
   return resp
 
-
+def removeOldRuns():
+  files = personalFunctions.getFiles('programRuns/')
+  for i in files:
+    modifiedTime = personalFunctions.getModifiedTime('programRuns/' + i)
+    currentTime = personalFunctions.time()
+    if modifiedTime > currentTime + 100:
+      personalFunctions.deleteFile('programRuns/' + i)   
 
 def runPeriodically():
-  accountManager.saveAccounts()
-  removeInactiveSessions()
+  while True:
+    accountManager.saveAccounts()
+    removeInactiveSessions()
+    removeOldRuns()
+    sleep(100)
 
 
 @app.route('/index', methods=["POST", "GET"])
@@ -37,7 +47,8 @@ def index():
     #print('token is valid')
     currentSession = refreshSession(token)
 
-    resp = make_response(render_template('index.html', login=True))
+
+    resp = make_response(render_template('index.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
     resp.set_cookie('token', currentSession.token)
     return resp
 
@@ -96,8 +107,7 @@ def register():
     userSessions.append(currentSession)
 
     #resp = make_response(render_template('challenge.html', login=True))
-    resp = make_response(
-      render_template('redirect.html', login=True, redirect_location='challenge'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenge'))
     resp.set_cookie('token', currentSession.token)
     return resp
   return render_template('login.html')
@@ -105,37 +115,50 @@ def register():
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
-
   token = request.cookies.get('token')
+  currentSession = getSession(token)
 
-  if isSession(token) == False:
-   return invalidSession(token)
+  #print(token)
+  
+  if currentSession == None:
+   return invalidSession()
 
-  session = getSession(token)
-  if accountManager.isAdmin(session.username) == False:
+  currentSession.refreshSession()
+  if accountManager.isAdmin(currentSession.username) == False:
     resp = make_response("You are not an admin")
     resp.set_cookie('token', "")
     return resp
-
   if request.method == "POST":
-    if (request.form['saveAccounts'] == 'True'):
+    #print(request.form)
+    if (request.form['button'] == 'saveAccounts'):
       accountManager.saveAccounts()
-
+    elif (request.form['button'] == 'reloadChallenges'):
+      yml.reloadChallenges()
+    elif (request.form['button'] == 'challengeSubmit'):
+      yml.writeChallenges(request.form['challengeQuestions'])
+      yml.reloadChallenges()
+    
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='admin'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
   resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
-  resp.set_cookie('token', session.token)
+  resp.set_cookie('token', currentSession.token)
   return resp
 
-
+@app.route('/challenge_submit', methods=["POST", "GET"])
+def challenge_submit():
+  return "you did it!"
+  
 @app.route('/challenges', methods=["POST", "GET"])
 @app.route('/challenge', methods=["POST", "GET"])
 def challenge():
 
   token = request.cookies.get('token')
   if isSession(token) == False:
-    invalidSession(token)
+    return invalidSession()
     
   currentSession = refreshSession(token)
-  resp = make_response(render_template('challenge.html', login=True))
+  resp = make_response(render_template('challenge.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
   resp.set_cookie('token', currentSession.token)
   return resp
 
@@ -146,7 +169,7 @@ def logout():
   currentSession = getSession(token)
   currentSession.removeSession()
 
-  return invalidSession(token)
+  return invalidSession()
 
 
 @app.route('/saveaccounts', methods=["POST", "GET"])
@@ -158,10 +181,20 @@ def saveAccounts():
 @app.route('/test', methods=["POST", "GET"])
 def test():
   #print(yml.data['firstCode']['page'])
+  token = request.cookies.get('token')
+  currentSession = getSession(token)
 
+  if currentSession == None:
+    return invalidSession()
+    
+  if accountManager.isAdmin(currentSession.username) == False:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenges'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+    
   if request.method == "POST":
     return "here"
-  
   return render_template("test.html", data=yml.data, page="firstCode")
 
   
@@ -187,7 +220,8 @@ accountManager.getAccounts()
 
 #print(accountManager.accounts)
 
-threading.Thread(target=removeInactiveSessions).start()
+threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=80, debug=False, use_reloader=False)
+  sleep(100000000)
