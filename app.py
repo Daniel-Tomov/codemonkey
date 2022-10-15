@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, render_template, request, make_response
-import time
 from sessions import isSession, sessions, userSessions, getSession, removeInactiveSessions
 import accountManager
 import personalFunctions
 import threading
-import subprocess
 import yml
 
 app = Flask(__name__)
@@ -120,10 +118,10 @@ def admin():
     return resp
 
   if request.method == "POST":
-    if (request.form['shutdown'] == 'True'):
+    if (request.form['saveAccounts'] == 'True'):
       accountManager.saveAccounts()
 
-  resp = make_response(render_template('admin.html', login=True))
+  resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
   resp.set_cookie('token', session.token)
   return resp
 
@@ -189,7 +187,7 @@ accountManager.getAccounts()
 
 #print(accountManager.accounts)
 
-#threading.Thread(target=removeInactiveSessions).start()
+threading.Thread(target=removeInactiveSessions).start()
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=80, debug=False, use_reloader=False)
