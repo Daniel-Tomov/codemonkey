@@ -3,6 +3,20 @@
   <head>
     <title>Test page for Code Monkey</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+      :root{
+        --width:400px;
+      }
+      #response{
+        background-color: lightgray; 
+        width:var(--width);
+        height: fit-content;
+      }
+
+      textarea{
+        width: var(--width)
+      }
+    </style>
   </head>
   <body>
     {{ data[page]['name'] }}
@@ -14,25 +28,25 @@
     
       {% if i == "question" %}
     
-        {% for n in data[page]['page']['question'] %}
-          {% if n == 'text' %}
-            <p>{{ data[page]['page']['question']['text'] }}</p>
+      {% for n in data[page]['page']['question'] %}
+        {% if n == 'text' %}
+          <p>{{ data[page]['page']['question']['text'] }}</p>
+        {% endif %}
+          {%   if data[page]['page']['question'][n] == 'textbox' %}
+            <textarea id="code">{{ data[page]['page']['question']['skeleton'] }}</textarea>
           {% endif %}
     
-          <form action="#" method="post">
-            {%   if data[page]['page']['question'][n] == 'textbox' %}
-              <textarea id="code" style="width:400px;">{{ data[page]['page']['question']['skeleton'] }}</textarea>
-            {% endif %}
-      
-            {% if data[page]['page']['question'][n] == 'submit' %}
-                <button id="submitButton" type="button">Submit</button>
-            {% endif %}
-           </form>
+          {% if data[page]['page']['question'][n] == 'submit' %}
+            <button id="submitButton" type="button">Submit</button>
+          {% endif %}
         {% endfor %}
       {% endif %}
     {% endfor %}
     <div id="response""></div>
   </body>
+
+
+  
   <script>
    $(document).ready(function() {
       $("button").click(function(event){
@@ -42,7 +56,7 @@
         $.ajax({
           url: "/recieve_data",
           type: "get",
-          data: {button_id: btoa(the_id), code: btoa(the_code)},
+          data: {button_id: btoa(the_id), code: btoa(the_code), token:getCookie("token")},
           success: function(response) {
           $("#response").html(atob(response));
         },
@@ -52,6 +66,21 @@
        });
      });
    });
+
+    function getCookie(cname) {
+      let name = cname + "=";
+      let ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
   </script>
 
   

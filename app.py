@@ -1,10 +1,10 @@
-from concurrent.futures import thread
 from flask import Flask, jsonify, render_template, request, make_response
 import time
 from sessions import isSession, sessions, userSessions, getSession, removeInactiveSessions
 import accountManager
 import personalFunctions
 import threading
+import subprocess
 import yml
 
 app = Flask(__name__)
@@ -168,11 +168,21 @@ def test():
 
   
 @app.route('/recieve_data', methods=["POST", "GET"])
-def get_id():
+def recieve_code():
+  token = request.args.get('token')
+  currentSession = getSession(token)
+  if currentSession == None:
+    return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
+  
   code = request.args.get('code')
-  program = personalFunctions.base64decode(code).decode('utf-8')
-  print(program)
-  return "<p>Got it!</p>"
+  program = personalFunctions.base64decode(code).decode('utf-8').replace("'", "\"")
+  
+  if "subprocess" in program or "import os" in program or "from os" in program:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
+  
+  #print(program)
+  output = personalFunctions.runCode(program, currentSession.token)  
+  return personalFunctions.base64encode(personalFunctions.replaceNewlines(output).encode())
 
 
 accountManager.getAccounts()
@@ -182,4 +192,4 @@ accountManager.getAccounts()
 #threading.Thread(target=removeInactiveSessions).start()
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=80, debug=True)
+  app.run(host="0.0.0.0", port=80, debug=False, use_reloader=False)

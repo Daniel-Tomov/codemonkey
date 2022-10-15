@@ -45,7 +45,7 @@ For me and other people in my group:
   <li>Should refresh every time a user reloads a page</li>
 </ul>
 
-:x: Use json for formating data
+:white_check_mark: Use json for formating data
 
 :white_check_mark: Put the session token into a cookie instead of plainly in the HTML. Also means the cookie has to be accessed by the backend.
 
@@ -55,11 +55,13 @@ For me and other people in my group:
 
 :white_check_mark: Use threading to remove inactive sessions every minute.
 
-:x: Accept code submit requests from the frontend
+:white_check_mark: Accept code submit requests from the frontend
 
-:x: Execute code from the frontend
+:white_check_mark: Execute code from the frontend
 
-:x: Send code back to the frontend
+:white_check_mark: Send code back to the frontend
+
+:x: Use threads to run code asynchronously and check if the code runs for too long, then kill the thread and notifiy the user.
 
 ## Functionality of Pages
 

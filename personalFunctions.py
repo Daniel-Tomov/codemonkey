@@ -1,6 +1,8 @@
 from datetime import datetime
 import hashlib
 import base64
+import subprocess
+import os
 
 def time():
     return int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
@@ -21,4 +23,13 @@ def base64decode(input):
 
 
 def runCode(inputCode, cookie):
+  os.system("echo '" + inputCode + "' > ./programRuns/" + cookie + ".py")
+  process = subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"], stdout=subprocess.PIPE)
+  stdout = process.communicate()[0].decode('utf-8')
+  #print(stdout)
   
+  return stdout
+
+
+def replaceNewlines(input):
+  return input.replace("\n", "<br>")
