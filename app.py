@@ -38,8 +38,6 @@ def index():
   token = request.cookies.get('token')
 
   if isSession(token) and request.method == "GET" and token != None:
-
-    #print('token is valid')
     currentSession = getSession(token)
 
 
@@ -59,13 +57,13 @@ def login():
     currentSession = getSession(token)
     # Since the user has a valid token, redirect them to the challenges page
     resp = make_response(
-      render_template('redirect.html', login=True, redirect_location="challenge"))
+      render_template('redirect.html', login=True, redirect_location="/challenge"))
     resp.set_cookie('token', currentSession.token)
     return resp
 
   if request.method == "POST":
     if request.form['uname'] == "loginCancel":
-      resp = make_response(render_template('redirect.html', login=True, redirect_location='home'))
+      resp = make_response(render_template('redirect.html', login=True, redirect_location='/home'))
       resp.set_cookie('token', '')
       return resp #hello
 
@@ -82,7 +80,7 @@ def login():
     userSessions.append(currentSession)
 
     #resp = make_response(render_template('challenge.html', login=True))
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenge'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
     return resp
 
@@ -102,7 +100,7 @@ def register():
     userSessions.append(currentSession)
 
     #resp = make_response(render_template('challenge.html', login=True))
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenge'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
     return resp
   return render_template('login.html')
@@ -113,8 +111,6 @@ def admin():
   token = request.cookies.get('token')
   currentSession = getSession(token)
 
-  #print(token)
-  
   if currentSession == None:
    return invalidSession()
 
@@ -123,7 +119,6 @@ def admin():
     resp.set_cookie('token', "")
     return resp
   if request.method == "POST":
-    #print(request.form)
     if (request.form['button'] == 'saveAccounts'):
       accountManager.saveAccounts()
     elif (request.form['button'] == 'reloadChallenges'):
@@ -132,7 +127,7 @@ def admin():
       yml.writeChallenges(request.form['challengeQuestions'])
       yml.reloadChallenges()
     
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='admin'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/admin'))
     resp.set_cookie('token', currentSession.token)
     return resp
   resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
@@ -174,7 +169,6 @@ def saveAccounts():
 
 @app.route('/test', methods=["POST", "GET"])
 def test():
-  #print(yml.data['firstCode']['page'])
   token = request.cookies.get('token')
   currentSession = getSession(token)
 
@@ -182,7 +176,7 @@ def test():
     return invalidSession()
     
   if accountManager.isAdmin(currentSession.username) == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenges'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
   
@@ -224,16 +218,13 @@ def get_chall(id):
     return invalidSession()
     
   if accountManager.isAdmin(currentSession.username) == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenges'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
 
   return render_template("challengeTemplate.html", data=yml.data, page=id)
 
 accountManager.getAccounts()
-
-#print(accountManager.accounts)
-
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
