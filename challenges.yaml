@@ -9,4 +9,4 @@ firstCode:
       skeleton: "print('Put your string in here')"
       button: "submit"
       correct: "Hello World!"
-      chal_id: "0004"
+      chal_id: "0002"

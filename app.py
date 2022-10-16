@@ -208,12 +208,17 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8').replace("'", "\"")
   
-  if "subprocess" in program or "import os" in program or "from os" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "import pty" in program or "from pty" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
   
-  #print(program)
   output = personalFunctions.runCode(program, currentSession.token)  
-  return personalFunctions.base64encode(personalFunctions.replaceNewlines(output).encode())
+
+  pageName, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(' ')
+  if yml.data[pageName]['page']['question']["chal_id"] == chal_id:
+    if yml.data[pageName]['page']['question']["correct"] + "\n" == output:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+    else:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
 
 accountManager.getAccounts()
@@ -223,5 +228,5 @@ accountManager.getAccounts()
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=80, debug=False, use_reloader=False)
+  app.run(host="0.0.0.0", port=80, debug=True, use_reloader=False)
   sleep(100000000)

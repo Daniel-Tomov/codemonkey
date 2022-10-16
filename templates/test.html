@@ -16,9 +16,21 @@
       textarea{
         width: var(--width)
       }
+
+      .correct{
+        background-color: lime;
+      }
+
+      .incorrect{
+        background-color: indianred;
+      }
     </style>
   </head>
   <body>
+    <a href="challenges">Challenges</a>
+    <a href="index">Home</a>
+    <a href="admin">Admin</a>   
+    
     {{ data[page]['name'] }}
 
     {% for i in data[page]['page'] %}
@@ -37,7 +49,7 @@
           {% endif %}
     
           {% if data[page]['page']['question'][n] == 'submit' %}
-            <button id="submitButton" type="button">Submit</button>
+            <button id="submitButton" value="{{ page + ' ' + data[page]['page']['question']['chal_id'] }}" type="button">Submit</button>
           {% endif %}
         {% endfor %}
       {% endif %}
@@ -52,11 +64,13 @@
       $("button").click(function(event){
         var the_id = event.target.id;
         var the_code = document.getElementById("code").value;
+        var chal_id = document.getElementById("submitButton").value;
+
         document.getElementById("response").innerHTML = "Running your code...";
         $.ajax({
           url: "/recieve_data",
           type: "get",
-          data: {button_id: btoa(the_id), code: btoa(the_code), token:getCookie("token")},
+          data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
           success: function(response) {
           $("#response").html(atob(response));
         },
