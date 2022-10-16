@@ -9,13 +9,8 @@ from time import sleep
 app = Flask(__name__)
 
 
-def refreshSession(token):
-  currentSession = getSession(token)
-  currentSession.refreshSession()
-  return currentSession
-
 def invalidSession():
-  resp = make_response(render_template('redirect.html', login=True, redirect_location="login"))
+  resp = make_response(render_template('redirect.html', login=True, redirect_location="/login"))
   resp.set_cookie('token', '')
   return resp
 
@@ -45,7 +40,7 @@ def index():
   if isSession(token) and request.method == "GET" and token != None:
 
     #print('token is valid')
-    currentSession = refreshSession(token)
+    currentSession = getSession(token)
 
 
     resp = make_response(render_template('index.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
@@ -123,7 +118,6 @@ def admin():
   if currentSession == None:
    return invalidSession()
 
-  currentSession.refreshSession()
   if accountManager.isAdmin(currentSession.username) == False:
     resp = make_response("You are not an admin")
     resp.set_cookie('token', "")
@@ -157,7 +151,7 @@ def challenge():
   if isSession(token) == False:
     return invalidSession()
     
-  currentSession = refreshSession(token)
+  currentSession = getSession(token)
   resp = make_response(render_template('challenge.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
   resp.set_cookie('token', currentSession.token)
   return resp
@@ -191,11 +185,8 @@ def test():
     resp = make_response(render_template('redirect.html', login=True, redirect_location='challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
-
-    
-  if request.method == "POST":
-    return "here"
-  return render_template("test.html", data=yml.data, page="secondCode")
+  
+  return render_template("test.html", data=yml.data)
 
   
 @app.route('/recieve_data', methods=["POST", "GET"])
@@ -224,6 +215,20 @@ def recieve_code():
     else:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
+@app.route('/test/<string:id>', methods=["POST", 'GET']) 
+def get_chall(id):
+  token = request.cookies.get('token')
+  currentSession = getSession(token)
+
+  if currentSession == None:
+    return invalidSession()
+    
+  if accountManager.isAdmin(currentSession.username) == False:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='challenges'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+  return render_template("challengeTemplate.html", data=yml.data, page=id)
 
 accountManager.getAccounts()
 

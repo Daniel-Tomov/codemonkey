@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Test page for Code Monkey</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+      :root{
+        --width:400px;
+      }
+      #response{
+        background-color: lightgray; 
+        width:var(--width);
+        height: fit-content;
+      }
+
+      textarea{
+        width: var(--width)
+      }
+
+      .correct{
+        background-color: lime;
+      }
+
+      .incorrect{
+        background-color: indianred;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/challenges">Challenges</a>
+    <a href="/index">Home</a>
+    <a href="/admin">Admin</a>   
+    
+    <p>{{ data[page]['name'] }}</p>
+    {% for i in data[page]['page'] %}
+      {% if i != "question" %}
+        <p>{{ data[page]['page'][i] }}</p>
+      {% endif %}
+      {% if i == "question" %}
+      {% for n in data[page]['page']['question'] %}
+        {% if n == 'text' %}
+          <p id="text">{{ data[page]['page']['question']['text'] }}</p>
+        {% endif %}
+          {%   if data[page]['page']['question'][n] == 'textbox' %}
+            <textarea id="code">{{ data[page]['page']['question']['skeleton'] }}</textarea>
+          {% endif %}
+          {% if data[page]['page']['question'][n] == 'submit' %}
+            <button id="submitButton" value="{{ page + ' ' + data[page]['page']['question']['chal_id'] }}" type="button">Submit</button>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <div id="response""></div>
+  </body>
+
+
+  
+  <script>
+   $(document).ready(function() {
+      $("button").click(function(event){
+        var the_id = event.target.id;
+        var the_code = document.getElementById("code").value;
+        var chal_id = document.getElementById("submitButton").value;
+
+        document.getElementById("response").innerHTML = "Running your code...";
+        $.ajax({
+          url: "/recieve_data",
+          type: "get",
+          data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
+          success: function(response) {
+          $("#response").html(atob(response));
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+       });
+     });
+   });
+
+    function getCookie(cname) {
+      let name = cname + "=";
+      let ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    let text = document.getElementById("text").textContent;
+    document.getElementById("text").innerText = text.replace(/\\r\\n/g, "<br />");
+    
+  </script>
+
+  
+</html>

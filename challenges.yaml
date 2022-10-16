@@ -4,24 +4,26 @@ firstCode:
   page:
     text: "This will be on the actual page of the module"
     question:
-      text: "For your first challenge, you will print \"Hello World!\"\n Don't"
+      text: "For your first challenge, you will print \"Hello World!\" You will see this this text many times while programming; whichever language you choose to learn after this course.\n
+            test of new line"
       type: "textbox"
       skeleton: "print(\"\")"
       button: "submit"
       correct: "Hello World!"
       chal_id: "0002"
 
-secondCode:
-  name: "Second Code"
+arithmeticPractice:
+  name: "Arithmetic Practice"
   text: "In this module, you will learn the basics of arithmetic."
   page:
     text: "This will be on the actual page of the module"
     question:
-      text: "For your second challenge, you will print basic math opertionas such as add, subtract, divide, multiply, and modulus. Don't worry if you don't know what some of these mean, you will learn!"
+      text: "For your second challenge, you will print basic math opertionas such as add, subtract, divide, multiply, and modulus. Don't worry if you don't know what some of these mean, you will learn!\n
+            This challenge requires you to add 1 and 1, subtract 4 from 10, multiply 2.5 and 2, and divide 20 by 2"
       type: "textbox"
       skeleton: ""
       button: "submit"
-      correct: "2\n6\n5\n"
+      correct: "2\n6\n5.0\n10.0"
       chal_id: "0003"
 
 thirdCode:

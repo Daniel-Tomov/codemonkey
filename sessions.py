@@ -29,7 +29,8 @@ class sessions:
 
   def isActiveSession(self):
     currentTime = personalFunctions.time()
-    if self.expireTime < currentTime:
+    if self.expireTime > currentTime:
+      self.refreshSession()
       return True
     return False
 
@@ -37,11 +38,12 @@ class sessions:
     userSessions.remove(self)
 
 def isSession(token):
-  if token == None:
+  if token == None or token == '':
     return False
 
   for i in userSessions:
     if i.token == token:
+      i.refreshSession()
       return True
 
   #print("Cookie " + token + " is not in the list")
@@ -53,6 +55,7 @@ def getSession(token):
 
   for i in userSessions:
     if i.token == token:
+      i.refreshSession()
       return i
 
 
