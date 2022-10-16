@@ -47,6 +47,6 @@ def saveAccounts():
 def isAdmin(username):
   for i in accounts:
     if i[2] == "admin" and i[0] == username:
-      print(f'{username} is an admin')
+      #print(f'{username} is an admin')
       return True
   return False
