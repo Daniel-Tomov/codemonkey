@@ -7,7 +7,8 @@ from os import listdir
 from os.path import isfile, join
 
 def time():
-    return int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+  #return 234509
+  return int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
 
 
 def encrypt(password):

@@ -9,7 +9,7 @@ class sessions:
   def __init__(self, username):
     self.username = username
     
-    currentTime = personalFunctions.time()
+    currentTime = convertTime()
     #print(currentTime)
     self.timeCreated = currentTime
     
@@ -83,7 +83,7 @@ def getExpireTime(timeCreated):
 def convertTime():
   currentTime = personalFunctions.time()
   converted = personalFunctions.time()
-  if int(str(currentTime)[0:2]) == 23 and int(str(currentTime)[0:2]) > 29:
-    converted = "-00" + currentTime[3:len(str(currentTime))]
+  if int(str(currentTime)[0:2]) == 23 and int(str(currentTime)[2:4]) > 29:
+    converted = getExpireTime(personalFunctions.time()) - sessionTimeout
   #print(converted)
   return converted
