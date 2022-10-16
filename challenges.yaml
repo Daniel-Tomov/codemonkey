@@ -4,9 +4,35 @@ firstCode:
   page:
     text: "This will be on the actual page of the module"
     question:
-      text: 'For your first challenge, you will print "Hello World!"'
+      text: "For your first challenge, you will print \"Hello World!\"\n Don't"
       type: "textbox"
-      skeleton: "print('Put your string in here')"
+      skeleton: "print(\"\")"
       button: "submit"
       correct: "Hello World!"
       chal_id: "0002"
+
+secondCode:
+  name: "Second Code"
+  text: "In this module, you will learn the basics of arithmetic."
+  page:
+    text: "This will be on the actual page of the module"
+    question:
+      text: "For your second challenge, you will print basic math opertionas such as add, subtract, divide, multiply, and modulus. Don't worry if you don't know what some of these mean, you will learn!"
+      type: "textbox"
+      skeleton: ""
+      button: "submit"
+      correct: "2\n6\n5\n"
+      chal_id: "0003"
+
+thirdCode:
+  name: "Third Code"
+  text: "In this module, you will to use variables."
+  page:
+    text: "This will be on the actual page of the module"
+    question:
+      text: "For your third challenge, you will print variables. Think of this as the variable \"x\" from math. You are able to store any value you want; sentences, numbers, True or False, characters and objects (all of which will be covered later in the course)."
+      type: "textbox"
+      skeleton: ""
+      button: "submit"
+      correct: ""
+      chal_id: "0003"

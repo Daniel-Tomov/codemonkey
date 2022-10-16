@@ -26,11 +26,17 @@ def base64decode(input):
 
 def runCode(inputCode, cookie):
   os.system("echo '" + inputCode + "' > ./programRuns/" + cookie + ".py")
-  process = subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"], stdout=subprocess.PIPE)
-  stdout = process.communicate()[0].decode('utf-8')
+  process = subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+  output, error = process.communicate()
+
+  if error.decode('utf-8') != '':
+    return error.decode('utf-8')
+  else:
+    return output.decode('utf-8')
+  #stdout = process.communicate()[0].decode('utf-8')
   #print(stdout)
   
-  return stdout
+  return "Please try again"
 
 
 def replaceNewlines(input):

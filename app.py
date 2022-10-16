@@ -195,7 +195,7 @@ def test():
     
   if request.method == "POST":
     return "here"
-  return render_template("test.html", data=yml.data, page="firstCode")
+  return render_template("test.html", data=yml.data, page="secondCode")
 
   
 @app.route('/recieve_data', methods=["POST", "GET"])
@@ -211,9 +211,13 @@ def recieve_code():
   if "subprocess" in program or "import os" in program or "from os" in program or "import pty" in program or "from pty" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
   
-  output = personalFunctions.runCode(program, currentSession.token)  
-
+  output = personalFunctions.runCode(program, currentSession.token)
+  
   pageName, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(' ')
+
+  #print(output)
+  #print(yml.data[pageName]['page']['question']["correct"])
+  
   if yml.data[pageName]['page']['question']["chal_id"] == chal_id:
     if yml.data[pageName]['page']['question']["correct"] + "\n" == output:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
