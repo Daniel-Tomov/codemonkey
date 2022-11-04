@@ -41,7 +41,7 @@
         {% if n == 'text' %}
           <p id="text">{{ data[page]['page']['question']['text'] }}</p>
         {% endif %}
-          {%   if data[page]['page']['question'][n] == 'textbox' %}
+          {% if data[page]['page']['question'][n] == 'textbox' %}
             <textarea id="code">{{ data[page]['page']['question']['skeleton'] }}</textarea>
           {% endif %}
           {% if data[page]['page']['question'][n] == 'submit' %}

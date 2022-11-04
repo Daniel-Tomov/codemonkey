@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import hashlib
 import base64
 import subprocess
@@ -7,8 +7,8 @@ from os import listdir
 from os.path import isfile, join
 
 def time():
-  #return 234509
-  return int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+  time = int(str(datetime.now().strftime("%H:%M:%S")).replace(':',''))
+  return time
 
 
 def encrypt(password):
@@ -51,3 +51,61 @@ def getModifiedTime(path):
 
 def deleteFile(path):
   os.system("rm -Rf " + path)
+
+def expireTime(timeout):
+  currentTime = datetime.now()
+  futureTime = currentTime + timedelta(hours=timeout['hours'], minutes=timeout['minutes'], seconds=timeout['seconds'])
+  return int(str(futureTime.strftime("%H:%M:%S")).replace(':',''))
+
+'''
+def expireTime(inputTime):
+  hours = int(str(inputTime)[0:2])
+  minutes = int(str(inputTime)[2:4])
+  seconds = int(str(inputTime)[4:len(str(inputTime))])
+  
+  print(f'{hours}    {minutes}   {seconds}   {inputTime}')
+  if minutes > 29:
+    minutes = 60 + (minutes - 30)
+    hours = hours - 1
+    #print(f'{hours}   {minutes}')
+    
+  if hours >= 24:
+    hours = "00"
+
+  if len(str(minutes)) == 1:
+    minutes = '0' + str(minutes)
+  
+  if len(str(seconds)) == 1:
+    seconds = '0' + str(seconds)
+  convertedTime = int(str(hours) + str(minutes) + str(seconds))
+
+  while len(str(convertedTime)) < 6:
+    convertedTime = "0" + str(convertedTime)
+  return convertedTime
+
+
+def convertTime(inputTime):
+  hours = int(str(inputTime)[0:2])
+  minutes = int(str(inputTime)[2:4])
+  seconds = int(str(inputTime)[4:len(str(inputTime))])
+  
+  print(f'{hours}    {minutes}   {seconds}   {inputTime}')
+  if minutes < 30:
+    minutes = 60 + (minutes - 30)
+    hours = hours - 1
+    #print(f'{hours}   {minutes}')
+    
+  if hours >= 24:
+    hours = "00"
+
+  if len(str(minutes)) == 1:
+    minutes = '0' + str(minutes)
+  
+  if len(str(seconds)) == 1:
+    seconds = '0' + str(seconds)
+  convertedTime = int(str(hours) + str(minutes) + str(seconds))
+
+  while len(str(convertedTime)) < 6:
+    convertedTime = "0" + str(convertedTime)
+  return convertedTime
+'''

@@ -27,7 +27,8 @@ def runPeriodically():
     accountManager.saveAccounts()
     removeInactiveSessions()
     removeOldRuns()
-    sleep(100)
+    #print(personalFunctions.convertTime(personalFunctions.time()))
+    sleep(1)
 
 
 @app.route('/index', methods=["POST", "GET"])
@@ -84,7 +85,7 @@ def login():
     resp.set_cookie('token', currentSession.token)
     return resp
 
-  return render_template('login.html', login=True)
+  return render_template('login.html')
 
 
 @app.route('/register', methods=["POST", "GET"])
@@ -229,4 +230,4 @@ threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=80, debug=True, use_reloader=False)
-  sleep(100000000)
+  #sleep(100000000)
