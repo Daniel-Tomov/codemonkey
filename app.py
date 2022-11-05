@@ -16,11 +16,13 @@ def invalidSession():
 
 def removeOldRuns():
   files = personalFunctions.getFiles('programRuns/')
-  for i in files:
-    modifiedTime = personalFunctions.getModifiedTime('programRuns/' + i)
-    currentTime = personalFunctions.time()
-    if modifiedTime > currentTime + 100:
-      personalFunctions.deleteFile('programRuns/' + i)   
+  for file in files:
+    valid = False
+    for session in userSessions:
+      if session.token == file:
+        valid = False
+    if not valid:
+      personalFunctions.deleteFile("programRuns/" + file + ".py")
 
 def runPeriodically():
   while True:
@@ -28,7 +30,7 @@ def runPeriodically():
     removeInactiveSessions()
     removeOldRuns()
     #print(personalFunctions.convertTime(personalFunctions.time()))
-    sleep(1)
+    sleep(10)
 
 
 @app.route('/index', methods=["POST", "GET"])
@@ -194,7 +196,7 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8').replace("'", "\"")
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "import pty" in program or "from pty" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
   
   output = personalFunctions.runCode(program, currentSession.token)

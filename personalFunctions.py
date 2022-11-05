@@ -44,7 +44,7 @@ def replaceNewlines(input):
   return input.replace("\n", "<br>")
 
 def getFiles(input):
-  return [f for f in listdir(input) if isfile(join(input, f))]
+  return [f.replace(".py", "") for f in listdir(input) if isfile(join(input, f))]
 
 def getModifiedTime(path):
   return os.path.getmtime(path)

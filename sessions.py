@@ -13,7 +13,8 @@ class sessions:
     
     currentTime = personalFunctions.time()
     
-    self.timeCreated = personalFunctions.time()
+    self.timeCreated = currentTime
+    self.refreshTime = currentTime
     #print(self.timeCreated)
     
     self.expireTime = personalFunctions.expireTime(sessionTimeout)
@@ -25,6 +26,7 @@ class sessions:
 
 
   def refreshSession(self):
+    self.refreshTime = personalFunctions.time()
     self.expireTime = personalFunctions.expireTime(sessionTimeout)
     
 
@@ -64,8 +66,8 @@ def removeInactiveSessions():
   currentTime = personalFunctions.time()
   for i in userSessions:
     # Remove sessions that have not been refreshed for at least 30 minutes
-    print(f'the user {i.username} created their token at {i.timeCreated} and will expire at {i.expireTime}    the current time is {currentTime}')
+    print(f'the user {i.username} created their token at {i.timeCreated}, refreshed it at {i.refreshTime} and will expire at {i.expireTime}    the current time is {currentTime}')
     if currentTime > i.expireTime:
-      print(i.expireTime)
-      print('removed the session of ' + i.username)
+      #print(i.expireTime)
+      #print('removed the session of ' + i.username)
       userSessions.remove(i)
