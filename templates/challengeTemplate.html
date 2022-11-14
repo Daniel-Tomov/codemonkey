@@ -71,7 +71,7 @@
           type: "get",
           data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
           success: function(response) {
-          $("#response").html(atob(response));
+          $("#response").html(atob(response).replace(/ /g, "&nbsp;"));
         },
         error: function(xhr) {
           //Do Something to handle error
