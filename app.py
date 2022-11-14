@@ -21,6 +21,7 @@ def removeOldRuns():
     for session in userSessions:
       if session.token == file:
         valid = False
+        break
     if not valid:
       personalFunctions.deleteFile("programRuns/" + file + ".py")
 
@@ -196,7 +197,7 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8').replace("'", "\"")
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
   
   output = personalFunctions.runCode(program, currentSession.token)
@@ -208,9 +209,9 @@ def recieve_code():
   
   if yml.data[pageName]['page']['question']["chal_id"] == chal_id:
     if yml.data[pageName]['page']['question']["correct"] + "\n" == output:
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
     else:
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
 @app.route('/test/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):
