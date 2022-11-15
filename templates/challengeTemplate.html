@@ -16,9 +16,13 @@
       }
 
       textarea{
-        width: var(--width)
+        width: var(--width);
       }
 
+      #response{
+        width: fit-content;
+      }
+      
       .correct{
         background-color: lime;
       }
@@ -71,7 +75,7 @@
           type: "get",
           data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
           success: function(response) {
-          $("#response").html("<p " + atob(response).replace(/ /g, "&nbsp;"));
+          $("#response").html(atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
         },
         error: function(xhr) {
           //Do Something to handle error

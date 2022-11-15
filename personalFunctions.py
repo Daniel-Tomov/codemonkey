@@ -26,10 +26,15 @@ def base64decode(input):
 
 
 def runCode(inputCode, cookie):
-  os.system("echo '" + inputCode + "' > ./programRuns/" + cookie + ".py")
+  file = open("programRuns/" + cookie + ".py", 'w')
+  file.write(inputCode)
+  file.close()
+  
   process = subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
   output, error = process.communicate()
 
+  #print(process.communicate(), output, error)
+  
   if error.decode('utf-8') != '':
     return error.decode('utf-8')
   else:
