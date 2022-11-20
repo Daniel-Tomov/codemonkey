@@ -1,10 +1,8 @@
 # Code Monkey
 
-For me and other people in my group: 
-<ul>
-  <li>Submission Form: <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWqrl5Fv2bUUb8hKgddbWtL_wgjdhOrIMJ5EPcReuUGyQniA/viewform"> Google Pre-Proposal Form</a></li>
-  <li>Shared Document: <a href="https://docs.google.com/document/d/1VxrSXIrScJ1PQG0PVCgcN-ZDyvmENHpNuVRCk0shqvc/edit">Google Document</a></li>
-</ul>
+Code Monkey is an online program that provides introduction to programming courses. It was created for my Senior Project at Landstown High School. The project had to be related to the strand I was enrolled in: Cybersecurity.
+
+Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 ## To Do List
 
