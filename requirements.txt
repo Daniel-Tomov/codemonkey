@@ -1,0 +1,6 @@
+flask
+numpy
+pyyaml
+
+
+hashlib
