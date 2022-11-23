@@ -19,7 +19,7 @@ def removeOldRuns():
   for file in files:
     valid = False
     for session in userSessions:
-      if file == "filler":
+      if file == "filler.py":
         valid = True
         break
       if session.token == file:
