@@ -201,17 +201,17 @@ def recieve_code():
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
-  
   output = personalFunctions.runCode(program, currentSession.token)
+  print(output)
 
   #print(output)
-  pageName, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(' ')
+  pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(' ')
 
   #print(output)
   #print(yml.data[pageName]['page']['question']["correct"])
-  
-  if yml.data[pageName]['page']['question']["chal_id"] == chal_id:
-    if yml.data[pageName]['page']['question']["correct"] + "\n" == output:
+
+  if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
+    if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
     else:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
