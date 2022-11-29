@@ -49,10 +49,10 @@
             <p class="text">{{ data[page]['page'][i]['text'] }}</p>
           {% endif %}
           {% if data[page]['page'][i][n] == 'textbox' %}
-            <textarea id="{{ data[page]['page'][i]['chal_id'] }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+            <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textbutton' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
           {% endif %}
           {% if data[page]['page'][i][n] == 'submit' %}
-            <button class="{{ data[page]['page'][i]['chal_id'] + 'submitButton' }}" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
+            <button id="{{ data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
           {% endif %}
         {% endfor %}
       {% endif %}
@@ -63,8 +63,10 @@
 
   
   <script>
-   $(document).ready(function() {
-      $("button").click(function(event){
+    $(document).ready(function() {
+      document.getElementsByClassName("submitButtons").addEventListener("click", myFunction);
+      function submitFunction() {
+        console.log("fasd");
         var the_id = event.target.id;
         var the_code = document.getElementById("code").value;
         var chal_id = document.getElementById("submitButton").value;

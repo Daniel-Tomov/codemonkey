@@ -238,5 +238,5 @@ accountManager.getAccounts()
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=80, debug=True, use_reloader=False)
+  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=False)
   #sleep(100000000)
