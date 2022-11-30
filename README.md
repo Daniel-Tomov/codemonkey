@@ -39,6 +39,8 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Make page for each challenge look pretty
 
+:x: Password restrictions for weak passwords
+
 ### Backend
 
 :white_check_mark: Use tokens to authenticate users
@@ -69,8 +71,6 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Do not allow users to create an account with an already existing username.
 
-:x: Password restrictions for weak passwords
-
 :x: Require emails for registration to prevent users from creating multiple accounts
 
 :x: Add email verification
@@ -78,6 +78,8 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 :x: Send emails to the users
 
 :x: Track users by a unique id
+
+:white_check_mark: Add multiple questions per page with submission for each question
 
 ## Functionality of Pages
 
