@@ -8,7 +8,6 @@ from yaml.loader import SafeLoader
 items = []
 rawChallengesData = open('challenges.yaml', 'r').read().replace("\r", "")
 data = yaml.load(open('challenges.yaml'), Loader=SafeLoader)
-print(data)
 #print(data)
 
 

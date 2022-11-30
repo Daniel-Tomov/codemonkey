@@ -209,10 +209,6 @@ def recieve_code():
 
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
 
-
-  print(code)
-  print(yml.data[pageName]['page'][question]["skeleton"])
-
   #print(output)
   #print(yml.data[pageName]['page']['question']["correct"])
   print(yml.data[pageName]['page'][question])
