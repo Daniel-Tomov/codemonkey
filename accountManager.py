@@ -1,5 +1,7 @@
 import personalFunctions
 import numpy
+import pickle
+
 accounts = []
 
 #### ADDING, CHECKING, AND REMOVING ACCOUNTS TO AND FROM ARRAY ####
@@ -50,3 +52,35 @@ def isAdmin(username):
       #print(f'{username} is an admin')
       return True
   return False
+
+
+  #### DETECT IF ACCOUNT EXISTS ####
+
+def accountExists(username):
+  for i in accounts:
+    if i[0] == username:
+      return True
+  return False
+
+
+def save_object(obj):
+    try:
+        with open("accounts.pickle", "wb") as f:
+            pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
+    except Exception as ex:
+        print("Error during pickling object (Possibly unsupported):", ex)
+
+def load_object(filename):
+  try:
+    with open(filename, "rb") as f:
+      print(f)
+      print(pickle.load(f))
+      return pickle.load(f)
+  except Exception as ex:
+    print("Error during unpickling object (Possibly unsupported):", ex)
+
+getAccounts()
+print(accounts)
+save_object("accounts.pickle")
+accounts = load_object("accounts.pickle")
+#print(accounts)

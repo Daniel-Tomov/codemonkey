@@ -1,2 +1,3 @@
 Daniel,30cd2f99101cdd52cc5fda1e996ee137,admin
 ChrisMz,7b3b4de00794a247cf8df8e6fbfe19bf,standard
+Lucas,e63572a78915704f486d8105c03cfe4f,standard

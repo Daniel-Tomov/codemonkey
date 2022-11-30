@@ -112,52 +112,7 @@
       console.log(text);
       texts[i].innerText = texts[i].innerText.replace(/\\r\\n/g, "<br />");
     }
-    /*
-    let text = document.getElementById("text").textContent;
-    document.getElementById("text").innerText = text.replace(/\\r\\n/g, "<br />");
-
-
-    $(document).ready(function() {
-      document.getElementsByClassName("submitButtons").addEventListener("click", submitFunction);
-      function submitFunction() {
-        console.log("fasd");
-        var the_id = event.target.id;
-        var the_code = document.getElementById("code").value;
-        var chal_id = document.getElementById("submitButton").value;
-
-        document.getElementById("response").innerHTML = "Running your code...";
-        $.ajax({
-          url: "/recieve_data",
-          type: "get",
-          data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
-          success: function(response) {
-          $("#response").html(atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
-        },
-        error: function(xhr) {
-          //Do Something to handle error
-        }
-       });
-     };
-   });
-
-    function getCookie(cname) {
-      let name = cname + "=";
-      let ca = document.cookie.split(';');
-      for(let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
-    }
-
-    let text = document.getElementById("text").textContent;
-    document.getElementById("text").innerText = text.replace(/\\r\\n/g, "<br />");
-   */ 
+    document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); 
   </script>
 
   

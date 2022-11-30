@@ -30,10 +30,11 @@ def removeOldRuns():
 
 def runPeriodically():
   while True:
-    accountManager.saveAccounts()
     removeInactiveSessions()
     removeOldRuns()
+    accountManager.save_object(accountManager.accounts)
     #print(personalFunctions.convertTime(personalFunctions.time()))
+    #print(accountManager.accounts)
     sleep(10)
 
 
@@ -100,12 +101,14 @@ def register():
     username = request.form['uname']
     password = request.form['psw']
 
+    if accountManager.accountExists(username) == True:
+      return "Sorry! Account already exists"
+
     accountManager.addAccount(username, password)
 
     # Create a new session with the username
     currentSession = sessions(username)
     userSessions.append(currentSession)
-
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
@@ -200,18 +203,14 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
   output = personalFunctions.runCode(program, currentSession.token)
-  print(output)
 
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
 
-  #print(output)
-  #print(yml.data[pageName]['page']['question']["correct"])
-  print(yml.data[pageName]['page'][question])
 
   if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
     if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
@@ -239,7 +238,6 @@ def get_chall(id):
 
   return render_template("challengeTemplate.html", data=yml.data, page=id)
 
-accountManager.getAccounts()
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
