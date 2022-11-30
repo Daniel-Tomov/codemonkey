@@ -49,22 +49,76 @@
             <p class="text">{{ data[page]['page'][i]['text'] }}</p>
           {% endif %}
           {% if data[page]['page'][i][n] == 'textbox' %}
-            <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textbutton' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+            <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
           {% endif %}
           {% if data[page]['page'][i][n] == 'submit' %}
-            <button id="{{ data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
+            <button id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
+            <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}"></div>
           {% endif %}
         {% endfor %}
       {% endif %}
     {% endfor %}
-    <div id="response""></div>
   </body>
 
 
   
   <script>
+
+    var listOfButtons = document.getElementsByClassName('submitButtons');
+
+    for(let i = 0; i < listOfButtons.length; i++) {
+      listOfButtons[i].addEventListener("click", function() {
+        var id = listOfButtons[i].id.replace("submitButton", "");
+
+        var ids = id.split("_");
+
+        var the_code = document.getElementById(ids[2] + "textarea").value;
+        var chal_id = ids[0] + " " + ids[1] + " " + ids[2]
+
+        console.log(chal_id);
+        console.log(the_code);
+        document.getElementById(ids[2] + "response").innerHTML = "Running your code...";
+        $.ajax({
+          url: "/recieve_data",
+          type: "get",
+          data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
+          success: function(response) {
+          document.getElementById(ids[2] + "response").innerHTML = (atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+      });
+    });
+  }
+  function getCookie(cname) {
+      let name = cname + "=";
+      let ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    let texts = document.getElementsByClassName("text");
+    for (let i = 0; i < texts.length; i++){
+      var text = texts[i].innerText;
+      console.log(text);
+      texts[i].innerText = texts[i].innerText.replace(/\\r\\n/g, "<br />");
+    }
+    /*
+    let text = document.getElementById("text").textContent;
+    document.getElementById("text").innerText = text.replace(/\\r\\n/g, "<br />");
+
+
     $(document).ready(function() {
-      document.getElementsByClassName("submitButtons").addEventListener("click", myFunction);
+      document.getElementsByClassName("submitButtons").addEventListener("click", submitFunction);
       function submitFunction() {
         console.log("fasd");
         var the_id = event.target.id;
@@ -83,7 +137,7 @@
           //Do Something to handle error
         }
        });
-     });
+     };
    });
 
     function getCookie(cname) {
@@ -103,7 +157,7 @@
 
     let text = document.getElementById("text").textContent;
     document.getElementById("text").innerText = text.replace(/\\r\\n/g, "<br />");
-    
+   */ 
   </script>
 
   

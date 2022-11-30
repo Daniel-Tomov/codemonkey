@@ -207,15 +207,24 @@ def recieve_code():
   output = personalFunctions.runCode(program, currentSession.token)
   print(output)
 
-  #print(output)
-  pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(' ')
+  pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
+
+
+  print(code)
+  print(yml.data[pageName]['page'][question]["skeleton"])
 
   #print(output)
   #print(yml.data[pageName]['page']['question']["correct"])
+  print(yml.data[pageName]['page'][question])
 
   if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
     if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+    elif yml.data[pageName]['page'][question]["correct"] == "change code":
+      if yml.data[pageName]['page'][question]["skeleton"] != program:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      else:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
     else:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
