@@ -40,8 +40,8 @@
     
     <p>{{ data[page]['name'] }}</p>
     {% for i in data[page]['page'] %}
-      {% if "question" not in i %}
-        <p>{{ data[page]['page'][i] }}</p>
+      {% if "text" in i %}
+        <p class="text">{{ data[page]['page'][i] }}</p>
       {% endif %}
       {% if "question" in i %}
         {% for n in data[page]['page'][i] %}
@@ -110,9 +110,9 @@
     for (let i = 0; i < texts.length; i++){
       var text = texts[i].innerText;
       console.log(text);
-      texts[i].innerText = texts[i].innerText.replace(/\\r\\n/g, "<br />");
+      texts[i].innerHTML = text.replace("^lb^", "<br>");
     }
-    document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); 
+    /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */
   </script>
 
   
