@@ -32,7 +32,7 @@ def runPeriodically():
   while True:
     removeInactiveSessions()
     removeOldRuns()
-    accountManager.save_object(accountManager.accounts)
+    accountManager.saveAccounts()
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)

@@ -1,6 +1,7 @@
 import personalFunctions
 import numpy
 import pickle
+import time
 
 accounts = []
 
@@ -29,7 +30,7 @@ def checkAccount(username, password):
     
 #### SAVING AND GETTING ACCOUNTS ####
     
-def getAccounts():
+def old_getAccounts():
   global accounts
   accountsTXT = open('accounts.txt', 'r').read().split('\n')
 
@@ -38,7 +39,7 @@ def getAccounts():
       continue
     accounts.append(i.split(','))
 
-def saveAccounts():
+def old_saveAccounts():
   file = open('accounts.txt', 'w')
   for f in accounts:
     file.write(f'{f[0]},{f[1]},{f[2]}\n')
@@ -63,24 +64,22 @@ def accountExists(username):
   return False
 
 
-def save_object(obj):
-    try:
-        with open("accounts.pickle", "wb") as f:
-            pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
-    except Exception as ex:
-        print("Error during pickling object (Possibly unsupported):", ex)
-
-def load_object(filename):
+def saveAccounts():
+  global accounts
   try:
-    with open(filename, "rb") as f:
-      print(f)
-      print(pickle.load(f))
-      return pickle.load(f)
+    with open("accounts.pickle", "wb") as f:
+      pickle.dump(accounts, f, protocol=pickle.HIGHEST_PROTOCOL)
+  except Exception as ex:
+    print("Error during pickling object (Possibly unsupported):", ex)
+
+def getAccounts():
+  global accounts
+  try:
+    with open("accounts.pickle", "rb") as f:
+      accounts = pickle.load(f)
   except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
 
+#old_getAccounts()
+#saveAccounts()
 getAccounts()
-print(accounts)
-save_object("accounts.pickle")
-accounts = load_object("accounts.pickle")
-#print(accounts)
