@@ -215,7 +215,7 @@ def recieve_code():
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
 
   if output[1] == 1:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output.replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output[0].replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
 
   output = output[0]
 
