@@ -75,8 +75,8 @@
         var the_code = document.getElementById(ids[2] + "textarea").value;
         var chal_id = ids[0] + " " + ids[1] + " " + ids[2]
 
-        console.log(chal_id);
-        console.log(the_code);
+        //console.log(chal_id);
+        //console.log(the_code);
         document.getElementById(ids[2] + "response").innerHTML = "Running your code...";
         $.ajax({
           url: "/recieve_data",
@@ -109,8 +109,8 @@
     let texts = document.getElementsByClassName("text");
     for (let i = 0; i < texts.length; i++){
       var text = texts[i].innerText;
-      console.log(text);
-      texts[i].innerHTML = text.replace("^lb^", "<br>");
+      /*console.log(text);*/
+      texts[i].innerHTML = text.replaceAll("^lb^", "<br>");
     }
     /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */
   </script>
