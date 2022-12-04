@@ -36,9 +36,9 @@ def runCode(inputCode, cookie):
   #print(process.communicate(), output, error)
   
   if error.decode('utf-8') != '':
-    return error.decode('utf-8')
+    return [error.decode('utf-8'), 1]
   else:
-    return output.decode('utf-8')
+    return [output.decode('utf-8'), 0]
   #stdout = process.communicate()[0].decode('utf-8')
   #print(stdout)
   
