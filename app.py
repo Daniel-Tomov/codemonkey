@@ -5,6 +5,7 @@ import personalFunctions
 import threading
 import yml
 from time import sleep
+import completion
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -52,7 +53,8 @@ def index():
     currentSession = getSession(token)
 
 
-    resp = make_response(render_template('index.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
+    account = accountManager.getAccount(currentSession.username)
+    resp = make_response(render_template('index.html', login=True, admin=account.admin))
     resp.set_cookie('token', currentSession.token)
     return resp
 
@@ -107,7 +109,7 @@ def register():
     if accountManager.accountExists(username) == True:
       return "Sorry! Account already exists"
 
-    accountManager.addAccount(username, password)
+    accountManager.accountManager(username, password)
 
     # Create a new session with the username
     currentSession = sessions(username)
@@ -127,7 +129,9 @@ def admin():
   if currentSession == None:
    return invalidSession()
 
-  if accountManager.isAdmin(currentSession.username) == False:
+  account = accountManager.getAccount(currentSession.username)
+  
+  if account.admin == False:
     resp = make_response("You are not an admin")
     resp.set_cookie('token', "")
     return resp
@@ -160,7 +164,8 @@ def challenge():
     return invalidSession()
     
   currentSession = getSession(token)
-  resp = make_response(render_template('challenge.html', login=True, admin=accountManager.isAdmin(currentSession.username)))
+  account = accountManager.getAccount(currentSession.username)
+  resp = make_response(render_template('challenge.html', login=True, admin=account.admin))
   resp.set_cookie('token', currentSession.token)
   return resp
 
@@ -188,7 +193,8 @@ def test():
   if currentSession == None:
     return invalidSession()
     
-  if accountManager.isAdmin(currentSession.username) == False:
+  account = accountManager.getAccount(currentSession.username)
+  if account.admin == False:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
@@ -238,7 +244,8 @@ def get_chall(id):
   if currentSession == None:
     return invalidSession()
     
-  if accountManager.isAdmin(currentSession.username) == False:
+  account = accountManager.getAccount(currentSession.username)
+  if admin.admin == False:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
