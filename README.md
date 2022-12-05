@@ -29,6 +29,8 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Create register page
 
+:x: Add emails to register page
+
 :x: Make register page look pretty
 
 :x: Create a function to submit code to the backend
@@ -69,7 +71,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Use threads to run code asynchronously and check if the code runs for too long, then kill the thread and notifiy the user.
 
-:x: Do not allow users to create an account with an already existing username.
+:white_check_mark: Do not allow users to create an account with an already existing username.
 
 :x: Require emails for registration to prevent users from creating multiple accounts
 
@@ -77,7 +79,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Send emails to the users
 
-:x: Track users by a unique id
+:x: Track users by a unique user id
 
 :white_check_mark: Add multiple questions per page with submission for each question
 
@@ -105,14 +107,14 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
   <li>Send this data to the backend using ajax</li>
   <li>The backend checks if the recieved session token is valid. Yes -> continue; No -> Require the user to login.</li>
   <li>Decode the base64 encoded user code</li>
-  <li>Check if the code contains any statements that allow code execution Examples would be "import os" to gain a remote shell to the server</li>
+  <li>Check if the code contains any statements that allow remote code execution. Examples would be "import os" or "write" to write to a file and gain a remote shell to the server</li>
   <li>Run the code</li>
   <li>Check if the output matches the expected output Yes -> Mark it as correct; No -> Mark it as correct</li>
 </ol>
 
 ## Database Layout
 
-## Accounts
+### Accounts
 
 The Accounts database contains usernames, emails, hashed passwords, and admin status
 
@@ -138,7 +140,7 @@ Example table:
   </tr>
 </table>
 
-## Completion
+### Completion
 
 This table will track course completion for each user
 

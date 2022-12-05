@@ -1,5 +1,8 @@
 import personalFunctions
 import numpy
+import pickle
+import time
+
 accounts = []
 
 #### ADDING, CHECKING, AND REMOVING ACCOUNTS TO AND FROM ARRAY ####
@@ -27,7 +30,7 @@ def checkAccount(username, password):
     
 #### SAVING AND GETTING ACCOUNTS ####
     
-def getAccounts():
+def old_getAccounts():
   global accounts
   accountsTXT = open('accounts.txt', 'r').read().split('\n')
 
@@ -36,7 +39,7 @@ def getAccounts():
       continue
     accounts.append(i.split(','))
 
-def saveAccounts():
+def old_saveAccounts():
   file = open('accounts.txt', 'w')
   for f in accounts:
     file.write(f'{f[0]},{f[1]},{f[2]}\n')
@@ -50,3 +53,33 @@ def isAdmin(username):
       #print(f'{username} is an admin')
       return True
   return False
+
+
+  #### DETECT IF ACCOUNT EXISTS ####
+
+def accountExists(username):
+  for i in accounts:
+    if i[0] == username:
+      return True
+  return False
+
+
+def saveAccounts():
+  global accounts
+  try:
+    with open("accounts.pickle", "wb") as f:
+      pickle.dump(accounts, f, protocol=pickle.HIGHEST_PROTOCOL)
+  except Exception as ex:
+    print("Error during pickling object (Possibly unsupported):", ex)
+
+def getAccounts():
+  global accounts
+  try:
+    with open("accounts.pickle", "rb") as f:
+      accounts = pickle.load(f)
+  except Exception as ex:
+    print("Error during unpickling object (Possibly unsupported):", ex)
+
+#old_getAccounts()
+#saveAccounts()
+getAccounts()
