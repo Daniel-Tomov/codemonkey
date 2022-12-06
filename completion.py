@@ -5,19 +5,17 @@ completions = {}
 class completion:
   def __init__(self, uid):
     self.uid = uid
-    self.completion = {}
-    completions[uid:self.completion]
+    self.completion = {'0002':["",""], '0005':["",""], '0003':["",""], '0004':["",""]}
+    completions[uid] = self.completion
 
   def addCompletion(self, challID):
-    self.completion[self.uid][challID] = "complete"
+    self.completion[challID] = "complete"
   
   def removeCompletion(self, challID):
-    self.completion[self.uid][challID] = "uncomplete"
+    self.completion[challID] = "uncomplete"
 
 def getCompletion(uid):
   return completions[uid]
-
-
 
 
 def saveCompletions():
@@ -35,3 +33,6 @@ def loadCompletions():
       completions = pickle.load(f)
   except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
+
+
+loadCompletions()

@@ -12,7 +12,7 @@ class accountManager:
     self.password = personalFunctions.encrypt(password)
 
     if uid == "":
-      self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "-_", k=50))
+      self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "", k=50))
     else:
       self.uid = uid
 
@@ -46,14 +46,14 @@ def checkAccount(username, password):
 def getAccountByUID(uid):
   global accounts
   for i in accounts:
-    if i.username == uid:
+    if i.uid == uid:
       return i
   return None
 
-def getAccountName(uid):
+def getAccountByName(username):
   global accounts
   for i in accounts:
-    if i.username == uid:
+    if i.username == username:
       return i
   return None
     

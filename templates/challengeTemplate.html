@@ -36,7 +36,7 @@
   <body>
     <a href="/challenges">Challenges</a>
     <a href="/index">Home</a>
-    <a href="/admin">Admin</a>   
+    <a href="/admin">Admin</a>
     
     <p>{{ data[page]['name'] }}</p>
     {% for i in data[page]['page'] %}
@@ -49,11 +49,13 @@
             <p class="text">{{ data[page]['page'][i]['text'] }}</p>
           {% endif %}
           {% if data[page]['page'][i][n] == 'textbox' %}
-            { % if completion[data[page]['page'][i]['chal_id']] == 'completed' % }
-              <p>Check</p>
-            { % endif % }
-            <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
-          {% endif %}
+            {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
+              <p style="background-color:green">Check</p>
+              <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
+            {% else %}
+              <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+            {% endif %}
+            {% endif %}
           {% if data[page]['page'][i][n] == 'submit' %}
             <button id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
             <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}"></div>

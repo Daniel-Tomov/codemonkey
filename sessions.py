@@ -6,12 +6,12 @@ import accountManager
 userSessions = []
 # session timeout in the for HH:MM:SS
 # the : are removed so thirty minutes would be 00:30:00 -> 003000
-sessionTimeout = {'hours':0, 'minutes':10, 'seconds':0} # Thirty minutes
+sessionTimeout = {'hours':0, 'minutes':10, 'seconds':0} # Ten minutes
 
 class sessions:
   def __init__(self, uid):
     self.uid = uid
-    self.username = accountManager.getAccountByUID(self.uid).username
+    self.username = accountManager.getAccountByUID(uid).username
 
 
     currentTime = personalFunctions.time()
@@ -26,6 +26,7 @@ class sessions:
     token = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890', k=20))
     #print(token)
     self.token = token
+    userSessions.append(self)
 
 
   def refreshSession(self):

@@ -38,6 +38,7 @@ def runPeriodically():
     removeOldRuns()
     accountManager.saveAccounts()
     saveCompletions()
+    print(completions)
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
@@ -90,8 +91,8 @@ def login():
       return render_template('wrongLogin.html')
 
     # Create a new session with the username
-    currentSession = sessions(username)
-    userSessions.append(currentSession)
+    account = accountManager.getAccountByName(username)
+    currentSession = sessions(account.uid)
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
@@ -110,14 +111,14 @@ def register():
     if accountManager.accountExists(username) == True:
       return "Sorry! Account already exists"
 
-    accountManager.accountManager(username, password)
-
+    account = accountManager.accountManager(username, password)
     # Create a new session with the username
-    currentSession = sessions(username)
-    userSessions.append(currentSession)
+    currentSession = sessions(account.uid)
+    
 
     # Create a new completion for the user
-    completion.completion(currentSession.uid)
+    print(currentSession.uid)
+    completion(currentSession.uid)
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
@@ -229,16 +230,22 @@ def recieve_code():
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output[0].replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
 
   output = output[0]
+  completions[currentSession.uid][chal_id][1] = program
 
   if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
     if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
+      completions[currentSession.uid][chal_id][0] = "complete"
+      print(completions)
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
     elif yml.data[pageName]['page'][question]["correct"] == "change code":
       if yml.data[pageName]['page'][question]["skeleton"] != program:
+        completions[currentSession.uid][chal_id][0] = "complete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
       else:
+        completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
     else:
+      completions[currentSession.uid][chal_id][0] = "uncomplete"
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
 @app.route('/test/<string:id>', methods=["POST", 'GET']) 
@@ -261,5 +268,5 @@ def get_chall(id):
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=5554, debug=True, use_reloader=False)
+  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=False)
   #sleep(100000000)
