@@ -1,6 +1,7 @@
 import random
 import string
 import personalFunctions
+import accountManager
 
 userSessions = []
 # session timeout in the for HH:MM:SS
@@ -8,9 +9,11 @@ userSessions = []
 sessionTimeout = {'hours':0, 'minutes':10, 'seconds':0} # Thirty minutes
 
 class sessions:
-  def __init__(self, username):
-    self.username = username
-    
+  def __init__(self, uid):
+    self.uid = uid
+    self.username = accountManager.getAccountByUID(self.uid).username
+
+
     currentTime = personalFunctions.time()
     
     self.timeCreated = currentTime

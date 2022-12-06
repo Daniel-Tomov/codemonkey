@@ -9,7 +9,7 @@ accounts = []
 class accountManager:
   def __init__(self, username, password, uid="", adminStatus=False):
     self.username = username
-    self.password = password
+    self.password = personalFunctions.encrypt(password)
 
     if uid == "":
       self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "-_", k=50))
@@ -21,9 +21,12 @@ class accountManager:
     else:
       self.admin = False
 
+    if username == "Daniel":
+      self.admin = True
+
     accounts.append(self)
       
-  def isAdmin():
+  def isAdmin(self):
     if self.admin:
       return True
     return False
@@ -35,15 +38,24 @@ class accountManager:
   
 def checkAccount(username, password):
   for i in accounts:
-    if i[0] == username and i[1] == personalFunctions.encrypt(password):
+    #print(f'{i.username}   {i.password} ||    {username}  {password}')
+    if i.username == username and i.password == personalFunctions.encrypt(password):
       return True
   return False
 
-def getAccount(username):
+def getAccountByUID(uid):
   global accounts
   for i in accounts:
-    if i.username == username:
+    if i.username == uid:
       return i
+  return None
+
+def getAccountName(uid):
+  global accounts
+  for i in accounts:
+    if i.username == uid:
+      return i
+  return None
     
 #### SAVING AND GETTING ACCOUNTS ####
     
@@ -59,7 +71,7 @@ def old_getAccounts():
       uid = i.split(',')[1]
       password = i.split(',')[2]
       adminStatus = i.split(',')[3]
-      accounts.append(accountManager(username, ))
+      accounts.append(accountManager(username, password))
   
 def old_saveAccounts():
   file = open('accounts.txt', 'w')
@@ -71,7 +83,7 @@ def old_saveAccounts():
 
 def accountExists(username):
   for i in accounts:
-    if i[0] == username:
+    if i.username == username:
       return True
   return False
 
@@ -89,6 +101,8 @@ def loadAccounts():
   try:
     with open("accounts.pickle", "rb") as f:
       accounts = pickle.load(f)
+      for i in accounts:
+        print(f'{i.username}   {i.password}    {i.uid}     {i.admin}')
   except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
     old_getAccounts()

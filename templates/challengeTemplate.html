@@ -49,6 +49,9 @@
             <p class="text">{{ data[page]['page'][i]['text'] }}</p>
           {% endif %}
           {% if data[page]['page'][i][n] == 'textbox' %}
+            { % if completion[data[page]['page'][i]['chal_id']] == 'completed' % }
+              <p>Check</p>
+            { % endif % }
             <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
           {% endif %}
           {% if data[page]['page'][i][n] == 'submit' %}

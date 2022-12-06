@@ -5,7 +5,7 @@ import personalFunctions
 import threading
 import yml
 from time import sleep
-import completion
+from completion import completions, completion, saveCompletions
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -37,6 +37,7 @@ def runPeriodically():
     removeInactiveSessions()
     removeOldRuns()
     accountManager.saveAccounts()
+    saveCompletions()
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
@@ -53,7 +54,7 @@ def index():
     currentSession = getSession(token)
 
 
-    account = accountManager.getAccount(currentSession.username)
+    account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('index.html', login=True, admin=account.admin))
     resp.set_cookie('token', currentSession.token)
     return resp
@@ -114,6 +115,10 @@ def register():
     # Create a new session with the username
     currentSession = sessions(username)
     userSessions.append(currentSession)
+
+    # Create a new completion for the user
+    completion.completion(currentSession.uid)
+
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
@@ -129,7 +134,7 @@ def admin():
   if currentSession == None:
    return invalidSession()
 
-  account = accountManager.getAccount(currentSession.username)
+  account = accountManager.getAccountByUID(currentSession.uid)
   
   if account.admin == False:
     resp = make_response("You are not an admin")
@@ -164,7 +169,7 @@ def challenge():
     return invalidSession()
     
   currentSession = getSession(token)
-  account = accountManager.getAccount(currentSession.username)
+  account = accountManager.getAccountByUID(currentSession.uid)
   resp = make_response(render_template('challenge.html', login=True, admin=account.admin))
   resp.set_cookie('token', currentSession.token)
   return resp
@@ -193,7 +198,7 @@ def test():
   if currentSession == None:
     return invalidSession()
     
-  account = accountManager.getAccount(currentSession.username)
+  account = accountManager.getAccountByUID(currentSession.uid)
   if account.admin == False:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
@@ -244,16 +249,17 @@ def get_chall(id):
   if currentSession == None:
     return invalidSession()
     
-  account = accountManager.getAccount(currentSession.username)
-  if admin.admin == False:
+  account = accountManager.getAccountByUID(currentSession.uid)
+  #print(account)
+  if account == None or account.admin == False:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
 
-  return render_template("challengeTemplate.html", data=yml.data, page=id)
+  return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid])
 
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=False)
+  app.run(host="0.0.0.0", port=5554, debug=True, use_reloader=False)
   #sleep(100000000)
