@@ -57,9 +57,9 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Track course completion for each user
 
-:x: Course completion should also be in a database file
+:white_check_mark: Course completion should also be in a database file
 
-:x: Store user information in a database instead of a text file
+:white_check_mark: Store user information in a database instead of a text file
 
 :white_check_mark: Use threading to remove inactive sessions every minute.
 
@@ -79,7 +79,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :x: Send emails to the users
 
-:x: Track users by a unique user id
+:white_check_mark: Track users by a unique user id
 
 :white_check_mark: Add multiple questions per page with submission for each question
 
@@ -109,6 +109,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
   <li>Decode the base64 encoded user code</li>
   <li>Check if the code contains any statements that allow remote code execution. Examples would be "import os" or "write" to write to a file and gain a remote shell to the server</li>
   <li>Run the code</li>
+  <li>Save the code to send back to the user if they come back to the page later</li>
   <li>Check if the output matches the expected output Yes -> Mark it as correct; No -> Mark it as correct</li>
 </ol>
 
@@ -123,18 +124,21 @@ Example table:
   <tr>
     <th>username</th>
     <th>email</th>
+    <th>UID</th>
     <th>password</th>
     <th>admin</th>
   </tr>
   <tr>
     <td>Daniel</td>
     <td>daniel@codemonkey.tk</td>
+    <td>Gu6jacXMyccsg3TxP3N4tPws6d3ESyR4uBYENqVLja9ZicISgj</td>
     <td>30cd2f99101cdd52cc5fda1e996ee137</td>
     <td>True</td>
   </tr>
   <tr>
     <td>ChrisMz</td>
     <td>chrismz@codemonkey.tk</td>
+    <td></td>
     <td>7b3b4de00794a247cf8df8e6fbfe19bf</td>
     <td>False</td>
   </tr>
@@ -148,17 +152,17 @@ Example table:
 
 <table>
   <tr>
-    <th>username</th>
+    <th>UID</th>
     <th>0001</th>
     <th>0002</th>
     <th>0003</th>
   </tr>
-    <td>Daniel</td>
+    <td>Gu6jacXMyccsg3TxP3N4tPws6d3ESyR4uBYENqVLja9ZicISgj</td>
     <td>True</td>
     <td>False</td>
     <td>False</td>
   </tr>
-    <td>ChrisMz</td>
+    <td>{Insert other example UID}</td>
     <td>False</td>
     <td>True</td>
     <td>True</td>
