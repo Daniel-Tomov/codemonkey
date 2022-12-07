@@ -180,7 +180,9 @@ def challenge():
 def logout():
   token = request.cookies.get('token')
   currentSession = getSession(token)
-  currentSession.removeSession()
+  
+  if currentSession != None:
+    currentSession.removeSession()
 
   return invalidSession()
 
