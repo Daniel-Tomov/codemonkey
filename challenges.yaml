@@ -50,5 +50,5 @@ thirdCode:
       type: "textbox"
       skeleton: ""
       button: "submit"
-      correct: ""
+      correct: "change code"
       chal_id: "0004"

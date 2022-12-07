@@ -6,6 +6,7 @@ import threading
 import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
+from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -38,7 +39,9 @@ def runPeriodically():
     removeOldRuns()
     accountManager.saveAccounts()
     saveCompletions()
+    saveCourseCompletions()
     print(completions)
+    print(courseCompletions)
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
@@ -117,8 +120,11 @@ def register():
     
 
     # Create a new completion for the user
-    print(currentSession.uid)
+    #print(currentSession.uid)
     completion(currentSession.uid)
+    print(currentSession.uid)
+    print(courseCompletion)
+    courseCompletion(currentSession.uid)
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
@@ -207,7 +213,7 @@ def test():
     resp.set_cookie('token', currentSession.token)
     return resp
   
-  return render_template("test.html", data=yml.data)
+  return render_template("test.html", data=yml.data, courseCompletion=courseCompletions[account.uid])
 
   
 @app.route('/recieve_data', methods=["POST", "GET"])
@@ -227,13 +233,13 @@ def recieve_code():
   output = personalFunctions.runCode(program, currentSession.token)
 
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
+  completions[currentSession.uid][chal_id][1] = program
 
   if output[1] == 1:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output[0].replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
 
   output = output[0]
-  completions[currentSession.uid][chal_id][1] = program
-
+  
   if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
     if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
       completions[currentSession.uid][chal_id][0] = "complete"
@@ -265,7 +271,12 @@ def get_chall(id):
     resp.set_cookie('token', currentSession.token)
     return resp
 
-  return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid])
+  if request.method == "POST":
+    if ("complete" in request.form['button']):
+      page, status = request.form['button'].split("_")
+      courseCompletions[account.uid][page] = status
+
+  return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
 
 threading.Thread(target=runPeriodically).start()
 

@@ -11,10 +11,12 @@
   <body>
     <a href="/challenges">Challenges</a>
     <a href="/index">Home</a>
-    <a href="/admin">Admin</a>   
-
+    <a href="/admin">Admin</a>
     {% for i in data %}
-      <p><a href="{{ '/test/' + i }}">{{ data[i]['name'] }}</a></p>
+        {% if courseCompletion[i] == "complete" %}
+          <p style="background-color:green">Check</p>
+        {% endif %}
+        <p><a href="{{ '/test/' + i }}">{{ data[i]['name'] }}</a></p>
     {% endfor %}
     <div id="response""></div>
   </body> 

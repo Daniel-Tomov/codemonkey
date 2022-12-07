@@ -7,6 +7,7 @@
     <style>
       :root{
         --width:400px;
+        --height:300px;
       }
       #response{
         background-color: lightgray; 
@@ -17,6 +18,7 @@
 
       textarea{
         width: var(--width);
+        height: var(--height);
       }
 
       #response{
@@ -37,6 +39,7 @@
     <a href="/challenges">Challenges</a>
     <a href="/index">Home</a>
     <a href="/admin">Admin</a>
+    <a href="/test">Test</a>
     
     <p>{{ data[page]['name'] }}</p>
     {% for i in data[page]['page'] %}
@@ -51,6 +54,8 @@
           {% if data[page]['page'][i][n] == 'textbox' %}
             {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
               <p style="background-color:green">Check</p>
+            {% endif %}
+            {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
               <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
             {% else %}
               <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
@@ -63,6 +68,15 @@
         {% endfor %}
       {% endif %}
     {% endfor %}
+    
+    <form action="#" method="post">
+      {% if courseCompletion[page] == "complete" %}
+        <button type="submit" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}">Completed</button>
+      {% else %}
+        <button type="submit" style="background-color:red" name="button" value="{{ page + '_complete'}}">Completed</button>
+      {% endif %}
+    </form>
+
   </body>
 
 
