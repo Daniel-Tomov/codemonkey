@@ -68,14 +68,12 @@
         {% endfor %}
       {% endif %}
     {% endfor %}
-    
-    <form action="#" method="post">
-      {% if courseCompletion[page] == "complete" %}
-        <button type="submit" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}">Completed</button>
-      {% else %}
-        <button type="submit" style="background-color:red" name="button" value="{{ page + '_complete'}}">Completed</button>
-      {% endif %}
-    </form>
+  
+    {% if courseCompletion[page] == "complete" %}
+      <button type="submit" id="completionButton" class="responses" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}">Completed</button>
+    {% else %}
+      <button type="submit" id="completionButton" class="responses" style="background-color:red" name="button" value="{{ page + '_complete'}}">Uncompleted</button>
+    {% endif %}
 
   </body>
 
@@ -131,6 +129,26 @@
       /*console.log(text);*/
       texts[i].innerHTML = text.replaceAll("^lb^", "<br>");
     }
+
+    let responseClass = document.getElementsByClassName("responses");
+    const responseArray = [];
+    for (let i=0; i<responseClass.length; i++){
+      if (responseClass[i].innerText == "completed"){
+        responseArray.push("1");
+      } else {
+        responseArray.push("0");
+      }
+    }
+
+    document.getElementById("completionButton").addEventListener("click", function() {
+      let responseClass = document.getElementsByClassName("responses");
+      for (let i=0; i<responseClass.length; i++){
+        if (responseClass[i] == responseArray[i]){
+          document.getElementById("completionButton").style("background-color:green");
+        }
+      }
+    });
+    
     /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */
   </script>
 
