@@ -53,7 +53,9 @@
           {% endif %}
           {% if data[page]['page'][i][n] == 'textbox' %}
             {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
-              <p style="background-color:green">Check</p>
+              <p class="completionStatus" style="background-color:green">Check</p>
+            {% else %}
+              <p class="completionStatus" style="background-color:red">Uncheck</p>
             {% endif %}
             {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
               <textarea id="{{ data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
@@ -63,16 +65,16 @@
             {% endif %}
           {% if data[page]['page'][i][n] == 'submit' %}
             <button id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
-            <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}"></div>
+            <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}" class="responses"></div>
           {% endif %}
         {% endfor %}
       {% endif %}
     {% endfor %}
   
     {% if courseCompletion[page] == "complete" %}
-      <button type="submit" id="completionButton" class="responses" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}">Completed</button>
+      <button type="submit" id="completionButton" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}">Completed</button>
     {% else %}
-      <button type="submit" id="completionButton" class="responses" style="background-color:red" name="button" value="{{ page + '_complete'}}">Uncompleted</button>
+      <button type="submit" id="completionButton" style="background-color:red" name="button" value="{{ page + '_complete'}}">Uncompleted</button>
     {% endif %}
 
   </body>
@@ -125,32 +127,67 @@
 
     let texts = document.getElementsByClassName("text");
     for (let i = 0; i < texts.length; i++){
-      var text = texts[i].innerText;
-      /*console.log(text);*/
-      texts[i].innerHTML = text.replaceAll("^lb^", "<br>");
+      var text = texts[i].innerText.toString();
+      texts[i].innerHTML = text.replace(/\^lb\^/g, "<br>");
     }
 
-    let responseClass = document.getElementsByClassName("responses");
-    const responseArray = [];
+    var responseClass = document.getElementsByClassName("responses");
+    var responseArray = [];
+    var completionStatus = document.getElementsByClassName("completionStatus");
     for (let i=0; i<responseClass.length; i++){
-      if (responseClass[i].innerText == "completed"){
+      if (completionStatus[i].innerText.includes("Check")){
         responseArray.push("1");
       } else {
         responseArray.push("0");
       }
     }
 
-    document.getElementById("completionButton").addEventListener("click", function() {
-      let responseClass = document.getElementsByClassName("responses");
-      for (let i=0; i<responseClass.length; i++){
-        if (responseClass[i] == responseArray[i]){
-          document.getElementById("completionButton").style("background-color:green");
-        }
+    var counter = 0;
+    for (let i=0; i<responseArray.length; i++){
+      if (responseArray[i].includes("1")){
+        counter++;
       }
-    });
+    }
+
+    if (counter == responseClass.length){
+      document.getElementById("completionButton").innerText = "Completed";
+      document.getElementById("completionButton").style.background = "green";
+      var value = document.getElementById("completionButton").value.split("_");
+      document.getElementById("completionButton").value = value[0] + "_complete"
+    }
+
+    document.getElementById("completionButton").addEventListener("click", function() {
+    var responseClass = document.getElementsByClassName("responses");
+    var completionStatus = document.getElementsByClassName("completionStatus");
+
+    var responseArray = [];
+    for (let i=0; i<responseClass.length; i++){
+
+      if (responseClass[i].innerText.includes("Correct!")){
+        responseArray.push("1");
+        completionStatus[i].innerText = "Check";
+        completionStatus[i].style.background = "green";
+      } else {
+        responseArray.push("0");
+      }
+    }
+
+    var counter = 0;
+    for (let i=0; i<responseArray.length; i++){
+      if (responseArray[i].includes("1")){
+        counter++;
+      }
+    }
+
+    if (counter == responseClass.length){
+      document.getElementById("completionButton").innerText = "Completed";
+      document.getElementById("completionButton").style.background = "green";
+      var value = document.getElementById("completionButton").value.split("_");
+      document.getElementById("completionButton").value = value[0] + "_complete"
+
+    }
+  });
     
     /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */
-  </script>
-
-  
+  </script>  
 </html>
