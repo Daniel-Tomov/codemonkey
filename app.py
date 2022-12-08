@@ -84,6 +84,10 @@ def login():
       resp = make_response(render_template('redirect.html', login=True, redirect_location='/home'))
       resp.set_cookie('token', '')
       return resp #hello
+    elif request.form['uname'] == "register":
+      resp = make_response(render_template('redirect.html', login=True, redirect_location='/register'))
+      resp.set_cookie('token', '')
+      return resp #hello
 
     username = request.form['uname']
     password = request.form['psw']
@@ -215,7 +219,22 @@ def test():
   
   return render_template("test.html", data=yml.data, courseCompletion=courseCompletions[account.uid])
 
-  
+@app.route('/completions', methods=["POST", 'GET']) 
+def submitCompletion():
+  token = request.args.get('token')
+  currentSession = getSession(token)
+  if currentSession == None:
+    return personalFunctions.base64encode("1".encode())
+  account = accountManager.getAccountByUID(currentSession.uid)
+  if account == None:
+    return personalFunctions.base64encode("1".encode())
+
+  page = personalFunctions.base64decode(request.args.get('page_id')).decode('utf-8')
+  status = personalFunctions.base64decode(request.args.get('status')).decode('utf-8')
+  courseCompletions[account.uid][page] = status
+
+  return personalFunctions.base64encode("1".encode())
+
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
   token = request.args.get('token')
@@ -270,11 +289,6 @@ def get_chall(id):
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
     resp.set_cookie('token', currentSession.token)
     return resp
-
-  if request.method == "POST":
-    if ("complete" in request.form['button']):
-      page, status = request.form['button'].split("_")
-      courseCompletions[account.uid][page] = status
 
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
 
