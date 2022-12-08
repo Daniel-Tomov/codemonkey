@@ -55,7 +55,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :white_check_mark: Put the session token into a cookie instead of plainly in the HTML. Also means the cookie has to be accessed by the backend.
 
-:x: Track course completion for each user
+:white_check_mark: Track course completion for each user
 
 :white_check_mark: Course completion should also be in a database file
 
