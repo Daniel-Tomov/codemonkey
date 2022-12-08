@@ -249,10 +249,11 @@ def recieve_code():
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
-  output = personalFunctions.runCode(program, currentSession.token)
+  output = personalFunctions.runCodeWithThread(program, currentSession.token)
 
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
   completions[currentSession.uid][chal_id][1] = program
+
 
   if output[1] == 1:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output[0].replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
