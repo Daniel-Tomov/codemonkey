@@ -102,18 +102,22 @@
         data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
         success: function(response) {
         document.getElementById(ids[2] + "response").innerHTML = (atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
+        checkChallenges();
       },
       error: function(xhr) {
         //Do Something to handle error
       }
     });
-    checkChallenges();
   }
 
 
   function checkChallenges(){
     for (let i=0; i<responseClass.length; i++){
-        if(responseClass[i].innerText.includes("Incorrect!")){
+      if(responseClass[i].innerText.includes("Incorrect!")){
+          completionStatus[i].innerText = "Uncheck";
+          completionStatus[i].style.background = "red";
+          responseArray[i] = "0";
+        } else if(responseClass[i].innerText.includes("Error")){
           completionStatus[i].innerText = "Uncheck";
           completionStatus[i].style.background = "red";
           responseArray[i] = "0";
@@ -146,6 +150,18 @@
         var value = completionButton.value.split("_");
         completionButton.value = value[0] + "_uncomplete"
       }
+      
+      var page_id = completionButton.value.split("_")[0];
+      var status = completionButton.value.split("_")[1];
+
+      $.ajax({
+          url: "/completions",
+          type: "get",
+          data: {token: getCookie("token"), page_id:btoa(page_id), status:btoa(status)},
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+      });
   }
 
   function getCookie(cname) {
@@ -173,17 +189,6 @@
 
     completionButton.addEventListener("click", function() {
       checkChallenges();
-      var page_id = completionButton.value.split("_")[0];
-      var status = completionButton.value.split("_")[1];
-
-      $.ajax({
-          url: "/completions",
-          type: "get",
-          data: {token: getCookie("token"), page_id:btoa(page_id), status:btoa(status)},
-        error: function(xhr) {
-          //Do Something to handle error
-        }
-      });
     });
     
     /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */

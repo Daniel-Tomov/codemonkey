@@ -40,8 +40,6 @@ def runPeriodically():
     accountManager.saveAccounts()
     saveCompletions()
     saveCourseCompletions()
-    print(completions)
-    print(courseCompletions)
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
@@ -249,21 +247,27 @@ def recieve_code():
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
-  output = personalFunctions.runCodeWithThread(program, currentSession.token)
+  output, error = personalFunctions.runCode(program, currentSession.token)
+
 
   pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
   completions[currentSession.uid][chal_id][1] = program
 
 
-  if output[1] == 1:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Erorr</p><p>" + output[0].replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+  if "KeyboardInterrupt" in output:
+    completions[currentSession.uid][chal_id][0] = "uncomplete"
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
 
-  output = output[0]
+
+  if error == 1:
+    completions[currentSession.uid][chal_id][0] = "uncomplete"
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+
+  
   
   if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
     if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
       completions[currentSession.uid][chal_id][0] = "complete"
-      print(completions)
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
     elif yml.data[pageName]['page'][question]["correct"] == "change code":
       if yml.data[pageName]['page'][question]["skeleton"] != program:
