@@ -69,7 +69,7 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :white_check_mark: Send code back to the frontend
 
-:x: Use threads to run code asynchronously and check if the code runs for too long, then kill the thread and notifiy the user.
+:white_check_mark: Use threads to run code asynchronously and check if the code runs for too long, then kill the thread and notifiy the user.
 
 :white_check_mark: Do not allow users to create an account with an already existing username.
 
@@ -138,7 +138,7 @@ Example table:
   <tr>
     <td>ChrisMz</td>
     <td>chrismz@codemonkey.tk</td>
-    <td></td>
+    <td>psx3P7cAhuLhLuIkUVhuieujSZFyIOK6iSBUY9jUPDv2y2mmnb</td>
     <td>7b3b4de00794a247cf8df8e6fbfe19bf</td>
     <td>False</td>
   </tr>
@@ -162,7 +162,7 @@ Example table:
     <td>False</td>
     <td>False</td>
   </tr>
-    <td>{Insert other example UID}</td>
+    <td>psx3P7cAhuLhLuIkUVhuieujSZFyIOK6iSBUY9jUPDv2y2mmnb</td>
     <td>False</td>
     <td>True</td>
     <td>True</td>
