@@ -7,6 +7,7 @@ import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
+import email
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -243,7 +244,7 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program or "import" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
