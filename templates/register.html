@@ -3,6 +3,7 @@
   <head>
     <title>CodeMonkey</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   </head>
   <body>
     
@@ -30,23 +31,23 @@
   </body>
   <script>
     function submitRegister(){
-      var username = document.getElementById("username");
-      var email = document.getElementById("email");
-      var password = document.getElementById("password")
-      if (email.includes("@")) {
-      
+      var username = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      if (email.includes("@") && username != "" && password.length >= 8) {
         $.ajax({
           url: "/registerForm",
           type: "get",
           data: {uname: btoa(username), email:btoa(email), psw:btoa(password)},
           success: function(response) {
-          document.getElementById(ids[2] + "response").innerHTML = (atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
-          checkChallenges();
+            console.log(atob(response))
         },
         error: function(xhr) {
           //Do Something to handle error
         }
       });
+    } else {
+      console.log("Please input an email");
     }
   }
   </script>

@@ -8,12 +8,10 @@ codemonkeyEmail = 'daniel308712@gmail.com'
 codemonkeyPassword = os.getenv('emailPassword')
 
 to = 'daniel308712@gmail.com'
-subject = 'Lorem ipsum dolor sit amet'
-body = 'consectetur adipiscing elit'
+subject = 'insert subject here'
+exampleBody = 'insert body here'
 
-email_text = body
-
-def sendEmail(userEmail, subject, body):
+def sendEmail(userEmail, subject, body=None):
     try:
         smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         print("connected")
@@ -26,7 +24,11 @@ def sendEmail(userEmail, subject, body):
         smtp_server.login(codemonkeyEmail, codemonkeyPassword)
         print("login")
 
-        message = 'Subject: {}\n\n{}'.format(subject, body)
+        if body == None:
+            message = 'Subject: {}\n\n{}'.format(subject, exampleBody)
+        else:
+            message = 'Subject: {}\n\n{}'.format(subject, body)
+
         smtp_server.sendmail(codemonkeyEmail, userEmail, message)
         print("send")
         

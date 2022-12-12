@@ -39,6 +39,7 @@ def runPeriodically():
   while True:
     removeInactiveSessions()
     removeOldRuns()
+    verifications.sendVerification()
     accountManager.saveAccounts()
     saveCompletions()
     saveCourseCompletions()
@@ -147,10 +148,14 @@ def registerForm():
   if accountManager.accountExists(username):
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
 
-  verification = verifications.getVerification(email)
-  if verification == None:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please register</p>").encode())
 
+
+  verification = verifications.getVerification(email)
+  if verification != None:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>You have already been sent an email</p>").encode())
+
+
+  verifications.verifications(username, email, password)
   return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please check your email for a code to input.</p>").encode())
 
 @app.route('/admin', methods=["POST", "GET"])
