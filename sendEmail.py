@@ -4,29 +4,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-codemonkeyEmail = '308712@vbstudents.com'
+codemonkeyEmail = 'daniel308712@gmail.com'
 codemonkeyPassword = os.getenv('emailPassword')
 
-
-sent_from = codemonkeyEmail
-to = 'user@gmail.com'
+to = 'daniel308712@gmail.com'
 subject = 'Lorem ipsum dolor sit amet'
 body = 'consectetur adipiscing elit'
 
 email_text = body
 
-def sendEmail(userEmail, body):
+def sendEmail(userEmail, subject, body):
     try:
         smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         print("connected")
+        
         smtp_server.ehlo()
         print("ehlo")
+        
         print(codemonkeyEmail)
-        print(codemonkeyPassword)
+
         smtp_server.login(codemonkeyEmail, codemonkeyPassword)
         print("login")
-        smtp_server.sendmail(sent_from, to, email_text)
+
+        message = 'Subject: {}\n\n{}'.format(subject, body)
+        smtp_server.sendmail(codemonkeyEmail, userEmail, message)
         print("send")
+        
         smtp_server.close()
         print ("Email sent successfully!")
     except Exception as ex:
@@ -34,4 +37,4 @@ def sendEmail(userEmail, body):
 
 
 if __name__ == "__main__":
-    sendEmail(sent_from, "test lol")
+    sendEmail(to,'a subject', "test lol")

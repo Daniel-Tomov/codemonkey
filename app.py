@@ -7,6 +7,7 @@ import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
 import sendEmail
+import verifications
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
 
 app = Flask(__name__)
@@ -110,11 +111,11 @@ def login():
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
-  if request.method == "POST":
+  if request.method == "asdf":
     username = request.form['uname']
     password = request.form['psw']
 
-    if accountManager.accountExists(username) == True:
+    if accountManager.accountExists(username):
       return "Sorry! Account already exists"
 
     account = accountManager.accountManager(username, password)
@@ -133,8 +134,24 @@ def register():
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
     return resp
-  return render_template('login.html')
+  return render_template('register.html')
 
+
+@app.route('/registerForm', methods=["POST", "GET"])
+def registerForm():
+  
+  username = request.args.get('uanme')
+  email = request.args.get('email')
+  password = request.args.get('psw')
+  
+  if accountManager.accountExists(username):
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
+
+  verification = verifications.getVerification(email)
+  if verification == None:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please register</p>").encode())
+
+  return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please check your email for a code to input.</p>").encode())
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():

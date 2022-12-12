@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CodeMonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+  </head>
+  <body>
+    
+    <div class="imgcontainer">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Avatar" class="avatar">
+    </div>
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" id="username" placeholder="Enter Username" name="uname" required>
+
+      <label for="uname"><b>Email</b></label>
+      <input type="text" id="email" placeholder="Enter Email" name="email" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" id="password" placeholder="Enter Password" name="psw" required>
+
+      <button onclick="submitRegister()" type="submit">Login</button>
+    </div>
+    
+    <div class="container" style="background-color:#f1f1f1">
+      <a href="/home"><button>Cancel</button></a>
+      <a href="/register"><button>Register</button></a>
+      <a href="/login"><button>Login</button></a>
+    </div>
+  </body>
+  <script>
+    function submitRegister(){
+      var username = document.getElementById("username");
+      var email = document.getElementById("email");
+      var password = document.getElementById("password")
+      if (email.includes("@")) {
+      
+        $.ajax({
+          url: "/registerForm",
+          type: "get",
+          data: {uname: btoa(username), email:btoa(email), psw:btoa(password)},
+          success: function(response) {
+          document.getElementById(ids[2] + "response").innerHTML = (atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
+          checkChallenges();
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+      });
+    }
+  }
+  </script>
+</html>
