@@ -6,6 +6,7 @@ import threading
 import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
+import sendEmail
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
 
 app = Flask(__name__)

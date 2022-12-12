@@ -101,8 +101,6 @@ def loadAccounts():
   try:
     with open("accounts.pickle", "rb") as f:
       accounts = pickle.load(f)
-      for i in accounts:
-        print(f'{i.username}   {i.password}    {i.uid}     {i.admin}')
   except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
     old_getAccounts()
