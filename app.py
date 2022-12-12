@@ -7,7 +7,6 @@ import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
-import email
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
