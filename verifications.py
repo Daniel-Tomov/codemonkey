@@ -1,9 +1,10 @@
 import random
 import string
 import sendEmail
+import personalFunctions
 
 
-
+verifyTimeout = {"hours": 0, "minutes": 5, "seconds": 0}
 verificationsList = ["f"]
 
 class verifications:
@@ -11,17 +12,22 @@ class verifications:
         global verifications
         self.username = username
         self.email = email
-        self.password = password
+        self.password = personalFunctions.encrypt(password)
         self.token = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890', k=20))
-        self.isVerified = False
+        self.verified = False
         self.emailSent = False
         verificationsList.append(self)
+        self.expireTime = personalFunctions.expireTime(verifyTimeout)
 
     def isVerified(self):
-        return self.isVerified
+        return self.verified
+
+    def setVerified(self):
+        self.verified = True
+        verificationsList.remove(self)
 
 
-def getVerification(email):
+def getVerificationByEmail(email):
     if email == "":
         return None
 
@@ -32,10 +38,31 @@ def getVerification(email):
             print(i.email)
             return i
 
+
+def getVerificationByID(id):
+    if id == "":
+        return None
+
+    for i in verificationsList:
+        if type(i) == type(""):
+            continue
+        if i.token == id:
+            print(i.email)
+            return i
+
+
 def sendVerification():
     for i in verificationsList:
         if type(i) == type(""):
             continue
         if i.emailSent == False:
-            print(i.email)
-            sendEmail.sendEmail(i.username, "Verify email for Codemonkey")
+            print(f'Sent email to {i.email} with id of {i.token}')
+            i.emailSent = True
+            sendEmail.sendEmail(i.email, subject="Verify Email for Codemonkey", body=f'Verify email for Codemonkey\nYour link is <a href="https://codemonkey.tk/verify/{i.token}">https://codemonkey.tk/verify/{i.token}</a>.')
+
+def removeVerifications():
+    for i in verificationsList:
+        if type(i) == type(""):
+            continue
+        if i.expireTime < personalFunctions.time():
+            verificationsList.remove(i)

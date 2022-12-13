@@ -7,9 +7,10 @@ accounts = []
 
 
 class accountManager:
-  def __init__(self, username, password, uid="", adminStatus=False):
+  def __init__(self, username, email, password, uid="", adminStatus=False):
     self.username = username
     self.password = personalFunctions.encrypt(password)
+    self.email = email
 
     if uid == "":
       self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "", k=50))
@@ -81,9 +82,15 @@ def old_saveAccounts():
 
   #### DETECT IF ACCOUNT EXISTS ####
 
-def accountExists(username):
+def accountExistsByUsername(username):
   for i in accounts:
     if i.username == username:
+      return True
+  return False
+
+def accountExistsByEmail(email):
+  for i in accounts:
+    if i.email == email:
       return True
   return False
 
