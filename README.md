@@ -73,15 +73,17 @@ Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
 
 :white_check_mark: Do not allow users to create an account with an already existing username.
 
-:x: Require emails for registration to prevent users from creating multiple accounts
+:white_check_mark: Require emails for registration to prevent users from creating multiple accounts
 
-:x: Add email verification
+:white_check_mark: Add email verification
 
-:x: Send emails to the users
+:white_check_mark: Send emails to the users
 
 :white_check_mark: Track users by a unique user id
 
 :white_check_mark: Add multiple questions per page with submission for each question
+
+:x: Add email to domain to send emails to users
 
 ## Functionality of Pages
 
