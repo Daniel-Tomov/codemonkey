@@ -58,7 +58,7 @@ def sendVerification():
         if i.emailSent == False:
             print(f'Sent email to {i.email} with id of {i.token}')
             i.emailSent = True
-            sendEmail.sendEmail(i.email, subject="Verify Email for Codemonkey", body=f'Verify email for Codemonkey\nYour link is <a href="https://codemonkey.tk/verify/{i.token}">https://codemonkey.tk/verify/{i.token}</a>.')
+            sendEmail.sendEmail(i.email, subject="Verify Email for Codemonkey", body=f'Verify email for Codemonkey\nYour link is https://codemonkey.tk/verify/{i.token}.')
 
 def removeVerifications():
     for i in verificationsList:
