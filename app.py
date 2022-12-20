@@ -6,6 +6,8 @@ import threading
 import yml
 from time import sleep
 from completion import completions, completion, saveCompletions
+import sendEmail
+import verifications
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
 
 app = Flask(__name__)
@@ -37,6 +39,8 @@ def runPeriodically():
   while True:
     removeInactiveSessions()
     removeOldRuns()
+    verifications.sendVerification()
+    verifications.removeVerifications()
     accountManager.saveAccounts()
     saveCompletions()
     saveCourseCompletions()
@@ -109,31 +113,29 @@ def login():
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
-  if request.method == "POST":
-    username = request.form['uname']
-    password = request.form['psw']
+  return render_template('register.html')
 
-    if accountManager.accountExists(username) == True:
-      return "Sorry! Account already exists"
 
-    account = accountManager.accountManager(username, password)
-    # Create a new session with the username
-    currentSession = sessions(account.uid)
-    
+@app.route('/registerForm', methods=["POST", "GET"])
+def registerForm():
+  
+  username = personalFunctions.base64decode(request.args.get('uname')).decode("utf-8")
+  email = personalFunctions.base64decode(request.args.get('email')).decode("utf-8")
+  password = personalFunctions.base64decode(request.args.get('psw')).decode("utf-8")
+  
+  if accountManager.accountExistsByUsername(username):
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
 
-    # Create a new completion for the user
-    #print(currentSession.uid)
-    completion(currentSession.uid)
-    print(currentSession.uid)
-    print(courseCompletion)
-    courseCompletion(currentSession.uid)
+  if accountManager.accountExistsByEmail(email):
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
 
-    #resp = make_response(render_template('challenge.html', login=True))
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token)
-    return resp
-  return render_template('login.html')
 
+  verification = verifications.getVerificationByEmail(email)
+  if verification != None:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>You have already been sent an email</p>").encode())
+  
+  verifications.verifications(username, email, password)
+  return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please check your email for a code to input.</p>").encode())
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
@@ -243,7 +245,7 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program or "import" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
@@ -297,6 +299,37 @@ def get_chall(id):
 
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
 
+@app.route('/verify/<string:id>', methods=["POST", 'GET']) 
+def verify(id):
+  verify = verifications.getVerificationByID(id)
+  if verify == None:
+    return "invalid id"
+  
+  if verify.verified == False:
+    verify.setVerified()
+
+    username = verify.username
+    email = verify.email
+    password = verify.password
+    account = accountManager.accountManager(username, email, password)
+    # return password to hashed value because needed to be hashed for verify and not again for account
+    account.password = password
+
+    # Create a new session with the username
+    currentSession = sessions(account.uid)
+    
+
+    # Create a new completion for the user
+    #print(currentSession.uid)
+    completion(currentSession.uid)
+    courseCompletion(currentSession.uid)
+
+    #resp = make_response(render_template('challenge.html', login=True))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+  return "lol down here"
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
