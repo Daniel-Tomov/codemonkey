@@ -10,7 +10,6 @@ Flask = "^2.2.2"
 strings-pkg = "^0.0.1"
 numpy = "^1.23.3"
 PyYAML = "^6.0"
-python-dotenv = "^0.21.0"
 
 [tool.poetry.dev-dependencies]
 

@@ -91,17 +91,6 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
-name = "python-dotenv"
-version = "0.21.0"
-description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-cli = ["click (>=5.0)"]
-
-[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -146,7 +135,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "6eabe0cbf15381b1a8a65a94916c89d3311267c894455aba66c18a340ebb7028"
+content-hash = "c49b8a53295b018dcbd31106c0e1b6375e838fadf419bee142d68a6913a1e7b3"
 
 [metadata.files]
 click = []
@@ -157,7 +146,6 @@ itsdangerous = []
 jinja2 = []
 markupsafe = []
 numpy = []
-python-dotenv = []
 pyyaml = []
 strings-pkg = []
 werkzeug = []

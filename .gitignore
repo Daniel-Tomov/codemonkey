@@ -1,3 +1,4 @@
 programRuns/*.py
 *.pyc
 .env
+accounts.pickle
