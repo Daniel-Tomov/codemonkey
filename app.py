@@ -181,7 +181,7 @@ def challenge():
     
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
-  resp = make_response(render_template('challenge.html', login=True, admin=account.admin))
+  resp = make_response(render_template('challenge.html', data=yml.data, courseCompletion=courseCompletions[account.uid]))
   resp.set_cookie('token', currentSession.token)
   return resp
 
@@ -282,7 +282,7 @@ def recieve_code():
       completions[currentSession.uid][chal_id][0] = "uncomplete"
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
-@app.route('/test/<string:id>', methods=["POST", 'GET']) 
+@app.route('/challenge/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):
   token = request.cookies.get('token')
   currentSession = getSession(token)
@@ -328,6 +328,30 @@ def verify(id):
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp.set_cookie('token', currentSession.token)
     return resp
+
+@app.route('/header', methods=["POST", "GET"])
+def header():
+  token = request.cookies.get('token')
+
+  if isSession(token) and request.method == "GET" and token != None:
+    currentSession = getSession(token)
+
+
+    account = accountManager.getAccountByUID(currentSession.uid)
+    resp = make_response(render_template('header.html', login=True, admin=account.admin))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+  return render_template("header.html")
+@app.route('/footer', methods=["POST", "GET"])
+def footer():
+  return render_template("footer.html")
+
+@app.route('/about', methods=["POST", "GET"])
+def about():
+  return "Christian hasn't made this yet lol"
+
+
 
   return "lol down here"
 threading.Thread(target=runPeriodically).start()

@@ -4,25 +4,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
     <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   </head>
 
-    <body>
-      <header>
-        <a href="/"><img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Avatar" class="avatar"></a>
-        <nav class="nav">
-          <ul>
-            <li><a href="challenge">Challenges</a></li>
-            <li><a href="#about">About</a></li>
-            {% if admin == True %}
-              <a href="admin">Admin</a>
-              <a href="test">Test</a>
-            {% endif %}
-            {% if login != True %}
-              <li><a href="login">Login</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      </header>
+    <body style="scroll-behavior: auto;">
+      <div id="body">
+      <header id="header"></header>
+      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+
       <main>
         <div id="beginning">
           <div id="mission-statement">
@@ -41,16 +30,21 @@
               <div class="exampleBox">
                 <h4 class="example">&nbsp;&nbsp;Python Example:</h4>
                 <div class="codeBox">
-                  <p class="code"><span style="color:#c485bd">if</span> <span style="color:white">5 > 2: </span></p>
-                  <p class="code">&nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"Five is greater than two!"</span><span style="color:#c7b809">)</span></p>
+                  <p class="code"><span style="color:#c485bd">x</span> <span style="color:white"> = 5</span></p>
+                  <p class="code"><span style="color:#c485bd">if</span> <span style="color:white">x &lt; 2: </span></p>
+                  <p class="code">&nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x isless than two!"</span><span style="color:#c7b809">)</span></p>
+                  <p class="code"><span style="color:#c485bd">elif</span> <span style="color:white">x &gt; 2: </span></p>
+                  &nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x is greater than two!"</span><span style="color:#c7b809">)</span></p>
+                  <p class="code"><span style="color:#c485bd">else</span> <span style="color:white">:</span></p>
+                  &nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x is equal to 2!"</span><span style="color:#c7b809">)</span></p>
                 </div>
               </div>
             </div>
           </div>
           
       </main>
-      <footer>
-        <p>Codemonkey is optimized for learning, testing, and training. Examples might be simplified to improve reading and basic understanding. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy.</p>
-      </footer>
+      <footer id="footer"></footer>
+      <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
+    </div>
     </body>
 </html>

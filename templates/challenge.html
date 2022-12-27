@@ -1,19 +1,44 @@
 <html>
   <head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <style>
+      main{
+        width: 700px;
+        margin:100px auto 0 auto;
+      }
+
+      .completionStatus{
+        margin: 10px 0;
+      }
+
+      .courseName{
+        color:white;
+        margin: 20px 0;
+      }
+
+      .courseName a{
+        color:white;
+      }
+
+    </style>
+
   </head> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
   <body>
-    <header>
-      <div class="topnav">
-              <a class="active" href="index">Home</a>
-              <a href="challenge">Challenges</a>
-              <a href="#about">About</a>
-              {% if admin == True %}
-                <a href="admin">Admin</a>
-                <a href="test">Test</a>
-              {% endif %}
-            </div>
-    </header>
-    <p>This is the challenge page</p>
+    <header id="header"></header>
+    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+    <main>
+      {% for i in data %}
+          {% if courseCompletion[i] == "complete" %}
+            <p class="completionStatus" style="background-color:green">Check</p>
+          {% endif %}
+          <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
+      {% endfor %}
+    </main>
+    <footer id="footer"></footer>
+    <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
   </body>
 </html>

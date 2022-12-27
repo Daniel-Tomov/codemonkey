@@ -3,30 +3,19 @@
     <title>CodeMonkey</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   </head>
   <body>
-      <header>
-        
-        <nav>
-          <a href="/challenges">Challenges</a>
-          <a href="/index">Home</a>
-          <a href="/admin">Admin</a>
-          <a href="/test">Test</a>
-        </nav>
-      </header>
-      <main>
-      <p>Add questions:</p>
-      <form action="#" method="post">
-          <div class="container">
-            <label for="newQuestions"><b>Question:</b></label>
-            <textarea name="challengeQuestions">{{ challenges }}</textarea>
-            <button type="submit" name="button" value="challengeSubmit">Submit</button>
-            <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
-            <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
-          </div>
-        </form>
-      </main>
-      <footer>
-      </footer>
+    <header id="header"></header>
+    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+    <main id="adminMain"> 
+      <form id="adminForm" action="#" method="post">
+          <textarea name="challengeQuestions">{{ challenges }}</textarea>
+          <button type="submit" name="button" value="challengeSubmit">Submit</button>
+          <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
+          <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
+      </form>
+    </main>
   </body>
 </html>
