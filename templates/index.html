@@ -1,39 +1,56 @@
 <html>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-    <head>
+  <head>
     <title>CodeMonkey</title>
-    
-    </head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+  </head>
 
     <body>
-      
-        <header>
-          <p class="title">Welcome to Code Monkey</p>
-          <nav>
-            <ul>
-              <li><a class="active" href="#home">Home</a></li>
-              {% if login != True %}
-                <li><a href="login">Login</a></li>
-              {% endif %}
-              <li><a href="challenge">Challenges</a></li>
-              <li><a href="#about">About</a></li>
-              {% if admin == True %}
-                <a href="admin">Admin</a>
-                <a href="test">Test</a>
-              {% endif %}
-            </ul>
-          </nav>
+      <header>
+        <a href="/"><img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Avatar" class="avatar"></a>
+        <nav class="nav">
+          <ul>
+            <li><a href="challenge">Challenges</a></li>
+            <li><a href="#about">About</a></li>
+            {% if admin == True %}
+              <a href="admin">Admin</a>
+              <a href="test">Test</a>
+            {% endif %}
+            {% if login != True %}
+              <li><a href="login">Login</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <div id="beginning">
+          <div id="mission-statement">
+            <h1>Learn to Code</h1>
+            <h3>With courses designed to change how programming is taught</h3>
+          </div>
+          <svg width="100%" height="70" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path id="wavepath" d="M0,0  L110,0C35,150 35,0 0,100z" fill="#282A35"></path>
+          </svg>
+        </div>
+          <div class="codingLanguageOutside" id="python">
+            <div class="codingLanguage">
+              <h2>Python</h2>
+              <h3>A popular programming language with usage in many applications and one of the best for beginners.</h3>
+              <img src="{{ url_for('static', filename='images/python.png') }}"/>
+              <div class="exampleBox">
+                <h4 class="example">&nbsp;&nbsp;Python Example:</h4>
+                <div class="codeBox">
+                  <p class="code"><span style="color:#c485bd">if</span> <span style="color:white">5 > 2: </span></p>
+                  <p class="code">&nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"Five is greater than two!"</span><span style="color:#c7b809">)</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
           
-        </header>
-
-        <main>
-          
-        </main>
-
-
-        <footer>
-
-        </footer>
+      </main>
+      <footer>
+        <p>Codemonkey is optimized for learning, testing, and training. Examples might be simplified to improve reading and basic understanding. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy.</p>
+      </footer>
     </body>
 </html>
