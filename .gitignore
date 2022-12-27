@@ -10,3 +10,4 @@ poetry.lock
 poetry.lock
 .replit
 __pycache__/
+static/images/logo.psd
