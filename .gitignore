@@ -1,4 +1,12 @@
 programRuns/*.py
 *.pyc
 .env
-accounts.pickle
+*.pickle
+venv
+.vscode
+replix.nix
+pyproject.toml
+poetry.lock
+poetry.lock
+.replit
+__pycache__/
