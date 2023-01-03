@@ -50,5 +50,6 @@ thirdCode:
       type: "textbox"
       skeleton: ""
       button: "submit"
-      correct: "change code"
+      correct: "contains"
+      contains: "="
       chal_id: "0004"
