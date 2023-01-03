@@ -278,6 +278,16 @@ def recieve_code():
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+    elif yml.data[pageName]['page'][question]["correct"] == "contains":
+      count = 0
+      for i in yml.data[pageName]['page'][question]["contains"]:
+        if i in program:
+          count+=1
+      if count == len(yml.data[pageName]['page'][question]["contains"]):
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      else:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+
     else:
       completions[currentSession.uid][chal_id][0] = "uncomplete"
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())

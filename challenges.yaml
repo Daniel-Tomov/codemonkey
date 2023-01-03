@@ -51,5 +51,7 @@ thirdCode:
       skeleton: ""
       button: "submit"
       correct: "contains"
-      contains: "="
+      contains: 
+       - "="
+       - "x"
       chal_id: "0004"
