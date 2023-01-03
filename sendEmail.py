@@ -7,7 +7,6 @@ load_dotenv()
 codemonkeyEmail = 'noreply@codemonkey.tk'
 codemonkeyPassword = os.getenv('emailPassword')
 
-to = 'daniel308712@gmail.com'
 subject = 'insert subject here'
 exampleBody = 'insert body here'
 
@@ -30,7 +29,3 @@ def sendEmail(userEmail, subject, body=None):
         smtp_server.close()
     except Exception as ex:
         print ("Something went wrong….",ex)
-
-
-if __name__ == "__main__":
-    sendEmail(to,'a subject', "test lol")
