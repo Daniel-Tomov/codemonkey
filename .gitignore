@@ -2,7 +2,6 @@ programRuns/*.py
 *.pyc
 .env
 venv
-.pickle
 .vscode
 replix.nix
 pyproject.toml
