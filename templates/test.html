@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <title>Test page for Code Monkey</title>
+    <style>
+      :root{
+        --width:400px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/challenges">Challenges</a>
+    <a href="/index">Home</a>
+    <a href="/admin">Admin</a>
+    {% for i in data %}
+        {% if courseCompletion[i] == "complete" %}
+          <p style="background-color:green">Check</p>
+        {% endif %}
+        <p><a href="{{ '/test/' + i }}">{{ data[i]['name'] }}</a></p>
+    {% endfor %}
+  </body> 
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CodeMonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <style>
+      label{
+        color:white;
+      }
+
+      .container{
+        width:700px;
+        margin:0 auto;
+      }
+      
+    </style>
+
+  </head>
+  <body>
+    <header id="header"></header>
+    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" id="username" placeholder="Enter Username" name="uname" required>
+
+      <label for="uname"><b>Email</b></label>
+      <input type="text" id="email" placeholder="Enter Email" name="email" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" id="password" placeholder="Enter Password" name="psw" required>
+
+      <button onclick="submitRegister()" type="submit">Login</button>
+    </div>
+    
+    <div class="container">
+      <a href="/home"><button>Cancel</button></a>
+      <a href="/register"><button>Register</button></a>
+      <a href="/login"><button>Login</button></a>
+    </div>
+  </body>
+  <script>
+    function submitRegister(){
+      var username = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      if (email.includes("@") && username != "" && password.length >= 8) {
+        $.ajax({
+          url: "/registerForm",
+          type: "get",
+          data: {uname: btoa(username), email:btoa(email), psw:btoa(password)},
+          success: function(response) {
+            console.log(atob(response))
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+      });
+    } else {
+      console.log("Please fill out all forms correctly");
+    }
+  }
+  </script>
+</html>
