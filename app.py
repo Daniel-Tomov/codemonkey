@@ -278,8 +278,8 @@ def get_chall(id):
     
   account = accountManager.getAccountByUID(currentSession.uid)
   #print(account)
-  if account == None or account.admin == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
+  if account == None:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/logout'))
     resp.set_cookie('token', currentSession.token)
     return resp
 
