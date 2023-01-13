@@ -76,8 +76,7 @@ def login():
   if isSession(token) and request.method == "GET" and token != None:
     currentSession = getSession(token)
     # Since the user has a valid token, redirect them to the challenges page
-    resp = make_response(
-      render_template('redirect.html', login=True, redirect_location="/challenge"))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenge"))
     resp.set_cookie('token', currentSession.token)
     return resp
 
@@ -195,29 +194,6 @@ def logout():
     currentSession.removeSession()
 
   return invalidSession()
-
-
-@app.route('/saveaccounts', methods=["POST", "GET"])
-def saveAccounts():
-  accountManager.saveAccounts()
-  return "done"
-
-
-@app.route('/test', methods=["POST", "GET"])
-def test():
-  token = request.cookies.get('token')
-  currentSession = getSession(token)
-
-  if currentSession == None:
-    return invalidSession()
-    
-  account = accountManager.getAccountByUID(currentSession.uid)
-  if account.admin == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
-    resp.set_cookie('token', currentSession.token)
-    return resp
-  
-  return render_template("test.html", data=yml.data, courseCompletion=courseCompletions[account.uid])
 
 @app.route('/completions', methods=["POST", 'GET']) 
 def submitCompletion():
