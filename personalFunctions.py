@@ -35,7 +35,7 @@ def runCode(inputCode, cookie):
   
   args = ['python3', 'programRuns/' + cookie + ".py"]
   #with subprocess.Popen(args=args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid) as process:
-  # find cooler alternative to sigint
+  # TODO find cooler alternative to sigint
   with subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"],stdout=subprocess.PIPE,stderr=subprocess.PIPE, preexec_fn=os.setsid) as process:
     try:
       output, error = process.communicate(timeout=4)
