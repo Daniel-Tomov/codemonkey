@@ -1,0 +1,4 @@
+flask
+numpy
+pyyaml
+python-dotenv

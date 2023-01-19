@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CodeMonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  </head>
+  <body>
+    <header id="header"></header>
+    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+    <main>
+      <form action="#" method="post">
+        <div class="container">
+          <label for="uname"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+      
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+      
+          <button type="submit">Login</button>
+        </div>
+      </form>
+
+      <div class="loginOptions">
+        <a href="/home"><button>Cancel</button></a>
+        <a href="/register"><button>Register</button></a>
+        <a href="/login"><button>Login</button></a>
+      </div>
+    </main>      
+    <footer id="footer"></footer>
+    <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
+  </body>
+</html>
