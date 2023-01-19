@@ -20,7 +20,7 @@ def start_app():
 app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "except"]
+NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__"]
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -246,7 +246,7 @@ def recieve_code():
 
   for i in NotWantedInCode:
     if i in code:
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
 
   #print(program)
   output, error = personalFunctions.runCode(program, currentSession.token)
