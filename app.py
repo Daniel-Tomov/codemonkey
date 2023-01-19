@@ -9,12 +9,23 @@ from completion import completions, completion, saveCompletions
 import sendEmail
 import verifications
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
+from flask_compress import Compress
 
-app = Flask(__name__)
+compress = Compress()
+def start_app():
+    app = Flask(__name__)
+    compress.init_app(app)
+    return app
+
+app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-
-
+NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "except"]
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Strict',
+)
 
 def invalidSession():
   resp = make_response(render_template('redirect.html', login=True, redirect_location="/login"))
@@ -48,6 +59,13 @@ def runPeriodically():
     #print(accountManager.accounts)
     sleep(10)
 
+def setHeaders(resp, token):
+  resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+  #resp.headers['Content-Security-Policy'] = "default-src 'self'"
+  resp.headers['X-Content-Type-Options'] = 'nosniff'
+  resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
+  resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
+  return resp
 
 @app.route('/index', methods=["POST", "GET"])
 @app.route('/home', methods=["POST", "GET"])
@@ -62,7 +80,7 @@ def index():
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('index.html', login=True, admin=account.admin))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   return render_template('index.html')
@@ -76,18 +94,20 @@ def login():
   if isSession(token) and request.method == "GET" and token != None:
     currentSession = getSession(token)
     # Since the user has a valid token, redirect them to the challenges page
-    resp = make_response(
-      render_template('redirect.html', login=True, redirect_location="/challenge"))
-    resp.set_cookie('token', currentSession.token)
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenge"))
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   if request.method == "POST":
     if request.form['uname'] == "loginCancel":
       resp = make_response(render_template('redirect.html', login=True, redirect_location='/home'))
+      resp = setHeaders(resp, currentSession.token)
       resp.set_cookie('token', '')
       return resp #hello
+    
     elif request.form['uname'] == "register":
       resp = make_response(render_template('redirect.html', login=True, redirect_location='/register'))
+      resp = setHeaders(resp, currentSession.token)
       resp.set_cookie('token', '')
       return resp #hello
 
@@ -105,7 +125,7 @@ def login():
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   return render_template('login.html')
@@ -119,23 +139,23 @@ def register():
 @app.route('/registerForm', methods=["POST", "GET"])
 def registerForm():
   
-  username = personalFunctions.base64decode(request.args.get('uname')).decode("utf-8")
-  email = personalFunctions.base64decode(request.args.get('email')).decode("utf-8")
-  password = personalFunctions.base64decode(request.args.get('psw')).decode("utf-8")
+  username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
+  email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
+  password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
   
   if accountManager.accountExistsByUsername(username):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
 
   if accountManager.accountExistsByEmail(email):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
 
 
   verification = verifications.getVerificationByEmail(email)
   if verification != None:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>You have already been sent an email</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
   
   verifications.verifications(username, email, password)
-  return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please check your email for a code to input.</p>").encode())
+  return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
@@ -161,10 +181,10 @@ def admin():
       yml.reloadChallenges()
     
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/admin'))
-    resp.set_cookie('token', currentSession.token)
+    resp = setHeaders(resp, currentSession.token)
     return resp
   resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
-  resp.set_cookie('token', currentSession.token)
+  resp = setHeaders(resp, currentSession.token)
   return resp
 
 @app.route('/challenge_submit', methods=["POST", "GET"])
@@ -181,8 +201,8 @@ def challenge():
     
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
-  resp = make_response(render_template('challenge.html', login=True, admin=account.admin))
-  resp.set_cookie('token', currentSession.token)
+  resp = make_response(render_template('challenge.html', username=currentSession.username, data=yml.data, courseCompletion=courseCompletions[account.uid]))
+  resp = setHeaders(resp, currentSession.token)
   return resp
 
 
@@ -196,32 +216,10 @@ def logout():
 
   return invalidSession()
 
-
-@app.route('/saveaccounts', methods=["POST", "GET"])
-def saveAccounts():
-  accountManager.saveAccounts()
-  return "done"
-
-
-@app.route('/test', methods=["POST", "GET"])
-def test():
-  token = request.cookies.get('token')
-  currentSession = getSession(token)
-
-  if currentSession == None:
-    return invalidSession()
-    
-  account = accountManager.getAccountByUID(currentSession.uid)
-  if account.admin == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
-    resp.set_cookie('token', currentSession.token)
-    return resp
-  
-  return render_template("test.html", data=yml.data, courseCompletion=courseCompletions[account.uid])
-
 @app.route('/completions', methods=["POST", 'GET']) 
 def submitCompletion():
-  token = request.args.get('token')
+  #token = request.args.get('token')
+  token = request.cookies.get('token')
   currentSession = getSession(token)
   if currentSession == None:
     return personalFunctions.base64encode("1".encode())
@@ -237,16 +235,18 @@ def submitCompletion():
 
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
-  token = request.args.get('token')
+  #token = request.args.get('token')
+  token = request.cookies.get('token')
   currentSession = getSession(token)
   if currentSession == None:
     return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
   
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
-  
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program or "import" in program:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
+
+  for i in NotWantedInCode:
+    if i in code:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
   output, error = personalFunctions.runCode(program, currentSession.token)
@@ -278,11 +278,21 @@ def recieve_code():
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+    elif yml.data[pageName]['page'][question]["correct"] == "contains":
+      count = 0
+      for i in yml.data[pageName]['page'][question]["contains"]:
+        if i in program:
+          count+=1
+      if count == len(yml.data[pageName]['page'][question]["contains"]):
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      else:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+
     else:
       completions[currentSession.uid][chal_id][0] = "uncomplete"
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
 
-@app.route('/test/<string:id>', methods=["POST", 'GET']) 
+@app.route('/challenge/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):
   token = request.cookies.get('token')
   currentSession = getSession(token)
@@ -292,9 +302,9 @@ def get_chall(id):
     
   account = accountManager.getAccountByUID(currentSession.uid)
   #print(account)
-  if account == None or account.admin == False:
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenges'))
-    resp.set_cookie('token', currentSession.token)
+  if account == None:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/logout'))
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
@@ -326,10 +336,32 @@ def verify(id):
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
-  return "lol down here"
+@app.route('/header', methods=["POST", "GET"])
+def header():
+  token = request.cookies.get('token')
+
+  if isSession(token) and request.method == "GET" and token != None:
+    currentSession = getSession(token)
+
+
+    account = accountManager.getAccountByUID(currentSession.uid)
+    resp = make_response(render_template('header.html', login=True, admin=account.admin))
+    resp = setHeaders(resp, currentSession.token)
+    return resp
+
+  return render_template("header.html")
+
+@app.route('/footer', methods=["POST", "GET"])
+def footer():
+  return render_template("footer.html")
+
+@app.route('/about', methods=["POST", "GET"])
+def about():
+  return "Christian hasn't made this yet lol"
+
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":

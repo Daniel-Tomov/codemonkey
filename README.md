@@ -2,7 +2,7 @@
 
 Code Monkey is an online program that provides introduction to programming courses. It was created for my Senior Project at Landstown High School. The project had to be related to the strand I was enrolled in: Cybersecurity.
 
-Read the latest One Pager <a href="documents/Proposal Draft 2.pdf">here</a>
+Read the latest One Pager <a href="documents/Final Proposal Draft.pdf">here</a>
 
 ## To Do List
 

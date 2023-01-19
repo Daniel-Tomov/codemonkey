@@ -35,7 +35,6 @@ def getVerificationByEmail(email):
         if type(i) == type(""):
             continue
         if i.email == email:
-            print(i.email)
             return i
 
 

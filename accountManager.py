@@ -110,7 +110,7 @@ def loadAccounts():
       accounts = pickle.load(f)
   except Exception as ex:
     print("Error during unpickling object (Possibly unsupported):", ex)
-    old_getAccounts()
+    #old_getAccounts()
 
 #old_getAccounts()
 #saveAccounts()
