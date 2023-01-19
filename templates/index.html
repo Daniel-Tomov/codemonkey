@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>CodeMonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <title>Challenges</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+  </head>
+
+    <body style="scroll-behavior: auto;">
+      <div id="body">
+      <header id="header"></header>
+      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+
+      <main>
+        <div id="beginning">
+          <div id="mission-statement">
+            <h1>Learn to Code</h1>
+            <h3>With courses designed to change how programming is taught</h3>
+          </div>
+          <svg width="100%" height="70" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path id="wavepath" d="M0,0  L110,0C35,150 35,0 0,100z" fill="#282A35"></path>
+          </svg>
+        </div>
+          <div class="codingLanguageOutside" id="python">
+            <div class="codingLanguage">
+              <h2>Python</h2>
+              <h3>A popular programming language with usage in many applications and one of the best for beginners.</h3>
+              <img alt="Pyton logo" src="{{ url_for('static', filename='images/python.png') }}"/>
+              <div class="exampleBox">
+                <h4 class="example">&nbsp;&nbsp;Python Example:</h4>
+                <div class="codeBox">
+                  <p class="code"><span style="color:#c485bd">x</span> <span style="color:white"> = 5</span></p>
+                  <p class="code"><span style="color:#c485bd">if</span> <span style="color:white">x &lt; 2: </span></p>
+                  <p class="code">&nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x is less than two!"</span><span style="color:#c7b809">)</span></p>
+                  <p class="code"><span style="color:#c485bd">elif</span> <span style="color:white">x &gt; 2: </span></p>
+                  &nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x is greater than two!"</span><span style="color:#c7b809">)</span></p>
+                  <p class="code"><span style="color:#c485bd">else</span> <span style="color:white">:</span></p>
+                  &nbsp;&nbsp;<span style="color:#c1d19c">print</span><span style="color:#c7b809">(</span><span style="color:#a5704f">"x is equal to 2!"</span><span style="color:#c7b809">)</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+      </main>
+      <footer id="footer"></footer>
+      <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
+    </div>
+    </body>
+</html>

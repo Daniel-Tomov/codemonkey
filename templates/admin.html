@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>CodeMonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <title>Challenges</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+  </head>
+  <body>
+    <div id="body">
+      <header id="header"></header>
+      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+      <main id="adminMain"> 
+        <form id="adminForm" action="#" method="post">
+            <textarea name="challengeQuestions">{{ challenges }}</textarea>
+            <button type="submit" name="button" value="challengeSubmit">Submit</button>
+            <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
+            <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>
