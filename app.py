@@ -61,7 +61,7 @@ def runPeriodically():
 
 def setHeaders(resp, token):
   resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-  resp.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline';"
+  #resp.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'unsafe-inline'; style-src-elem 'unsafe-inline'"
   resp.headers['X-Content-Type-Options'] = 'nosniff'
   resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
   resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
