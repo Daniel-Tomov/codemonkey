@@ -14,7 +14,11 @@ app = Flask(__name__)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
-
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
 
 def invalidSession():
   resp = make_response(render_template('redirect.html', login=True, redirect_location="/login"))
@@ -197,7 +201,8 @@ def logout():
 
 @app.route('/completions', methods=["POST", 'GET']) 
 def submitCompletion():
-  token = request.args.get('token')
+  #token = request.args.get('token')
+  token = request.cookies.get('token')
   currentSession = getSession(token)
   if currentSession == None:
     return personalFunctions.base64encode("1".encode())
@@ -213,7 +218,8 @@ def submitCompletion():
 
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
-  token = request.args.get('token')
+  #token = request.args.get('token')
+  token = request.cookies.get('token')
   currentSession = getSession(token)
   if currentSession == None:
     return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())

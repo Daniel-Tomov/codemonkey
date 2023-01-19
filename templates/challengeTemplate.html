@@ -118,7 +118,6 @@
 
     $(document).keydown(function(event) {
       let activeElement = document.activeElement;
-      console.log(activeElement.tagName);
       if (activeElement.tagName != "TEXTAREA"){
         return;
       }
@@ -132,7 +131,6 @@
       if (event.keyCode == 13 && ctrlPressed){
         event.preventDefault();
         ctrlPressed = false;
-        console.log();
         submitChallenge(activeElement.id.replace("textarea", ""));
       }
       if (event.keyCode == 17){
@@ -166,7 +164,7 @@
       $.ajax({
         url: "/recieve_data",
         type: "get",
-        data: {code: btoa(the_code), token:getCookie("token"), chal_id:btoa(chal_id)},
+        data: {code: btoa(the_code), chal_id:btoa(chal_id)},
         success: function(response) {
         document.getElementById(ids[2] + "response").innerHTML = (atob(response).replace(/  /g, "&nbsp;&nbsp;").replace("&nbsp; ", "&nbsp;&nbsp;"));
         checkChallenges();
@@ -223,7 +221,7 @@
         $.ajax({
             url: "/completions",
             type: "get",
-            data: {token: getCookie("token"), page_id:btoa(page_id), status:btoa(status)},
+            data: {page_id:btoa(page_id), status:btoa(status)},
           error: function(xhr) {
             //Do Something to handle error
           }
@@ -246,7 +244,6 @@
     }
 
     function insertAtCursor(myFieldName, myValue) {
-      console.log(myFieldName.id);
 
       for (let i = 0; i < textAreas.length; i++){
         currentID = textAreas[i].id;
