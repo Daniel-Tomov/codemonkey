@@ -1,5 +1,0 @@
-flask
-numpy
-pyyaml
-python-dotenv
-flask-compress
