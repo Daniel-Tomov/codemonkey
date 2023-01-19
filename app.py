@@ -66,7 +66,7 @@ def index():
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('index.html', login=True, admin=account.admin))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   return render_template('index.html')
@@ -81,7 +81,7 @@ def login():
     currentSession = getSession(token)
     # Since the user has a valid token, redirect them to the challenges page
     resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenge"))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   if request.method == "POST":
@@ -108,7 +108,7 @@ def login():
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   return render_template('login.html')
@@ -164,10 +164,10 @@ def admin():
       yml.reloadChallenges()
     
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/admin'))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
   resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
-  resp.set_cookie('token', currentSession.token)
+  resp.set_cookie('token', currentSession.token, secure=True)
   return resp
 
 @app.route('/challenge_submit', methods=["POST", "GET"])
@@ -185,7 +185,7 @@ def challenge():
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
   resp = make_response(render_template('challenge.html', username=currentSession.username, data=yml.data, courseCompletion=courseCompletions[account.uid]))
-  resp.set_cookie('token', currentSession.token)
+  resp.set_cookie('token', currentSession.token, secure=True)
   return resp
 
 
@@ -227,7 +227,7 @@ def recieve_code():
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
   
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open(" in program or "write(" in program or "import" in program:
+  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open" in program or "write" in program or "import" in program or "exec" in program or "eval" in program or "getattr" in program or "locals" in program or "globals" in program or "getattribute" in program or "__" in program or "except" in program:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
@@ -286,7 +286,7 @@ def get_chall(id):
   #print(account)
   if account == None:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/logout'))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
@@ -318,7 +318,7 @@ def verify(id):
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
 @app.route('/header', methods=["POST", "GET"])
@@ -331,7 +331,7 @@ def header():
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('header.html', login=True, admin=account.admin))
-    resp.set_cookie('token', currentSession.token)
+    resp.set_cookie('token', currentSession.token, secure=True)
     return resp
 
   return render_template("header.html")
