@@ -123,18 +123,18 @@ def registerForm():
   password = personalFunctions.base64decode(request.args.get('psw')).decode("utf-8")
   
   if accountManager.accountExistsByUsername(username):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
 
   if accountManager.accountExistsByEmail(email):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that email is in use by another account!</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
 
 
   verification = verifications.getVerificationByEmail(email)
   if verification != None:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>You have already been sent an email</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
   
   verifications.verifications(username, email, password)
-  return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Please check your email for a code to input.</p>").encode())
+  return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
