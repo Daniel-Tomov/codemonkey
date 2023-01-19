@@ -14,15 +14,17 @@
     <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
   </head>
   <body>
-    <header id="header"></header>
-    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
-    <main id="adminMain"> 
-      <form id="adminForm" action="#" method="post">
-          <textarea name="challengeQuestions">{{ challenges }}</textarea>
-          <button type="submit" name="button" value="challengeSubmit">Submit</button>
-          <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
-          <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
-      </form>
-    </main>
+    <div id="body">
+      <header id="header"></header>
+      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+      <main id="adminMain"> 
+        <form id="adminForm" action="#" method="post">
+            <textarea name="challengeQuestions">{{ challenges }}</textarea>
+            <button type="submit" name="button" value="challengeSubmit">Submit</button>
+            <button type="submit" name="button" value="saveAccounts">Save Accounts</button>
+            <button type="submit" name="button" value="reloadChallenges">Reload Challenges</button>
+        </form>
+      </main>
+    </div>
   </body>
 </html>

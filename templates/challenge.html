@@ -19,22 +19,24 @@
     </style>
   </head> 
   <body>
-    <header id="header"></header>
-    <main>
-      <h1 style="color:white">Welcome, {{ username }}!</h1>
-      {% for i in data %}
-        <div class="challengeBox">
-          {% if courseCompletion[i] == "complete" %}
-            <img class="completionStatus" alt="check" src="{{ url_for('static', filename='images/check.png') }}"/>
-          {% endif %}
-          <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
-        </div>
-      {% endfor %}
-    </main>
-    <footer id="footer"></footer>
-    <script defer>
-      $("#header").load("{{ url_for('header') }}");
-      $("#footer").load("{{ url_for('footer') }}");
-    </script>
+    <div id="body">
+      <header id="header"></header>
+      <main>
+        <h1 style="color:white">Welcome, {{ username }}!</h1>
+        {% for i in data %}
+          <div class="challengeBox">
+            {% if courseCompletion[i] == "complete" %}
+              <img class="completionStatus" alt="check" src="{{ url_for('static', filename='images/check.png') }}"/>
+            {% endif %}
+            <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
+          </div>
+        {% endfor %}
+      </main>
+      <footer id="footer"></footer>
+      <script defer>
+        $("#header").load("{{ url_for('header') }}");
+        $("#footer").load("{{ url_for('footer') }}");
+      </script>
+    </div>
   </body>
 </html>
