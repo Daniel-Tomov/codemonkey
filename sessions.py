@@ -6,7 +6,7 @@ import accountManager
 userSessions = []
 # session timeout in the for HH:MM:SS
 # the : are removed so thirty minutes would be 00:30:00 -> 003000
-sessionTimeout = {'hours':0, 'minutes':10, 'seconds':0} # Ten minutes
+sessionTimeout = {'hours':0, 'minutes':1, 'seconds':0} # Ten minutes
 
 class sessions:
   def __init__(self, uid):

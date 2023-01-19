@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
     <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css"/>
@@ -8,25 +9,27 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <title>Test page for Code Monkey</title>
+
+    <!-- Create a simple CodeMirror instance -->
+    <script src="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.js') }}"></script>
+    <script src="https://codemirror.net/5/mode/python/python.js"></script>
+
     <style>
       :root{
         --width:700px;
         --height:300px;
       }
-      #response{
+      .responses{
         background-color: lightgray; 
         width:var(--width);
         height: fit-content;
         font-family: "Anonymous Pro"; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px;
+        font-size: 16px;
       }
 
       textarea{
         width: var(--width);
         height: var(--height);
-      }
-
-      #response{
-        width: fit-content;
       }
       
       .correct{
@@ -69,12 +72,14 @@
               {% else %}
                 <p class="completionStatus" style="background-color:red">Uncheck</p>
               {% endif %}
-              {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
-                <textarea id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
-              {% else %}
-                <textarea id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}">{{ data[page]['page'][i]['skeleton'] }}</textarea>
-              {% endif %}
-              {% endif %}
+              <div id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}" class="textAreaBox">
+                {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
+                  <textarea class="textareas">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
+                {% else %}
+                  <textarea class="textareas">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+                {% endif %}
+              </div>
+            {% endif %}
             {% if data[page]['page'][i][n] == 'submit' %}
               <button onclick="submitChallenge(this.id)" id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
               <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}" class="responses"></div>
@@ -101,15 +106,28 @@
     var listOfButtons = document.getElementsByClassName('submitButtons');
     var responseArray = [];
     var completionButton = document.getElementById("completionButton");
-    var textAreas = document.getElementsByClassName("textareas");
+    var textAreas = document.getElementsByClassName("textAreaBox");
+    var codeMirrors = [];
     var ctrlPressed = false;
 
     $(document).keydown(function(event) {
       let activeElement = document.activeElement;
+      console.log(activeElement.tagName);
+      if (activeElement.tagName != "TEXTAREA"){
+        return;
+      }
+      activeElement = activeElement.parentElement.parentElement.parentElement
       if (event.keyCode == 9) {  //tab pressed
         event.preventDefault(); // stops its action
-        insertAtCursor(activeElement.id, "    ");
-        console.log(activeElement.id);
+        //console.log(activeElement);
+        //insertAtCursor(activeElement.id, "    ");
+      }
+      
+      if (event.keyCode == 13 && ctrlPressed){
+        event.preventDefault();
+        ctrlPressed = false;
+        console.log();
+        submitChallenge(activeElement.id.replace("textarea", ""));
       }
       if (event.keyCode == 17){
         if (ctrlPressed == false){
@@ -120,21 +138,24 @@
         }
       }
 
-      if (event.keyCode == 13 && ctrlPressed){
-        event.preventDefault();
-        ctrlPressed = false;
-        submitChallenge(activeElement.id.replace("textarea", ""));
-      }
     });
-    
-
 
     function submitChallenge(clicked_id){
       var id = clicked_id.replace("submitButton", "");
       var ids = id.split("_");
-      var the_code = document.getElementById(id + "textarea").value;
-      var chal_id = ids[0] + " " + ids[1] + " " + ids[2]
       document.getElementById(ids[2] + "response").innerHTML = "Running your code...";
+      var chal_id = ids[0] + " " + ids[1] + " " + ids[2]
+      let currentID = "";
+
+      for (let i = 0; i < textAreas.length; i++){
+        currentID = textAreas[i].id;
+        if (currentID.includes(id)) {
+          var the_code = codeMirrors[i].getValue();
+          //var the_code = document.getElementById(id + "textarea").lastElementChild.getValue;
+        }
+      }
+               
+      
       $.ajax({
         url: "/recieve_data",
         type: "get",
@@ -218,6 +239,18 @@
     }
 
     function insertAtCursor(myFieldName, myValue) {
+      console.log(myFieldName.id);
+
+      for (let i = 0; i < textAreas.length; i++){
+        currentID = textAreas[i].id;
+        if (currentID.includes(id)) {
+          codeMirrors[i].replaceSelection(myValue);
+          //var the_code = document.getElementById(id + "textarea").lastElementChild.getValue;
+        }
+      }
+
+
+
       var myField = document.getElementById(myFieldName);
       //IE support
       if (document.selection) {
@@ -246,7 +279,27 @@
     completionButton.addEventListener("click", function() {
       checkChallenges();
     });
+
+
+    // Code mirror
+    for (let i = 0; i < textAreas.length; i++){
+      var editor = CodeMirror.fromTextArea(textAreas[i].firstElementChild, {
+        lineNumbers: true,
+        mode: {
+          name: "python",
+          version: 3,
+          singleLineStringErrors: false
+        },
+        matchBrackets: true,
+        extraKeys: {
+          //Tab: false,
+          "Enter": false,
+          "Ctrl": false,
+        }
+      });
+      codeMirrors.push(editor);
+    }
     
     /*document.getElementsByTagName("body")[0].innerHTML = document.getElementsByTagName("body")[0].innerHTML.replace(/\\n\\n/g, "<br />"); */
-  </script>  
+  </script>
 </html>
