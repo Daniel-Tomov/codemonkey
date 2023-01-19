@@ -2,11 +2,11 @@
 <html lang="en-US">
   <head>
     <title>CodeMonkey</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
-    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
-    <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <script defer src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
     <meta name="keywords" content="Code, Python, Programming, Learn">
     <meta name="author" content="Daniel Tomov">
     <title>Challenges</title>
@@ -16,7 +16,6 @@
   <body>
     <div id="body">
       <header id="header"></header>
-      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
       <main id="adminMain"> 
         <form id="adminForm" action="#" method="post">
             <textarea name="challengeQuestions">{{ challenges }}</textarea>
@@ -26,5 +25,9 @@
         </form>
       </main>
     </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
   </body>
 </html>

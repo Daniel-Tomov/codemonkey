@@ -2,10 +2,10 @@
 <html lang="en-US">
   <head id>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}" defer/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
     <meta name="keywords" content="Code, Python, Programming, Learn">
     <meta name="author" content="Daniel Tomov">
     <title>Challenges</title>
@@ -33,10 +33,10 @@
         {% endfor %}
       </main>
       <footer id="footer"></footer>
-      <script defer>
-        $("#header").load("{{ url_for('header') }}");
-        $("#footer").load("{{ url_for('footer') }}");
-      </script>
     </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
   </body>
 </html>
