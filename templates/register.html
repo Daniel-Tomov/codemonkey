@@ -47,20 +47,21 @@
       var username = document.getElementById("username").value;
       var email = document.getElementById("email").value;
       var password = document.getElementById("password").value;
-      if (email.includes("@") && username != "" && password.length >= 8) {
+      var response = document.getElementById("response");
+      if (email.includes("@") && email.includes(".") && username != "" && password.length >= 8) {
         $.ajax({
           url: "/registerForm",
           type: "get",
           data: {uname: btoa(username), email:btoa(email), psw:btoa(password)},
           success: function(response) {
-            console.log(atob(response))
+            alert(atob(response))
         },
         error: function(xhr) {
           //Do Something to handle error
         }
       });
     } else {
-      console.log("Please fill out all forms correctly");
+      alert("Please fill out all forms correctly");
     }
   }
   </script>
