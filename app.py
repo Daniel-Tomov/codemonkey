@@ -9,15 +9,22 @@ from completion import completions, completion, saveCompletions
 import sendEmail
 import verifications
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
+from flask_compress import Compress
 
-app = Flask(__name__)
+compress = Compress()
+def start_app():
+    app = Flask(__name__)
+    compress.init_app(app)
+    return app
+
+app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-
+NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "except"]
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SAMESITE='Strict',
 )
 
 def invalidSession():
@@ -52,6 +59,13 @@ def runPeriodically():
     #print(accountManager.accounts)
     sleep(10)
 
+def setHeaders(resp, token):
+  resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+  #resp.headers['Content-Security-Policy'] = "default-src 'self'"
+  resp.headers['X-Content-Type-Options'] = 'nosniff'
+  resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
+  resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
+  return resp
 
 @app.route('/index', methods=["POST", "GET"])
 @app.route('/home', methods=["POST", "GET"])
@@ -81,16 +95,19 @@ def login():
     currentSession = getSession(token)
     # Since the user has a valid token, redirect them to the challenges page
     resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenge"))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   if request.method == "POST":
     if request.form['uname'] == "loginCancel":
       resp = make_response(render_template('redirect.html', login=True, redirect_location='/home'))
+      resp = setHeaders(resp, currentSession.token)
       resp.set_cookie('token', '')
       return resp #hello
+    
     elif request.form['uname'] == "register":
       resp = make_response(render_template('redirect.html', login=True, redirect_location='/register'))
+      resp = setHeaders(resp, currentSession.token)
       resp.set_cookie('token', '')
       return resp #hello
 
@@ -108,7 +125,7 @@ def login():
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   return render_template('login.html')
@@ -164,10 +181,10 @@ def admin():
       yml.reloadChallenges()
     
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/admin'))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
   resp = make_response(render_template('admin.html', login=True, challenges=yml.rawChallengesData))
-  resp.set_cookie('token', currentSession.token, secure=True)
+  resp = setHeaders(resp, currentSession.token)
   return resp
 
 @app.route('/challenge_submit', methods=["POST", "GET"])
@@ -185,7 +202,7 @@ def challenge():
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
   resp = make_response(render_template('challenge.html', username=currentSession.username, data=yml.data, courseCompletion=courseCompletions[account.uid]))
-  resp.set_cookie('token', currentSession.token, secure=True)
+  resp = setHeaders(resp, currentSession.token)
   return resp
 
 
@@ -226,9 +243,10 @@ def recieve_code():
   
   code = request.args.get('code')
   program = personalFunctions.base64decode(code).decode('utf-8')
-  
-  if "subprocess" in program or "import os" in program or "from os" in program or "pty" in program or "open" in program or "write" in program or "import" in program or "exec" in program or "eval" in program or "getattr" in program or "locals" in program or "globals" in program or "getattribute" in program or "__" in program or "except" in program:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
+
+  for i in NotWantedInCode:
+    if i in code:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
 
   #print(program)
   output, error = personalFunctions.runCode(program, currentSession.token)
@@ -286,7 +304,7 @@ def get_chall(id):
   #print(account)
   if account == None:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/logout'))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
@@ -318,7 +336,7 @@ def verify(id):
 
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
 @app.route('/header', methods=["POST", "GET"])
@@ -331,10 +349,11 @@ def header():
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('header.html', login=True, admin=account.admin))
-    resp.set_cookie('token', currentSession.token, secure=True)
+    resp = setHeaders(resp, currentSession.token)
     return resp
 
   return render_template("header.html")
+
 @app.route('/footer', methods=["POST", "GET"])
 def footer():
   return render_template("footer.html")
@@ -343,9 +362,6 @@ def footer():
 def about():
   return "Christian hasn't made this yet lol"
 
-
-
-  return "lol down here"
 threading.Thread(target=runPeriodically).start()
 
 if __name__ == "__main__":
