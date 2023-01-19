@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
@@ -51,51 +52,56 @@
     </style>
   </head>
   <body>
-    <header id="header"></header>
-    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
-    <main>
-      <h2>{{ data[page]['name'] }}</h2>
-      {% for i in data[page]['page'] %}
-        {% if "text" in i %}
-          <p class="text">{{ data[page]['page'][i] }}</p>
-          <div class="divider"></div>
-        {% endif %}
-        {% if "question" in i %}
-          <div class="question">
-          {% for n in data[page]['page'][i] %}
-            {% if n == 'text' %}
-              <p class="text">{{ data[page]['page'][i]['text'] }}</p>
-            {% endif %}
-            {% if data[page]['page'][i][n] == 'textbox' %}
-              {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
-                <p class="completionStatus" style="background-color:green">Check</p>
-              {% else %}
-                <p class="completionStatus" style="background-color:red">Uncheck</p>
+    <div id="body">
+      <header id="header"></header>
+      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
+      <main>
+        <h2 id="pageTitle">{{ data[page]['name'] }}</h2>
+        {% for i in data[page]['page'] %}
+          {% if "text" in i %}
+            <p class="text">{{ data[page]['page'][i] }}</p>
+            <div class="divider"></div>
+          {% endif %}
+          {% if "question" in i %}
+            <div class="question">
+            {% for n in data[page]['page'][i] %}
+              {% if n == 'text' %}
+                <p class="text">{{ data[page]['page'][i]['text'] }}</p>
               {% endif %}
-              <div id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}" class="textAreaBox">
-                {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
-                  <textarea class="textareas">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
+              {% if data[page]['page'][i][n] == 'textbox' %}
+                {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
+                  <p class="completionStatus" style="background-color:green">Check</p>
                 {% else %}
-                  <textarea class="textareas">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+                  <p class="completionStatus" style="background-color:red">Uncheck</p>
                 {% endif %}
-              </div>
-            {% endif %}
-            {% if data[page]['page'][i][n] == 'submit' %}
-              <button onclick="submitChallenge(this.id)" id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
-              <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}" class="responses"></div>
-            {% endif %}
-          {% endfor %}
+                <div id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}" class="textAreaBox">
+                  {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
+                    <textarea class="textareas">{{ completion[data[page]['page'][i]['chal_id']|string][1] }}</textarea>
+                  {% else %}
+                    <textarea class="textareas">{{ data[page]['page'][i]['skeleton'] }}</textarea>
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% if data[page]['page'][i][n] == 'submit' %}
+                <button onclick="submitChallenge(this.id)" id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
+                <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}" class="responses"></div>
+              {% endif %}
+            {% endfor %}
 
-        </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      
+        {% if courseCompletion[page] == "complete" %}
+          <button type="submit" id="completionButton" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}" disabled>Completed</button>
+        {% else %}
+          <button type="submit" id="completionButton" style="background-color:red" name="button" value="{{ page + '_complete'}}" disabled>Uncompleted</button>
         {% endif %}
-      {% endfor %}
-    
-      {% if courseCompletion[page] == "complete" %}
-        <button type="submit" id="completionButton" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}" disabled>Completed</button>
-      {% else %}
-        <button type="submit" id="completionButton" style="background-color:red" name="button" value="{{ page + '_complete'}}" disabled>Uncompleted</button>
-      {% endif %}
+        <footer id="footer"></footer>
+        <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
+      </div>
     </main>
+    
   </body>
 
 
@@ -136,8 +142,9 @@
         else{
           ctrlPressed = false;
         }
+      } else {
+        ctrlPressed = false;
       }
-
     });
 
     function submitChallenge(clicked_id){

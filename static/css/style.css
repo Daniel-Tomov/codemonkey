@@ -91,12 +91,6 @@ main{
   padding-bottom: var(--footer-height);
 }
 
-textarea{
-  width: 100%;
-  height: 50%;
-}
-
-
 #beginning{
   width: 100%;
   height: 500px;
@@ -197,6 +191,46 @@ footer > p{
   color:var(--white);
   
 }
+
+#pageTitle{
+  margin:50px 0 50px 0;
+  text-align: center;
+}
+
+.text{
+  width: var(--width);
+  display: block;
+  margin:0 auto;
+}
+
+.challengeBox{
+  border-color:var(--black);
+  border-radius: 10px;
+  border-width: 5px;
+  border-style: solid;
+  margin:20px 0;
+  box-shadow: 10px 10px 1px var(--black);
+  width: 100%;
+  height: 75px;
+  padding: 5px;
+}
+
+.challengeBox .courseName {
+  font-size: 16pt;
+  text-align: center;
+  margin: 0;
+} .challengeBox .courseName a{color:white;}
+
+.challengeBox .completionStatus {
+  font-size: 16pt;
+  position: absolute;
+  float:left;
+  height: 75px;
+  margin: 0 0 0 10px;
+  width: 75px;
+}
+
+#completionButton{display: block; margin:0 auto;}
 
 #adminMain{
   height:100%;

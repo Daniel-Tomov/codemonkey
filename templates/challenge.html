@@ -1,6 +1,7 @@
 <html>
   <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+  <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
   <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -11,18 +12,6 @@
         margin:100px auto 0 auto;
       }
 
-      .completionStatus{
-        margin: 10px 0;
-      }
-
-      .courseName{
-        color:white;
-        margin: 20px 0;
-      }
-
-      .courseName a{
-        color:white;
-      }
 
     </style>
 
@@ -31,12 +20,14 @@
     <header id="header"></header>
     <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
     <main>
-      <h1>Welcome, {{ username }}</h1>
+      <h1 style="color:white">Welcome, {{ username }}!</h1>
       {% for i in data %}
+        <div class="challengeBox">
           {% if courseCompletion[i] == "complete" %}
-            <p class="completionStatus" style="background-color:green">Check</p>
+            <img class="completionStatus" src="{{ url_for('static', filename='images/check.png') }}"/>
           {% endif %}
           <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
+        </div>
       {% endfor %}
     </main>
     <footer id="footer"></footer>
