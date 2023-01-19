@@ -1,7 +1,6 @@
 programRuns/*.py
 *.pyc
 .env
-*.pickle
 venv
 .vscode
 replix.nix
