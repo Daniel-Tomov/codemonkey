@@ -242,7 +242,10 @@ footer > p{
 }
 
 #adminForm > textarea {
-  height: 75%;
+  height: 600px;
+  width:98%;
+  margin: 10px auto 10px auto;
+  display: block;
 }
 
 /*ss
