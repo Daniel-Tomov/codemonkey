@@ -1,36 +1,40 @@
-<html>
-  <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
-  <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-  <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-
+<!DOCTYPE html>
+<html lang="en">
+  <head id>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <title>Challenges</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
     <style>
       main{
         width: 700px;
         margin:100px auto 0 auto;
       }
-
-
     </style>
-
   </head> 
   <body>
     <header id="header"></header>
-    <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
     <main>
       <h1 style="color:white">Welcome, {{ username }}!</h1>
       {% for i in data %}
         <div class="challengeBox">
           {% if courseCompletion[i] == "complete" %}
-            <img class="completionStatus" src="{{ url_for('static', filename='images/check.png') }}"/>
+            <img class="completionStatus" alt="check" src="{{ url_for('static', filename='images/check.png') }}"/>
           {% endif %}
           <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
         </div>
       {% endfor %}
     </main>
     <footer id="footer"></footer>
-    <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
   </body>
 </html>
