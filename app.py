@@ -139,9 +139,9 @@ def register():
 @app.route('/registerForm', methods=["POST", "GET"])
 def registerForm():
   
-  username = personalFunctions.base64decode(request.args.get('uname')).decode("utf-8")
-  email = personalFunctions.base64decode(request.args.get('email')).decode("utf-8")
-  password = personalFunctions.base64decode(request.args.get('psw')).decode("utf-8")
+  username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
+  email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
+  password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
   
   if accountManager.accountExistsByUsername(username):
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
