@@ -126,7 +126,7 @@ def registerForm():
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
 
   if accountManager.accountExistsByEmail(email):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that username exists!</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>Sorry, that email is in use by another account!</p>").encode())
 
 
   verification = verifications.getVerificationByEmail(email)
