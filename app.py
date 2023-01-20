@@ -143,6 +143,9 @@ def registerForm():
   email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
   password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
   
+  if "@" not in email or "." not in email:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please enter a valid email").encode())
+
   if accountManager.accountExistsByUsername(username):
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
 
