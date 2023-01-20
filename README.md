@@ -17,31 +17,35 @@ Read the latest One Pager <a href="documents/Final Proposal Draft.pdf">here</a>
 
 :white_check_mark: Create admin page
 
-:x: Make admin page look pretty
+:white_check_mark: Make admin page look pretty
 
 :white_check_mark: Create login page
 
-:x: Make login page pretty
+:white_check_mark: Make login page pretty
 
 :white_check_mark: Create default page
 
-:x: Make default page look pretty
+:white_check_mark: Make default page look pretty
 
-:x: Create register page
+:white_check_mark: Create register page
 
-:x: Add emails to register page
+:white_check_mark: Add emails to register page
 
-:x: Make register page look pretty
+:white_check_mark: Make register page look pretty
 
-:x: Create a function to submit code to the backend
+:white_check_mark: Create a function to submit code to the backend
 
-:x: Receive code execution details from the backend
+:white_check_mark: Receive code execution details from the backend
 
-:x: Create a page that recieves challenges and displays them to the user.
+:white_check_mark: Create a page that recieves challenges and displays them to the user.
 
-:x: Make page for each challenge look pretty
+:white_check_mark: Make page for each challenge look pretty
 
-:x: Password restrictions for weak passwords
+:white_check_mark: Password restrictions for weak passwords
+
+:x: Make about page
+
+:x: Make something to handle wrong logins
 
 ### Backend
 
@@ -218,3 +222,7 @@ Example table:
     <td>True</td>
   </tr>
 </table>
+
+## Penetration Tests
+
+1/19/2023: Done by <a href="https://github.com/LeoDog896">LeoDog896</a> and solved in <a href="https://github.com/Daniel-Tomov/codemonkey/pull/4">e48953c</a>
