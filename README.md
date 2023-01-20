@@ -225,4 +225,4 @@ Example table:
 
 ## Penetration Tests
 
-1/19/2023: Done by <a href="https://github.com/LeoDog896">LeoDog896</a> and solved in <a href="https://github.com/Daniel-Tomov/codemonkey/pull/4">e48953c</a>
+1/19/2023: Done by <a href="https://github.com/LeoDog896">LeoDog896</a> and all issues solved in <a href="https://github.com/Daniel-Tomov/codemonkey/pull/4">e48953c</a>
