@@ -243,6 +243,7 @@ def submitCompletion():
 
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
+  global NotWantedInCode
   try:
     #token = request.args.get('token')
     token = request.cookies.get('token')
@@ -254,10 +255,9 @@ def recieve_code():
     program = personalFunctions.base64decode(code).decode('utf-8')
 
     for i in NotWantedInCode:
-      if i in code:
+      if i in program:
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
 
-    #print(program)
     output, error = personalFunctions.runCode(program, currentSession.token)
 
   
