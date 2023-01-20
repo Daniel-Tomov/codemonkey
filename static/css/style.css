@@ -22,14 +22,14 @@ html{background-color: var(--main-color);}
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6, a{
   font-family: var(--heading-font);
 }
 p{font-family: var(--text-font);}
 
 h1{font-size: 50pt;}
 h2{font-size: 40pt;}
-h3{font-size: 18pt;}
+h3{font-size: 18pt; color: var(--white);}
 
 
 .divider{height:10px; width:10px;}
@@ -89,6 +89,7 @@ main{
   width: 100%;
   height: fit-content;
   padding-bottom: var(--footer-height);
+
 }
 
 #beginning{
@@ -139,7 +140,7 @@ main{
 .codingLanguage > .exampleBox{
   float: left;
   width:50%;
-  height:50%;
+  height:200px;
   margin: 40px 0 0 0;
   color:var(--black);
   background-color:#e7e9eb;
@@ -162,7 +163,7 @@ main{
 }
 
 form{
-  width:50%;
+  width: 98%;
   margin:0 auto;
 }
 
@@ -171,9 +172,16 @@ form label{
 }
 
 .loginOptions{
-
-  width: 50%;
+  width: 98%;
   margin:10px auto 0 auto;
+}
+
+#loginForm{
+  width:750px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 footer{
@@ -195,6 +203,13 @@ footer > p{
 #pageTitle{
   margin:50px 0 50px 0;
   text-align: center;
+}
+
+label{
+  font-size:16pt;
+}
+button{
+  font-size:14pt;
 }
 
 .text{
