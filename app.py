@@ -5,10 +5,10 @@ import personalFunctions
 import threading
 import yml
 from time import sleep
-from completion import completions, completion, saveCompletions
+from completion import completions, completion, saveCompletions, addNewChallenges
 import sendEmail
 import verifications
-from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
+from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion, addNewCompletions
 from flask_compress import Compress
 
 compress = Compress()
@@ -50,11 +50,16 @@ def runPeriodically():
   while True:
     removeInactiveSessions()
     removeOldRuns()
+    
     verifications.sendVerification()
     verifications.removeVerifications()
+    
     accountManager.saveAccounts()
     saveCompletions()
     saveCourseCompletions()
+
+    addNewChallenges()
+    addNewCompletions()
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
@@ -339,6 +344,9 @@ def verify(id):
     completion(currentSession.uid)
     courseCompletion(currentSession.uid)
 
+    addNewChallenges()
+    addNewCompletions()
+
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp = setHeaders(resp, currentSession.token)
@@ -350,7 +358,6 @@ def header():
 
   if isSession(token) and request.method == "GET" and token != None:
     currentSession = getSession(token)
-
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('header.html', login=True, admin=account.admin))
