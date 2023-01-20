@@ -216,7 +216,7 @@ def logout():
 
   return invalidSession()
 
-@app.route('/completions', methods=["POST", 'GET']) 
+@app.route('/completions', methods=["POST", 'GET'])
 def submitCompletion():
   #token = request.args.get('token')
   token = request.cookies.get('token')
@@ -235,62 +235,64 @@ def submitCompletion():
 
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
-  #token = request.args.get('token')
-  token = request.cookies.get('token')
-  currentSession = getSession(token)
-  if currentSession == None:
-    return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
-  
-  code = request.args.get('code')
-  program = personalFunctions.base64decode(code).decode('utf-8')
+  try:
+    #token = request.args.get('token')
+    token = request.cookies.get('token')
+    currentSession = getSession(token)
+    if currentSession == None:
+      return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
+    
+    code = request.args.get('code')
+    program = personalFunctions.base64decode(code).decode('utf-8')
 
-  for i in NotWantedInCode:
-    if i in code:
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
+    for i in NotWantedInCode:
+      if i in code:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
 
-  #print(program)
-  output, error = personalFunctions.runCode(program, currentSession.token)
-
-
-  pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
-  completions[currentSession.uid][chal_id][1] = program
-
-
-  if "KeyboardInterrupt" in output:
-    completions[currentSession.uid][chal_id][0] = "uncomplete"
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
-
-
-  if error == 1:
-    completions[currentSession.uid][chal_id][0] = "uncomplete"
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+    #print(program)
+    output, error = personalFunctions.runCode(program, currentSession.token)
 
   
-  
-  if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
-    if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
-      completions[currentSession.uid][chal_id][0] = "complete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
-    elif yml.data[pageName]['page'][question]["correct"] == "change code":
-      if yml.data[pageName]['page'][question]["skeleton"] != program:
+    pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
+    completions[currentSession.uid][chal_id][1] = program
+      
+
+    if "KeyboardInterrupt" in output:
+      completions[currentSession.uid][chal_id][0] = "uncomplete"
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+
+
+    if error == 1:
+      completions[currentSession.uid][chal_id][0] = "uncomplete"
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+
+      
+    if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
+      if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
         completions[currentSession.uid][chal_id][0] = "complete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      elif yml.data[pageName]['page'][question]["correct"] == "change code":
+        if yml.data[pageName]['page'][question]["skeleton"] != program:
+          completions[currentSession.uid][chal_id][0] = "complete"
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+        else:
+          completions[currentSession.uid][chal_id][0] = "uncomplete"
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+      elif yml.data[pageName]['page'][question]["correct"] == "contains":
+        count = 0
+        for i in yml.data[pageName]['page'][question]["contains"]:
+          if i in program:
+            count+=1
+        if count == len(yml.data[pageName]['page'][question]["contains"]):
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+        else:
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
-    elif yml.data[pageName]['page'][question]["correct"] == "contains":
-      count = 0
-      for i in yml.data[pageName]['page'][question]["contains"]:
-        if i in program:
-          count+=1
-      if count == len(yml.data[pageName]['page'][question]["contains"]):
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
-      else:
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
-
-    else:
-      completions[currentSession.uid][chal_id][0] = "uncomplete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+  except:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again.</p>").encode())
 
 @app.route('/challenge/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):

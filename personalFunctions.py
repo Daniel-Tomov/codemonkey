@@ -41,7 +41,6 @@ def runCode(inputCode, cookie):
     try:
       output, error = process.communicate(timeout=4)
     except subprocess.TimeoutExpired:
-      print("killing")
       process.send_signal(signal.SIGINT)
       os.killpg(process.pid, signal.SIGINT) # send signal to the process group
       process.send_signal(signal.SIGINT)
