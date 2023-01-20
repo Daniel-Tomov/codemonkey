@@ -5,10 +5,10 @@ import personalFunctions
 import threading
 import yml
 from time import sleep
-from completion import completions, completion, saveCompletions
+from completion import completions, completion, saveCompletions, addNewChallenges
 import sendEmail
 import verifications
-from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion
+from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion, addNewCompletions
 from flask_compress import Compress
 
 compress = Compress()
@@ -20,7 +20,7 @@ def start_app():
 app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "except"]
+NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__"]
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -50,18 +50,23 @@ def runPeriodically():
   while True:
     removeInactiveSessions()
     removeOldRuns()
+    
     verifications.sendVerification()
     verifications.removeVerifications()
+    
     accountManager.saveAccounts()
     saveCompletions()
     saveCourseCompletions()
+
+    addNewChallenges()
+    addNewCompletions()
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
 
 def setHeaders(resp, token):
   resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-  #resp.headers['Content-Security-Policy'] = "default-src 'self'"
+  #resp.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'unsafe-inline'; style-src-elem 'unsafe-inline'"
   resp.headers['X-Content-Type-Options'] = 'nosniff'
   resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
   resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
@@ -138,25 +143,29 @@ def register():
 
 @app.route('/registerForm', methods=["POST", "GET"])
 def registerForm():
-  
-  username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
-  email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
-  password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
-  
-  if accountManager.accountExistsByUsername(username):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
+  try:
+    username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
+    email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
+    password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
+    
+    if "@" not in email or "." not in email:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please enter a valid email").encode())
 
-  if accountManager.accountExistsByEmail(email):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
+    if accountManager.accountExistsByUsername(username):
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
+
+    if accountManager.accountExistsByEmail(email):
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
 
 
-  verification = verifications.getVerificationByEmail(email)
-  if verification != None:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
-  
-  verifications.verifications(username, email, password)
-  return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
-
+    verification = verifications.getVerificationByEmail(email)
+    if verification != None:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
+    
+    verifications.verifications(username, email, password)
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
+  except:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("There has been an error processing your information. Please try again now or later.").encode())
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
   token = request.cookies.get('token')
@@ -216,7 +225,7 @@ def logout():
 
   return invalidSession()
 
-@app.route('/completions', methods=["POST", 'GET']) 
+@app.route('/completions', methods=["POST", 'GET'])
 def submitCompletion():
   #token = request.args.get('token')
   token = request.cookies.get('token')
@@ -235,62 +244,64 @@ def submitCompletion():
 
 @app.route('/recieve_data', methods=["POST", "GET"])
 def recieve_code():
-  #token = request.args.get('token')
-  token = request.cookies.get('token')
-  currentSession = getSession(token)
-  if currentSession == None:
-    return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
-  
-  code = request.args.get('code')
-  program = personalFunctions.base64decode(code).decode('utf-8')
+  global NotWantedInCode
+  try:
+    #token = request.args.get('token')
+    token = request.cookies.get('token')
+    currentSession = getSession(token)
+    if currentSession == None:
+      return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
+    
+    code = request.args.get('code')
+    program = personalFunctions.base64decode(code).decode('utf-8')
 
-  for i in NotWantedInCode:
-    if i in code:
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.</p>").encode())
+    for i in NotWantedInCode:
+      if i in program:
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
 
-  #print(program)
-  output, error = personalFunctions.runCode(program, currentSession.token)
-
-
-  pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
-  completions[currentSession.uid][chal_id][1] = program
-
-
-  if "KeyboardInterrupt" in output:
-    completions[currentSession.uid][chal_id][0] = "uncomplete"
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
-
-
-  if error == 1:
-    completions[currentSession.uid][chal_id][0] = "uncomplete"
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+    output, error = personalFunctions.runCode(program, currentSession.token)
 
   
-  
-  if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
-    if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
-      completions[currentSession.uid][chal_id][0] = "complete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
-    elif yml.data[pageName]['page'][question]["correct"] == "change code":
-      if yml.data[pageName]['page'][question]["skeleton"] != program:
+    pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
+    completions[currentSession.uid][chal_id][1] = program
+      
+
+    if "KeyboardInterrupt" in output:
+      completions[currentSession.uid][chal_id][0] = "uncomplete"
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+
+
+    if error == 1:
+      completions[currentSession.uid][chal_id][0] = "uncomplete"
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+
+      
+    if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
+      if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
         completions[currentSession.uid][chal_id][0] = "complete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+      elif yml.data[pageName]['page'][question]["correct"] == "change code":
+        if yml.data[pageName]['page'][question]["skeleton"] != program:
+          completions[currentSession.uid][chal_id][0] = "complete"
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+        else:
+          completions[currentSession.uid][chal_id][0] = "uncomplete"
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+      elif yml.data[pageName]['page'][question]["correct"] == "contains":
+        count = 0
+        for i in yml.data[pageName]['page'][question]["contains"]:
+          if i in program:
+            count+=1
+        if count == len(yml.data[pageName]['page'][question]["contains"]):
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+        else:
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
-    elif yml.data[pageName]['page'][question]["correct"] == "contains":
-      count = 0
-      for i in yml.data[pageName]['page'][question]["contains"]:
-        if i in program:
-          count+=1
-      if count == len(yml.data[pageName]['page'][question]["contains"]):
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
-      else:
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
-
-    else:
-      completions[currentSession.uid][chal_id][0] = "uncomplete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+  except:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())
 
 @app.route('/challenge/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):
@@ -334,6 +345,9 @@ def verify(id):
     completion(currentSession.uid)
     courseCompletion(currentSession.uid)
 
+    addNewChallenges()
+    addNewCompletions()
+
     #resp = make_response(render_template('challenge.html', login=True))
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp = setHeaders(resp, currentSession.token)
@@ -345,7 +359,6 @@ def header():
 
   if isSession(token) and request.method == "GET" and token != None:
     currentSession = getSession(token)
-
 
     account = accountManager.getAccountByUID(currentSession.uid)
     resp = make_response(render_template('header.html', login=True, admin=account.admin))

@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>CodeMonkey</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"/>
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <title>Codemonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}" defer/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
   </head>
   <body>
     <div class="body">
       <header id="header"></header>
-      <script>$(function(){$("#header").load("{{ url_for('header') }}");});</script>
-      <main>
+      <main id="loginForm">
         <form action="#" method="post">
           <div class="container">
             <label for="uname"><b>Username</b></label>
@@ -32,7 +31,10 @@
         </div>
       </main>      
       <footer id="footer"></footer>
-      <script>$(function(){$("#footer").load("{{ url_for('footer') }}");});</script>
     </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
   </body>
 </html>

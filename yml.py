@@ -15,11 +15,14 @@ def reloadChallenges():
   global rawChallengesData, data
   data = yaml.load(open('challenges.yaml'), Loader=SafeLoader)
   rawChallengesData = open('challenges.yaml', 'r').read().replace("\r", "")
+  #print(data)
+  #print(rawChallengesData)
 
 def writeChallenges(input):
   file = open('challenges.yaml', 'w')
   input = input.replace("\r", "")
   file.write(input)
+  file.close()
 
 for item in data:
   items.append([item, data[item]['name'], data[item]['text'], [i for i in data[item]['page']]])

@@ -32,16 +32,19 @@ def runCode(inputCode, cookie):
   file = open("programRuns/" + cookie + ".py", 'w')
   file.write(inputCode)
   file.close()
-  
+  error = b'ERROR: Your code probably took too long to execute'
+  output = b'ERROR: Your code probably took too long to execute'
+
   args = ['python3', 'programRuns/' + cookie + ".py"]
   #with subprocess.Popen(args=args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid) as process:
-  # TODO find cooler alternative to sigint
   with subprocess.Popen(['python3', 'programRuns/' + cookie + ".py"],stdout=subprocess.PIPE,stderr=subprocess.PIPE, preexec_fn=os.setsid) as process:
     try:
       output, error = process.communicate(timeout=4)
     except subprocess.TimeoutExpired:
+      process.send_signal(signal.SIGINT)
       os.killpg(process.pid, signal.SIGINT) # send signal to the process group
-      output, error = process.communicate()
+      process.send_signal(signal.SIGINT)
+      process.send_signal(signal.SIGTERM)
 
   if error == None:
     return [output, 1]
