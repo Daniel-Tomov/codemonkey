@@ -143,28 +143,29 @@ def register():
 
 @app.route('/registerForm', methods=["POST", "GET"])
 def registerForm():
-  
-  username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
-  email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
-  password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
-  
-  if "@" not in email or "." not in email:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please enter a valid email").encode())
+  try:
+    username = str(personalFunctions.base64decode(request.args.get('uname')).decode("utf-8"))
+    email = str(personalFunctions.base64decode(request.args.get('email')).decode("utf-8"))
+    password = str(personalFunctions.base64decode(request.args.get('psw')).decode("utf-8"))
+    
+    if "@" not in email or "." not in email:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please enter a valid email").encode())
 
-  if accountManager.accountExistsByUsername(username):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
+    if accountManager.accountExistsByUsername(username):
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
 
-  if accountManager.accountExistsByEmail(email):
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
+    if accountManager.accountExistsByEmail(email):
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
 
 
-  verification = verifications.getVerificationByEmail(email)
-  if verification != None:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
-  
-  verifications.verifications(username, email, password)
-  return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
-
+    verification = verifications.getVerificationByEmail(email)
+    if verification != None:
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("You have already been sent an email").encode())
+    
+    verifications.verifications(username, email, password)
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
+  except:
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("There has been an error processing your information. Please try again now or later.").encode())
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
   token = request.cookies.get('token')
@@ -300,7 +301,7 @@ def recieve_code():
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
   except:
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again.</p>").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())
 
 @app.route('/challenge/<string:id>', methods=["POST", 'GET']) 
 def get_chall(id):
