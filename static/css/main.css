@@ -1,0 +1,61 @@
+
+#mission-statement{
+    width: 100%;
+    padding: 100px 0 0 0;
+    text-align: center;
+    height:300px;
+    color:var(--white);
+    background-color: var(--main-color);
+}
+
+.codingLanguageOutside{
+  height:500px;
+  width:100%;
+}
+.codingLanguage {width:800px;margin:0 auto;}
+
+.codingLanguage > h2{
+  text-align: center;
+  color:var(--white);
+}
+
+.codingLanguage > .example{
+  margin: 30px 0 0 0;
+  width:50%;
+  color: var(--black);
+  font-size:18pt;
+  float:left;
+}
+
+.codingLanguage > img {
+  float:right;
+}
+
+.codingLanguage > h3{
+  float:left;
+}
+
+.codingLanguage > .exampleBox{
+  float: left;
+  width:50%;
+  height:200px;
+  margin: 40px 0 0 0;
+  color:var(--black);
+  background-color:#e7e9eb;
+}
+
+.codingLanguage > .exampleBox > h4{
+  font-size: 16pt;
+}
+
+.codingLanguage > .exampleBox > .codeBox{
+  background-color: #1e1e1e;
+  width:95%;
+  padding: 0 0 0 10px;
+  height: 85%;
+  margin:0 auto;
+}
+
+#python{
+  background-color: #255074;
+}

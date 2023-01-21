@@ -1,0 +1,16 @@
+#adminMain{
+    height:100%;
+    padding:0;
+  }
+  
+  #adminForm{
+    height:100%;
+  }
+  
+  #adminForm > textarea {
+    height: 600px;
+    width:98%;
+    margin: 10px auto 10px auto;
+    display: block;
+  }
+  

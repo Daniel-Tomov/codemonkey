@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Codemonkey</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}" defer/>
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" defer/>
     <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <meta name="keywords" content="Code, Python, Programming, Learn">
     <meta name="author" content="Daniel Tomov">
-    <title>Challenges</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+    <title>Codemonkey Register</title>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
 
     <style>
       label{
@@ -44,7 +43,6 @@
       
       <div class="container">
         <a href="/home"><button>Cancel</button></a>
-        <a href="/register"><button>Register</button></a>
         <a href="/login"><button>Login</button></a>
       </div>
       <footer id="footer"></footer>
@@ -54,22 +52,21 @@
       $("#footer").load("{{ url_for('footer') }}");
     </script>
   </body>
-  <script>
+  <script defer>
     function submitRegister(){
       var username = document.getElementById("username").value;
       var email = document.getElementById("email").value;
       var password = document.getElementById("password").value;
-      var response = document.getElementById("response");
       if (email.includes("@") && email.includes(".") && username != "" && password.length >= 8) {
         $.ajax({
           url: "/registerForm",
           type: "get",
           data: {uname: btoa(username), email:btoa(email), psw:btoa(password)},
           success: function(response) {
-            alert(atob(response))
+            alert(atob(response));
         },
         error: function(xhr) {
-          //Do Something to handle error
+          alert("There has been an error in sending your credentials. Please try again later.");
         }
       });
     } else {
