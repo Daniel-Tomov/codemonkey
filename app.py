@@ -121,8 +121,7 @@ def login():
 
     # Check if account information is correct
     if accountManager.checkAccount(username, password) == False:
-      return "Stupid"
-      return render_template('wrongLogin.html')
+      return render_template('login.html', wrongPassword=True)
 
     # Create a new session with the username
     account = accountManager.getAccountByName(username)

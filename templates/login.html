@@ -12,9 +12,11 @@
     <div id="body">
       <header id="header"></header>
       <main id="loginForm">
-        <div id="loggedIn">
+        {% if wrongPassword %}
+        <div id="wrongPassword">
           <p>You have entered incorrect credentials</p>
         </div>
+        {% endif %}
         <form action="#" method="post">
           <div class="container">
             <label for="uname"><b>Username</b></label>
