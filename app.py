@@ -312,7 +312,7 @@ def get_chall(id):
     resp = setHeaders(resp, currentSession.token)
     return resp
   try:
-  return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
+    return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
   except:
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/presurvey'))
     resp = setHeaders(resp, currentSession.token)
