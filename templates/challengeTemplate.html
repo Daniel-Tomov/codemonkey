@@ -72,9 +72,9 @@
               {% endif %}
               {% if data[page]['page'][i][n] == 'textbox' %}
                 {% if completion[data[page]['page'][i]['chal_id']|string][0] == 'complete' %}
-                  <p class="completionStatus" style="background-color:green">Check</p>
+                  <p class="completionStatus" style="background-color:green">Completed</p>
                 {% else %}
-                  <p class="completionStatus" style="background-color:red">Uncheck</p>
+                  <p class="completionStatus" style="background-color:red">Incomplete</p>
                 {% endif %}
                 <div id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'textarea' }}" class="textAreaBox">
                   {% if completion[data[page]['page'][i]['chal_id']|string][1] != ''%}
@@ -182,20 +182,20 @@
     function checkChallenges(){
       for (let i=0; i<responseClass.length; i++){
         if(responseClass[i].innerText.includes("Incorrect!")){
-            completionStatus[i].innerText = "Uncheck";
+            completionStatus[i].innerText = "Incomplete";
             completionStatus[i].style.background = "red";
             responseArray[i] = "0";
           } else if(responseClass[i].innerText.includes("Error")){
-            completionStatus[i].innerText = "Uncheck";
+            completionStatus[i].innerText = "Incomplete";
             completionStatus[i].style.background = "red";
             responseArray[i] = "0";
           } else if (responseClass[i].innerText.includes("Correct!")){
             responseArray[i] = "1";
-            completionStatus[i].innerText = "Check";
+            completionStatus[i].innerText = "Completed";
             completionStatus[i].style.background = "green";
-          } else if(completionStatus[i].innerText.includes("Uncheck")){
+          } else if(completionStatus[i].innerText.includes("Incomplete")){
             responseArray[i] = "0";
-          }  else if(completionStatus[i].innerText.includes("Check")) {
+          }  else if(completionStatus[i].innerText.includes("Completed")) {
             responseArray[i] = "1";
           }
         }
