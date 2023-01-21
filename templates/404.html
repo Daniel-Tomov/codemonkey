@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>About Codemonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/404.css') }}" defer/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  </head>
+
+    <body style="scroll-behavior: auto;">
+      <div id="body">
+      <header id="header"></header>
+
+      <main>
+        <h1>Uh-Oh!</h1>
+        <h3>You have opened a page that does not exist!</h3>
+      </main>
+      <footer id="footer"></footer>
+    </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
+    </body>
+</html>
