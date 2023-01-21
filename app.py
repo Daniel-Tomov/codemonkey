@@ -12,6 +12,10 @@ from courseCompletion import courseCompletions, saveCourseCompletions, courseCom
 from flask_compress import Compress
 import survey
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 compress = Compress()
 def start_app():
     app = Flask(__name__)
@@ -441,6 +445,10 @@ def footer():
 @app.route('/about', methods=["POST", "GET"])
 def about():
   return render_template("about.html")
+
+@app.errorhandler(404)
+def not_found(e):
+  return render_template("404.html")
 
 threading.Thread(target=runPeriodically).start()
 
