@@ -49,3 +49,8 @@ ul > li > p{
 button{
     margin: 100px 0 0 0;
 }
+
+p{
+    color:white;
+    text-align: center;
+}

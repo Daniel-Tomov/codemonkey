@@ -19,7 +19,20 @@
 
       <main>
         <h1>Good job! You have completed the course!</h1>
-        <p>Before you started the course, you felt .....</p>
+        <p>When you started the course, you {{ preFeeling[preSurvey['feeling']] }}. You also thought it was {{ prePursue[preSurvey['pursue']] }} that you would pursue a career in the computer science field.</p>
+
+        {% if preSurvey['feeling'] <= postSurvey['feeling'] %}
+          <p>When you finished the course, you were more excited to program! Good job!</p>
+        {% elif preSurvey['feeling'] > postSurvey['feeling'] %}
+          <p>When you finished the course, you were less excited to program. Do not worry though! That is normal. Programming is not for everyone.s</p>
+        {% endif %}
+
+        {% if preSurvey['pursue'] <= postSurvey['pursue'] %}
+          <p>In addition, you were more likely to pursue a career in computer science!</p>
+        {% elif preSurvey['pursue'] > postSurvey['pursue'] %}
+          <p>In addition, you were less likely to pursue a career in computer science. Do not worry though! You will find interests in other topics.</p>
+        {% endif %}
+
       </main>
       <footer id="footer"></footer>
     </div>

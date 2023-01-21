@@ -10,6 +10,7 @@ import sendEmail
 import verifications
 from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion, addNewCompletions
 from flask_compress import Compress
+import survey
 
 compress = Compress()
 def start_app():
@@ -197,7 +198,13 @@ def challenge():
     
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
-  resp = make_response(render_template('challenge.html', username=currentSession.username, data=yml.data, courseCompletion=courseCompletions[account.uid]))
+
+  if account.preSurvey == accountManager.surveyDict:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/presurvey'))
+    resp = setHeaders(resp, currentSession.token)
+    return resp
+  
+  resp = make_response(render_template('challenge.html', username=currentSession.username, data=yml.data, courseCompletion=courseCompletions[account.uid], free=account.free))
   resp = setHeaders(resp, currentSession.token)
   return resp
 
@@ -304,8 +311,12 @@ def get_chall(id):
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/logout'))
     resp = setHeaders(resp, currentSession.token)
     return resp
-
+  try:
   return render_template("challengeTemplate.html", data=yml.data, page=id, completion=completions[account.uid], courseCompletion=courseCompletions[account.uid])
+  except:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/presurvey'))
+    resp = setHeaders(resp, currentSession.token)
+    return resp
 
 @app.route('/verify/<string:id>', methods=["POST", 'GET']) 
 def verify(id):
@@ -355,6 +366,8 @@ def preSurvey():
     return resp
 
   if request.method == "POST":
+    print(request.form.get("feeling"))
+    print(request.form.get("pursue"))
     account.preSurvey["feeling"] = request.form.get("feeling")
     account.preSurvey["pursue"] = request.form.get("pursue")
     
@@ -375,16 +388,11 @@ def postSurvey():
   currentSession = getSession(token)
   account = accountManager.getAccountByUID(currentSession.uid)
 
-  for i in account.postSurvey:
-    if account.finished == False:
-      resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenges"))
-      resp.set_cookie('token', currentSession.token)
-      return resp
-
   if request.method == "POST":
-    account.preSurvey["feeling"] = request.form.get("feeling")
-    account.preSurvey["pursue"] = request.form.get("pursue")
+    account.postSurvey["feeling"] = request.form.get("feeling")
+    account.postSurvey["pursue"] = request.form.get("pursue")
     account.finished = True
+    account.free = 'true'
     
     resp = make_response(render_template('redirect.html', login=True, redirect_location="/results"))
     resp.set_cookie('token', currentSession.token)
@@ -408,7 +416,7 @@ def results():
     resp.set_cookie('token', currentSession.token)
     return resp
   
-  resp = make_response(render_template('results.html', preSurvey=account.preSurvey, postSurvey=account.postSurvey))
+  resp = make_response(render_template('results.html', preSurvey=account.preSurvey, postSurvey=account.postSurvey, preFeeling=survey.preFeeling, prePursue=survey.prePursue, postFeeling=survey.postFeeling, postPursue=survey.postPursue))
   resp = setHeaders(resp, currentSession.token)
   return resp
 

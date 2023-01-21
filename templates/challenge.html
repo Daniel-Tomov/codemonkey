@@ -38,5 +38,15 @@
       $("#header").load("{{ url_for('header') }}");
       $("#footer").load("{{ url_for('footer') }}");
     </script>
+    <script>
+      var challengeBoxes = document.getElementsByClassName("challengeBox");
+      var completionStatuses = document.getElementsByClassName("completionStatus");
+
+      if ((challengeBoxes.length == completionStatuses.length) && ('{{ free }}' == 'false')){
+        setTimeout(function(){
+                window.location.href = "postsurvey";
+            }, 1);
+      }
+    </script>
   </body>
 </html>

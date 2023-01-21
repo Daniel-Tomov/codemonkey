@@ -15,6 +15,7 @@ class accountManager:
     self.preSurvey = {"feeling":"","pursue":""}
     self.postSurvey = {"feeling":"","pursue":""}
     self.finished = False
+    self.free = 'false'
 
     if uid == "":
       self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "", k=50))
