@@ -360,7 +360,7 @@ def footer():
 
 @app.route('/about', methods=["POST", "GET"])
 def about():
-  return "Christian hasn't made this yet lol"
+  return render_template("about.html")
 
 threading.Thread(target=runPeriodically).start()
 

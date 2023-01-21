@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>About Codemonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}" defer/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  </head>
+
+    <body style="scroll-behavior: auto;">
+      <div id="body">
+      <header id="header"></header>
+
+      <main>
+        <div id="beginning">
+          <h1>About Us</h1>
+        </div>
+
+        <div id="second">
+          <svg width="100%" height="70" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path id="wavepath" d="M0,0  L110,0C35,150 35,0 0,100z" fill="#282a35"></path>
+          </svg>
+          <div class="container">
+            <p>Codemonkey is a website to teach elementary and middle school students programming languages. With the exponential rise of computers over the past few years, this knowledge is invaluable in the computer science field.</p>
+          </div>
+      </div>
+      <div id="third">
+        <svg width="100%" height="70" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path id="wavepath" d="M0,0L108,0C34,150 3,0 0,1z" fill="#36bb8a"></path>
+        </svg>
+        <div class="container">
+          <p>The course is created by Daniel Tomov, a high school senior with a passion in computer science. He noticed that many online programming courses do not teach programming very well. They do not teach it like they were explaining it to a first grader. Codemonkey is made to change that. With a targeted demographic of elementary and middle school students, Codemonkey is a perfect fit for anyone who wants to get started in computer science!</p>
+        </div>
+        </div>
+        <svg width="100%" height="70" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path id="wavepath" d="M0,0L108,0C34,150 3,0 0,1z" fill="#111111"></path>
+        </svg>
+      </main>
+      <footer id="footer"></footer>
+    </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
+    </body>
+</html>
