@@ -1,0 +1,51 @@
+/*
+--text-font: source-serif-pro, serif;
+--heading-font: var(--text-font);
+*/
+
+:root{
+    --width: 700px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    text-decoration: none;
+    font-family: var(--text-font);
+}
+
+h1, h2{
+    color:white;
+    text-align: center;
+    line-height:100px;
+}
+
+h2{
+    margin:50px 0 0 100px;
+    text-align: left;
+}
+
+ul{
+    margin: 0 0 0 200px;
+    width:var(--width);
+}
+
+ul > li{
+    width: 100%;
+    height: 25px;
+}
+
+ul > li > input{
+    float:left;
+    margin:5px 0 0 0;
+}
+
+ul > li > p{
+    color:white;
+    float:left;
+    margin: 0 0 0 5px;
+}
+
+button{
+    margin: 100px 0 0 0;
+}

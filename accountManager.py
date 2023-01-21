@@ -4,6 +4,7 @@ import random
 import string
 
 accounts = []
+surveyDict = {"feeling":"","pursue":""}
 
 
 class accountManager:
@@ -11,6 +12,9 @@ class accountManager:
     self.username = username
     self.password = personalFunctions.encrypt(password)
     self.email = email
+    self.preSurvey = {"feeling":"","pursue":""}
+    self.postSurvey = {"feeling":"","pursue":""}
+    self.finished = False
 
     if uid == "":
       self.uid = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + '1234567890' + "", k=50))

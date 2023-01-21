@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>About Codemonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/survey.css') }}" defer/>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  </head>
+
+    <body style="scroll-behavior: auto;">
+      <div id="body">
+      <header id="header"></header>
+      <main>
+        <form action="#" method="post">
+            <h2>How excited are you about learning to program?</h2>
+            <ul>
+              <li><input type="radio" name="feeling" value="A lot" required><p>A lot!</p></li>
+              <li><input type="radio" name="feeling" value="Excited" required><p>Excited!</p></li>
+              <li><input type="radio" name="feeling" value="Not sure" required><p>Not sure</p></li>
+              <li><input type="radio" name="feeling" value="Not excited, but you decided to try" required><p>Not excited, but I will try</p></li>
+              <li><input type="radio" name="feeling" value="Dreaded it before beginning" required><p>Dreading it already...</p></li>
+            </ul>
+
+            <h2>How likely are you to pursue a career related to computer science?</h2>
+            <ul>
+              <li><input type="radio" name="pursue" value="very likely" required><p>Very likely</p></li>
+              <li><input type="radio" name="pursue" value="likely" required><p>Likely</p></li>
+              <li><input type="radio" name="pursue" value="Not sure" required><p>Not sure</p></li>
+              <li><input type="radio" name="pursue" value="not likely" required><p>Not likely</p></li>
+              <li><input type="radio" name="pursue" value="extremely unlikely" required><p>Extremely unlikely</p></li>
+            </ul>
+
+          <button type="submit">Login</button>
+        </form>
+      </main>
+      <footer id="footer"></footer>
+    </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
+    </body>
+</html>

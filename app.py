@@ -336,9 +336,81 @@ def verify(id):
     addNewCompletions()
 
     #resp = make_response(render_template('challenge.html', login=True))
-    resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
+    resp = make_response(render_template('redirect.html', login=True, redirect_location='/presurvey'))
     resp = setHeaders(resp, currentSession.token)
     return resp
+
+@app.route('/presurvey', methods=["POST", "GET"])
+def preSurvey():
+  token = request.cookies.get('token')
+  if isSession(token) == False:
+    return invalidSession()
+
+  currentSession = getSession(token)
+  account = accountManager.getAccountByUID(currentSession.uid)
+
+  if account.preSurvey != accountManager.surveyDict:
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenges"))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+
+  if request.method == "POST":
+    account.preSurvey["feeling"] = request.form.get("feeling")
+    account.preSurvey["pursue"] = request.form.get("pursue")
+    
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenges"))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+  
+  resp = make_response(render_template('presurvey.html'))
+  resp = setHeaders(resp, currentSession.token)
+  return resp
+
+@app.route('/postsurvey', methods=["POST", "GET"])
+def postSurvey():
+  token = request.cookies.get('token')
+  if isSession(token) == False:
+    return invalidSession()
+
+  currentSession = getSession(token)
+  account = accountManager.getAccountByUID(currentSession.uid)
+
+  for i in account.postSurvey:
+    if account.finished == False:
+      resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenges"))
+      resp.set_cookie('token', currentSession.token)
+      return resp
+
+  if request.method == "POST":
+    account.preSurvey["feeling"] = request.form.get("feeling")
+    account.preSurvey["pursue"] = request.form.get("pursue")
+    account.finished = True
+    
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/results"))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+  
+  resp = make_response(render_template('presurvey.html'))
+  resp = setHeaders(resp, currentSession.token)
+  return resp
+
+@app.route('/results', methods=["POST", "GET"])
+def results():
+  token = request.cookies.get('token')
+  if isSession(token) == False:
+    return invalidSession()
+
+  currentSession = getSession(token)
+  account = accountManager.getAccountByUID(currentSession.uid)
+
+  if account.finished == False:  
+    resp = make_response(render_template('redirect.html', login=True, redirect_location="/challenges"))
+    resp.set_cookie('token', currentSession.token)
+    return resp
+  
+  resp = make_response(render_template('results.html', preSurvey=account.preSurvey, postSurvey=account.postSurvey))
+  resp = setHeaders(resp, currentSession.token)
+  return resp
 
 @app.route('/header', methods=["POST", "GET"])
 def header():
