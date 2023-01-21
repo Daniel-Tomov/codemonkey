@@ -104,18 +104,6 @@ def login():
     return resp
 
   if request.method == "POST":
-    if request.form['uname'] == "loginCancel":
-      resp = make_response(render_template('redirect.html', login=True, redirect_location='/home'))
-      resp = setHeaders(resp, currentSession.token)
-      resp.set_cookie('token', '')
-      return resp #hello
-    
-    elif request.form['uname'] == "register":
-      resp = make_response(render_template('redirect.html', login=True, redirect_location='/register'))
-      resp = setHeaders(resp, currentSession.token)
-      resp.set_cookie('token', '')
-      return resp #hello
-
     username = request.form['uname']
     password = request.form['psw']
 
@@ -256,7 +244,7 @@ def recieve_code():
 
     for i in NotWantedInCode:
       if i in program:
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you probably used a blocked keyword.</p>").encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you have used a blocked keyword.</p>").encode())
 
     output, error = personalFunctions.runCode(program, currentSession.token)
 
@@ -272,7 +260,7 @@ def recieve_code():
 
     if error == 1:
       completions[currentSession.uid][chal_id][0] = "uncomplete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
+      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/daniel/codemonkey/programRuns/", "") + "</p>").encode())
 
       
     if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
