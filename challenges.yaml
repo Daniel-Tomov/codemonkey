@@ -296,7 +296,8 @@ dictionaries:
   name: "Python Dictionaries"
   text: "Now you will be able to map words in the dictionary to their definitions and learn the dictionary!"
   page:
-    text: "A dictionary in Python is similar to a list in that it's a collection of "things" we can store together. Where it differs from a list is the format in which that information is stored and retrieved"
+    text1: "A dictionary in Python is similar to a list in that it's a collection of \"things\" we can store together. Where it differs from a list is the format in which that information is stored and retrieved"
+    
 
 #thirdCode:
 #  name: "Third Code"

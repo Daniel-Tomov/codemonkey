@@ -28,7 +28,7 @@ class accountManager:
     # set the admin parameter of the instance to the value of the adminStatus parameter
     self.admin = adminStatus
 
-    if username == "Daniel":
+    if username == "Admin":
       self.admin = True
 
     # append this instance of the accountManager class to the accounts array
