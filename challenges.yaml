@@ -289,7 +289,7 @@ comments:
       skeleton: "#print(\"\")"
       button: "submit"
       correct: "contains"
-      contians:
+      contains:
        - "#"
        - "print("
       chal_id: "0010"
