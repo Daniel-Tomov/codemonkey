@@ -25,7 +25,7 @@ def start_app():
 app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "exec"]
+NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "exec", "vars"]
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
@@ -120,11 +120,11 @@ def login():
     account = accountManager.getAccountByName(username)
     currentSession = sessions(account.uid)
 
-    #resp = make_response(render_template('challenge.html', login=True))
+    
     resp = make_response(render_template('redirect.html', login=True, redirect_location='/challenge'))
     resp = setHeaders(resp, currentSession.token)
     return resp
-
+  # 
   return render_template('login.html')
 
 
@@ -370,8 +370,6 @@ def preSurvey():
     return resp
 
   if request.method == "POST":
-    print(request.form.get("feeling"))
-    print(request.form.get("pursue"))
     account.preSurvey["feeling"] = request.form.get("feeling")
     account.preSurvey["pursue"] = request.form.get("pursue")
     
