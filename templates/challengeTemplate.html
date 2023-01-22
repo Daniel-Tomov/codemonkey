@@ -63,11 +63,24 @@
           {% if "text" in i %}
             <p class="text">{{ data[page]['page'][i] }}</p>
             <div class="divider"></div>
-          {% endif %}
-          {% if "question" in i %}
+          {% elif "codeblock" in i %}
+            <div class="codeblock textAreaBox">
+              <textarea class="textareas">{{ data[page]['page'][i]['code'] }}</textarea>
+            </div>
+          {% elif "subheading" in i %}
+            <h3 class="subheading">{{ data[page]['page'][i] }}</h3>
+          {% elif "list" in i %}
+            <div class="list">
+              <ul>
+                {% for n in data[page]['page'][i] %}
+                  <li>{{ data[page]['page'][i][n] }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% elif "question" in i %}
             <div class="question">
             {% for n in data[page]['page'][i] %}
-              {% if n == 'text' %}
+              {% if 'text' in n %}
                 <p class="text">{{ data[page]['page'][i]['text'] }}</p>
               {% endif %}
               {% if data[page]['page'][i][n] == 'textbox' %}

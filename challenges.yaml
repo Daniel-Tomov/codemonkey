@@ -1,43 +1,53 @@
-firstCode:
-  name: "First Code"
-  text: "In this module, you will learn the basics with Python! Your first challenge will be to print the text \"Hello World!\""
+printing:
+  name: "Printing in Python"
+  text: "Let's get writing our first Python program. On most programming courses, the first program you write tends to output 'Hello, World!' to the screen."
   page:
-    text1: "This will be on the actual page of the module"
+    text1: "Let's get writing our first Python program. On most programming courses, the first program you write tends to output 'Hello, World!' to the screen. Let's not break that tradition."
     question1:
       name: "question1"
-      text: "For your first challenge, you will print \"Hello World!\" You will see this this text many times while programming; whichever language you choose to learn after this course.^lb^
-            test of new line"
+      text: "For your first challenge, you will print \"Hello World!\" to the screen. In Python, this happens through the use of the word <i>print</i> with () on the end. <i>print()</i> will print anything you want to the screen.^lb^
+            For example, if you wanted to put \"Hello, Robot\" to the screen, you would write print(\"Hello, Robot\")
+            The first part to the solution of the challenge has been given to you. Can you figure out the other part?"
       type: "textbox"
       skeleton: "print(\"\")"
       button: "submit"
       correct: "Hello World!"
-      chal_id: "0002"
-    text2: "text in between the lines^lb^^lb^^lb^^lb^"
-    question2:
-      name: "question2"
-      text: "This is an example of a second question^lb^
-            with a new line^lb^
-            for this challenge, you will print your name"
-      type: "textbox"
-      skeleton: "print(\"\")"
-      button: "submit"
-      correct: "change code"
-      chal_id: "0005"
-
-arithmeticPractice:
-  name: "Arithmetic Practice"
-  text: "In this module, you will learn the basics of arithmetic."
+      chal_id: "0001"
+variables:
+  name: "Variables"
+  text: "What are variables?"
   page:
-    text: "This will be on the actual page of the module"
+    text1: "The last module was not so interesting. That's because you can't really do anything cool in any programming language without using variables. A variable is a way of sorting data in programs."
+    text2: "Think of a variable like a box with a label on it. Let's say your box has a label that says \"Box A\". Then you put a whole bunch of socks in the box. If someone asks you for some socks, you can just say \"Oh, you'll wnat to look in Box A\" But if, one day, you decide to remove all the socks and store some shoes in that box instead, you would still refer to that box as \"Box A\". The contents may have changed, but the label or the way of referring to the box remains the same."
+    subheading1: "Assigning values to a variable"
+    text3: "In most programming languages, to assign a value to a variable, we use the equals (=) operator. Python follows this standard, so in Python, assigning a message to our variable looks like this:"
+    codeblock1:
+      code: "user_text = \"Billy was here\"\nprint(user_text)"
+    text4: "At any time later in the program, you can change the value of <i>user_text</i> varaible again like so:"
+    codeblock2:
+      code: "user_text = \"Billy was here\"\nprint(user_text)\nuser_text = \"Have you seen Billy lately?\"\nprint(user_text)"
+    text5: "The above code will create the output below:"
+    codeblock3:
+      code: "Billy was here\nHave you seen Billy lately?"
     question1:
       name: "question1"
-      text: "For your second challenge, you will print basic math opertionas such as add, subtract, divide, multiply, and modulus. Don't worry if you don't know what some of these mean, you will learn!^lb^
-            This challenge requires you to add 1 and 1, subtract 4 from 10, multiply 2.5 and 2, and divide 20 by 2"
+      text: "For this question, create a variable called \"my_message\" with any message you want."
       type: "textbox"
       skeleton: ""
       button: "submit"
-      correct: "2\n6\n5.0\n10.0"
-      chal_id: "0003"
+      correct: "contains"
+      contains: 
+       - "="
+       - "my_message"
+      chal_id: "0002"
+    subheading2: "Naming Variables"
+    text6: "You can name a variable almost anything you want, but there are a few guidelines youshould follow to prevent errors, and to make your program easier for humans to read andunderstand. After all, programming languages are for people, not for computers, so weshould always be thinking about the people trying to understand our code when we create variables."
+    list1:
+      item1: "Variable names can contain only letters, numbers, and underscores."
+      item2: "You can start a variable name with a letter or an underscore, but not with a number. So variable_1 and _variable1 are both ok, but 1_variable won't work."
+      item3: "Variable names are case sensitive: string and String are two different variables to a computer."
+      item4: "You shouldn't use Python's built-in keywords or functions as variable names, such as print or break."
+      item5: "Keep your variable names short but descriptive. A variable called this_is_a_really_long_and_pointlessly_verbose_variable_name is probably a bit long in most contexts, but likewise a variable called a doesn't tell us much about what the variable's purpose is. Something short but also descriptive like username is much better"
 
 thirdCode:
   name: "Third Code"
@@ -54,4 +64,4 @@ thirdCode:
       contains: 
        - "="
        - "x"
-      chal_id: "0004"
+      chal_id: "0003"
