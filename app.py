@@ -29,10 +29,7 @@ def start_app():
 app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-<<<<<<< HEAD
 NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "exec", "vars"]
-=======
->>>>>>> 01865a3384bd6ba8427ab97ae2178e5584566590
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
