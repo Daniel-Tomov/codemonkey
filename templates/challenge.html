@@ -24,12 +24,15 @@
       <main>
         <h1 style="color:white">Welcome, {{ username }}!</h1>
         {% for i in data %}
-          <div class="challengeBox">
-            {% if courseCompletion[i] == "complete" %}
-              <img class="completionStatus" alt="check" src="{{ url_for('static', filename='images/check.png') }}"/>
-            {% endif %}
-            <p class="courseName"><a href="{{ '/challenge/' + i }}">{{ data[i]['name'] }}</a></p>
-          </div>
+          <a class="challengeLink" href="{{ '/challenge/' + i }}">
+            <div class="challengeBox">
+              {% if courseCompletion[i] == "complete" %}
+                <img class="completionStatus" alt="check" src="{{ url_for('static', filename='images/check.png') }}"/>
+              {% endif %}
+              <p class="courseName">{{ data[i]['name'] }}</p>
+              <p class="underneath">{{ data[i]['text'] }}</p>
+            </div>
+          </a>
         {% endfor %}
       </main>
       <footer id="footer"></footer>
