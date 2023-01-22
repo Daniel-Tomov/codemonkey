@@ -36,7 +36,7 @@ def loadCompletions():
     print("Error during unpickling object (Possibly unsupported):", ex)
 
 
-def addNewChallenges():
+def addNewCompletions():
   data = yml.data
   for uid in completions:
     #print(completions[uid])
