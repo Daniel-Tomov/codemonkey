@@ -100,7 +100,7 @@ strings:
     text11: "The above will print:"
     codeblock9: "Bill\nBob\nSarah\nMike\n"
     question2:
-      name: "question1"
+      name: "question2"
       text: "Concatanate your favorite restaurant with a new line and your favorite food after the new line. Then print the variable to the screen"
       type: "textbox"
       skeleton: ""
@@ -109,7 +109,6 @@ strings:
       contains: 
        - "="
        - "print"
-       - "\n"
       chal_id: "0004"
 arithmetic:
   name: "Math"
@@ -293,7 +292,11 @@ comments:
        - "#"
        - "print("
       chal_id: "0010"
-
+dictionaries:
+  name: "Python Dictionaries"
+  text: "Now you will be able to map words in the dictionary to their definitions and learn the dictionary!"
+  page:
+    text: "A dictionary in Python is similar to a list in that it's a collection of "things" we can store together. Where it differs from a list is the format in which that information is stored and retrieved"
 
 #thirdCode:
 #  name: "Third Code"
