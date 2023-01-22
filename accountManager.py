@@ -57,14 +57,21 @@ def getAccountByUID(uid):
     if i.uid == uid:
       return i
   return None
+
 # returns the instance of the accountManager class that equals the supplied username
-def getAccountByName(username):
+def getAccountByUsername(username):
   global accounts
   for i in accounts:
     if i.username == username:
       return i
   return None
-
+# returns the instance of the accountManager class that equals the supplied email
+def getAccountByEmail(email):
+  global accounts
+  for i in accounts:
+    if i.email == email:
+      return i
+  return None
 
 #### SAVING AND GETTING ACCOUNTS ####
 def saveAccounts():

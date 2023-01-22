@@ -5,10 +5,10 @@ import personalFunctions
 import threading
 import yml
 from time import sleep
-from completion import completions, completion, saveCompletions, addNewChallenges
+from completion import completions, completion, saveCompletions, addNewCompletions
 import sendEmail
 import verifications
-from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion, addNewCompletions
+from courseCompletion import courseCompletions, saveCourseCompletions, courseCompletion, addNewCourseCompletions
 from flask_compress import Compress
 import survey
 import logging
@@ -90,14 +90,14 @@ def runPeriodically():
     saveCourseCompletions()
 
     addNewCompletions()
-    addNewCompletions()
+    addNewCourseCompletions()
     #print(personalFunctions.convertTime(personalFunctions.time()))
     #print(accountManager.accounts)
     sleep(10)
 
 # a commonly used function used to send various security headers back to the user. 
 # For example, the ability to access the cookie only from the site is set here. If it was not set, then hackers could use XSS attacks to log a user's cookie with document.cookie in the browser.
-def setHeaders(resp, token):
+def setHeaders(resp, token=""):
   resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
   #resp.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'unsafe-inline'; style-src-elem 'unsafe-inline'"
   resp.headers['X-Content-Type-Options'] = 'nosniff'
@@ -117,7 +117,7 @@ def index():
     resp = make_response(render_template('index.html'))
     return setHeaders(resp, token)
   
-  return setHeaders(render_template('index.html'), '')
+  return setHeaders(make_response(render_template('index.html')))
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -142,7 +142,7 @@ def login():
       return render_template('login.html', wrongPassword=True)
 
     # Create a new session with the username
-    account = accountManager.getAccountByName(username)
+    account = accountManager.getAccountByUsername(username)
     currentSession = sessions(account.uid)
 
     #resp = make_response(render_template('challenge.html', ,))
@@ -176,11 +176,11 @@ def registerForm():
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please enter a valid email").encode())
 
     # check if there is a username conflict
-    if accountManager.accountExistsByUsername(username):
+    if accountManager.getAccountByUsername(username) != None:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that username exists!").encode())
 
     # check if there is an email conflict
-    if accountManager.accountExistsByEmail(email):
+    if accountManager.getAccountByEmail(email) != None:
       return personalFunctions.base64encode(personalFunctions.replaceNewlines("Sorry, that email is in use by another account!").encode())
 
     # check if the user already registered with the email but has not verified their account

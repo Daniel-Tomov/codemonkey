@@ -34,7 +34,7 @@ def loadCourseCompletions():
     print("Error during unpickling object (Possibly unsupported):", ex)
 
 # if the challenges.yaml file was updated, automatically add the updated modules to the user's courseCompletion dictionary.
-def addNewCompletions():
+def addNewCourseCompletions():
   data = yml.data
   for uid in courseCompletions:
     for name in data:
