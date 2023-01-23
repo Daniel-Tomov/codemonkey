@@ -1,9 +1,9 @@
-// output functions are configurable.  This one just appends some text
-// to a pre element.
+// Skulpt example code from the skulpt.org website
+
 function outf(text) {
     var mypre = document.getElementById(Sk.pre);
-    mypre.innerHTML = mypre.innerHTML + text + "<br>";
-    mypre.innerHTML = mypre.innerHTML.replace(/<br>\n<br>/g, "<br>");
+    mypre.innerText = mypre.innerText + text + "";
+
 }
 
 function builtinRead(x) {
@@ -12,11 +12,6 @@ function builtinRead(x) {
     return Sk.builtinFiles["files"][x];
 }
 
-// Here's everything you need to run a python program in skulpt
-// grab the code from your textarea
-// get a reference to your pre element for output
-// configure the output function
-// call Sk.importMainWithBody()
 function runit(theCode, destination) { 
    var prog = theCode; 
    var mypre = document.getElementById(destination); 
