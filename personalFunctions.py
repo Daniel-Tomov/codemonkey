@@ -34,6 +34,8 @@ def base64decode(input):
   
 # run user code
 # the cookie is used to ensure the file being written to is unique and won't be overwritten by accident
+########### OLD CODE THAT SHOULD BE REMOVED BUT KEEPING IT SO I CAN REFERENCE IT LATER#################
+'''
 def runCode(inputCode, cookie):
   # open the file and write the code to the file
   file = open("programRuns/" + cookie + ".py", 'w')
@@ -62,7 +64,7 @@ def runCode(inputCode, cookie):
     return [error.decode('utf-8'), 1]
   else:
     return [output.decode('utf-8'), 0]
-  
+'''
 
 # replacing new lines in any strings that are input with <br> for HTML
 # used mainly when returning code output to the user
