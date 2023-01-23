@@ -33,9 +33,9 @@ Read the latest One Pager <a href="documents/Final Proposal Draft.pdf">here</a>
 
 :white_check_mark: Make register page look pretty
 
-:white_check_mark: Create a function to submit code to the backend
+:white_check_mark: Create a function to submit code to the backend (this function now submits code output from Skulpt as well)
 
-:white_check_mark: Receive code execution details from the backend
+:white_check_mark: Receive code execution details from the backend (now recieves completion status of the question)
 
 :white_check_mark: Create a page that recieves challenges and displays them to the user.
 
@@ -46,6 +46,8 @@ Read the latest One Pager <a href="documents/Final Proposal Draft.pdf">here</a>
 :white_check_mark: Make about page
 
 :white_check_mark: Make something to handle wrong logins
+
+:white_check_mark: Handle user code in the browser (done by using <a href="https://skulpt.org">Skulpt</a>)
 
 ### Backend
 
