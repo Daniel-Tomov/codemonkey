@@ -43,9 +43,9 @@ Read the latest One Pager <a href="documents/Final Proposal Draft.pdf">here</a>
 
 :white_check_mark: Password restrictions for weak passwords
 
-:x: Make about page
+:white_check_mark: Make about page
 
-:x: Make something to handle wrong logins
+:white_check_mark: Make something to handle wrong logins
 
 ### Backend
 
