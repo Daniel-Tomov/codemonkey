@@ -34,7 +34,7 @@ $(document).keydown(function(event) {
     ctrlPressed = false;
   }
 });
-function submitChallenge(clicked_id){
+async function submitChallenge(clicked_id){
   var id = clicked_id.replace("submitButton", "");
   var ids = id.split("_");
   var destination = ids[2] + "response";
@@ -49,17 +49,15 @@ function submitChallenge(clicked_id){
     }
   }
 
-  runit(the_code, destination);
-  output = document.getElementById(destination).innerHTML;
-  //console.log(output);
-  
+  await runit(the_code, (destination + "_output"));
+  output = document.getElementById(destination + "_output").innerHTML;
+
   $.ajax({
     url: "/recieve_data",
     type: "get",
     data: {code: btoa(the_code), output: btoa(output), chal_id:btoa(chal_id)},
     success: function(response) {
-      var resp = atob(response);
-      document.getElementById(destination).innerHTML = resp + output;
+      document.getElementById(destination).innerHTML = atob(response);
       checkChallenges();
     },
     error: function(xhr) {
@@ -181,4 +179,8 @@ for (let i = 0; i < textAreas.length; i++){
     }
   });
   codeMirrors.push(editor);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

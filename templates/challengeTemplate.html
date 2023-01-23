@@ -24,7 +24,7 @@
         --width:700px;
         --height:300px;
       }
-      .responses{
+      .responses, .response_outputs{
         background-color: lightgray; 
         width:var(--width);
         height: fit-content;
@@ -101,6 +101,7 @@
               {% if data[page]['page'][i][n] == 'submit' %}
                 <button onclick="submitChallenge(this.id)" id="{{ page + '_' + data[page]['page'][i]['name'] + '_' + data[page]['page'][i]['chal_id'] + 'submitButton' }}" class="submitButtons" value="{{ page + ' ' + i + ' ' + data[page]['page'][i]['chal_id'] }}" type="button">Submit</button>
                 <div id="{{ data[page]['page'][i]['chal_id'] + 'response' }}" class="responses"></div>
+                <div id="{{ data[page]['page'][i]['chal_id'] + 'response_output' }}" class="response_outputs"></div>
               {% endif %}
             {% endfor %}
 
@@ -115,12 +116,12 @@
         {% endif %}
         <footer id="footer"></footer>
       </main>
-      <script defer>
-        $("#header").load("{{ url_for('header') }}");
-        $("#footer").load("{{ url_for('footer') }}");
-      </script>
     </div>
   </body>
+  <script defer>
+    $("#header").load("{{ url_for('header') }}");
+    $("#footer").load("{{ url_for('footer') }}");
+  </script>
   <script defer src="{{ url_for('static', filename='js/challenges.js') }}" type="text/javascript"></script>
   <script defer src="{{ url_for('static', filename='js/skulpt.js') }}" type="text/javascript"></script>
 <script defer src="https://skulpt.org/js/skulpt.min.js" type="text/javascript"></script> 

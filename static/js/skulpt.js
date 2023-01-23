@@ -3,7 +3,6 @@
 function outf(text) {
     var mypre = document.getElementById(Sk.pre);
     mypre.innerHTML = mypre.innerHTML + text + "<br>";
-    
     mypre.innerHTML = mypre.innerHTML.replace(/<br>\n<br>/g, "<br>");
 }
 
@@ -33,7 +32,6 @@ function runit(theCode, destination) {
        console.log('success');
    },
        function(err) {
-       console.log(err.toString());
        document.getElementById(destination).innerHTML = document.getElementById(destination).innerHTML + err.toString();
    });
 }
