@@ -6,12 +6,16 @@ var completionButton = document.getElementById("completionButton");
 var textAreas = document.getElementsByClassName("textAreaBox");
 var codeMirrors = [];
 var ctrlPressed = false;
+var codeblocks = document.getElementsByClassName("codeblocks");
+
+
 $(document).keydown(function(event) {
   let activeElement = document.activeElement;
   if (activeElement.tagName != "TEXTAREA"){
     return;
   }
   activeElement = activeElement.parentElement.parentElement.parentElement
+
   if (event.keyCode == 9) {  //tab pressed
     event.preventDefault(); // stops its action
     //console.log(activeElement);
@@ -19,9 +23,13 @@ $(document).keydown(function(event) {
   }
   
   if (event.keyCode == 13 && ctrlPressed){
-    event.preventDefault();
-    ctrlPressed = false;
-    submitChallenge(activeElement.id.replace("textarea", ""));
+    if (activeElement.id.includes("codeblock")){
+      runCodeblock(activeElement.id);
+    } else {
+      event.preventDefault();
+      ctrlPressed = false;
+      submitChallenge(activeElement.id.replace("textarea", ""));
+    }
   }
   if (event.keyCode == 17){
     if (ctrlPressed == false){
@@ -34,6 +42,23 @@ $(document).keydown(function(event) {
     ctrlPressed = false;
   }
 });
+
+function runCodeblock(clicked_id){
+  var id = clicked_id.replace("submitButton", "");
+  var destination = id + "response";
+  document.getElementById(destination).innerHTML = "Running your code...";
+  let currentID = "";
+  for (let i = 0; i < textAreas.length; i++){
+    currentID = textAreas[i].id;
+    if (currentID.includes(id)) {
+      var the_code = codeMirrors[i].getValue();
+      //var the_code = document.getElementById(id + "textarea").lastElementChild.getValue;
+    }
+  }
+  runit(the_code, (destination));
+
+}
+
 async function submitChallenge(clicked_id){
   var id = clicked_id.replace("submitButton", "");
   var ids = id.split("_");

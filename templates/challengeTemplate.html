@@ -18,42 +18,6 @@
     <!-- Create a simple CodeMirror instance -->
     <script src="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.js') }}"></script>
     <script src="https://codemirror.net/5/mode/python/python.js"></script>
-
-    <style>
-      :root{
-        --width:700px;
-        --height:300px;
-      }
-      .responses, .response_outputs{
-        background-color: lightgray; 
-        width:var(--width);
-        height: fit-content;
-        font-family: "Anonymous Pro"; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px;
-        font-size: 16px;
-      }
-
-      textarea{
-        width: var(--width);
-        height: var(--height);
-      }
-      
-      .correct{
-        background-color: lime;
-      }
-
-      .incorrect{
-        background-color: indianred;
-      }
-
-      h2{color:white}
-      .text{color:white}
-
-      .completionStatus{width:var(--width); margin:0 auto;}
-      button{width:var(--width); margin:0 auto;}
-
-      .question{width: var(--width); margin:0 auto 20px auto;}
-      
-    </style>
   </head>
   <body>
     <div id="body">
@@ -65,8 +29,10 @@
             <p class="text">{{ data[page]['page'][i] }}</p>
             <div class="divider"></div>
           {% elif "codeblock" in i %}
-            <div class="codeblock textAreaBox">
-              <textarea class="textareas">{{ data[page]['page'][i] }}</textarea>
+            <div id="{{ i }}" class="codeblock textAreaBox">
+              <textarea id="{{ i + 'text' }}" class="textareas">{{ data[page]['page'][i] }}</textarea>
+              <button onclick="runCodeblock(this.id)" id="{{ i + 'submitButton' }}">Run this code</button>
+              <div class="codeblockResponses" id="{{ i + 'response' }}"></div>
             </div>
           {% elif "subheading" in i %}
             <h3 class="subheading">{{ data[page]['page'][i] }}</h3>

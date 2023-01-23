@@ -24,8 +24,6 @@ variables:
     codeblock1: "user_text = \"Billy was here\"\nprint(user_text)"
     text4: "At any time later in the program, you can change the value of <i>user_text</i> varaible again like so:"
     codeblock2: "user_text = \"Billy was here\"\nprint(user_text)\nuser_text = \"Have you seen Billy lately?\"\nprint(user_text)"
-    text5: "The above code will create the output below:"
-    codeblock3: "Billy was here\nHave you seen Billy lately?"
     question1:
       name: "question1"
       text: "For this question, create a variable called \"my_message\" with any message you want."
@@ -97,8 +95,6 @@ strings:
     subheading3: "Adding and Stripping Whitespace"
     text10: "A \"whitespace\" refers to a type of character that doesn't print anything out, but adds some sort of spacing formatting to the output. The spacebar, tab key, and return key on your computer all create a different kind of \"whitespace\". We can add whitespace to our programs to format our output. Let's output our list of wellknown agents so that each agent appears on a different line using the \\n character combination to tell the program where we want our line breaks. "
     codeblock8: "user_list = \"Bill\\nBob\\nSarah\\nMike\"\nprint(user_list)"
-    text11: "The above will print:"
-    codeblock9: "Bill\nBob\nSarah\nMike\n"
     question2:
       name: "question2"
       text: "Concatanate your favorite restaurant with a new line and your favorite food after the new line. Then print the variable to the screen"

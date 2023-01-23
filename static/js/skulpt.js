@@ -23,7 +23,7 @@ function runit(theCode, destination) {
    mypre.innerHTML = ''; 
    Sk.pre = destination;
    Sk.configure({output:outf, read:builtinRead}); 
-
+   //alert(prog);
    var myPromise = Sk.misceval.asyncToPromise(function() {
        return Sk.importMainWithBody("<stdin>", false, prog, true);
    });
