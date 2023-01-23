@@ -29,14 +29,11 @@ def start_app():
 app = start_app()
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "exec", "vars"]
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Strict',
 )
-# use a blocklist to ensure malicious users do not get access to the server or crash the application
-NotWantedInCode = ["subprocess", "import", "pty", "write", "open", "eval", "getattr", "locals", "globals", "getattribute", "__", "exec"]
 
 # function that is commonly used to remove a user's cookie once it expires. It also logs them out 
 def invalidSession():
@@ -301,48 +298,33 @@ def recieve_code():
     if currentSession == None:
       return personalFunctions.base64encode("<p><a href=\"login\">Please log in</a></p>".encode())
     
-    # get the code argument from the request
-    code = request.args.get('code')
     # decode the code argument from base64
-    program = personalFunctions.base64decode(code).decode('utf-8')
-    # check if any of the blocked keywords are in the user's code
-    for i in NotWantedInCode:
-      if i in program:
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p>We have detected you are trying to gain access to our systems.\nThis incident has been reported.\nIf you did not do this intentionally, you have used a blocked keyword.</p>").encode())
+    program = personalFunctions.base64decode(request.args.get('code')).decode('utf-8')
 
-    # run the user's code
-    output, error = personalFunctions.runCode(program, currentSession.token)
+    # get the user's code from the request
+    output = personalFunctions.base64decode(request.args.get('output')).decode('utf-8').replace("<br>", "\n")
+    #print(output)
 
     # get the name of the page, the question number, and the challlenge ID for later use in the dictionary of completions.
     # this is how the user's code is saved and they can access it later when they refresh the page
     pageName, question, chal_id = personalFunctions.base64decode(request.args.get('chal_id')).decode('utf-8').split(" ")
     completions[currentSession.uid][chal_id][1] = program
-      
-    # this will happen if the code runs for too long. Also set the completion status for this question to uncomplete
-    if "KeyboardInterrupt" in output:
-      completions[currentSession.uid][chal_id][0] = "uncomplete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error: Your code took longer than 5 seconds to run. Please try again.</p><p>" + str(output).replace("/home/runner/codemonkey/programRuns/", "") + "</p>").encode())
-
-    # if there is an error, set the completion status for this question to uncomplete
-    if error == 1:
-      completions[currentSession.uid][chal_id][0] = "uncomplete"
-      return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Error</p><p>" + str(output).replace("/home/daniel/codemonkey/programRuns/", "") + "</p>").encode())
-
+    
     # go through different checks to validate user code
     # first check if the submitted ID is the actual ID of the question number for the specific page
     if yml.data[pageName]['page'][question]["chal_id"] == chal_id:
       # check if the output of the user code equal the expected code in challenges.yaml
       if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
         completions[currentSession.uid][chal_id][0] = "complete"
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
       # if the user is expeced to change the code, then compare thier code to the originial skeleton
       elif yml.data[pageName]['page'][question]["correct"] == "change code":
         if yml.data[pageName]['page'][question]["skeleton"] != program:
           completions[currentSession.uid][chal_id][0] = "complete"
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
         else:
           completions[currentSession.uid][chal_id][0] = "uncomplete"
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p>").encode())
       # the user can also be expected to have certain strings in their code. This is how it is checked.
       elif yml.data[pageName]['page'][question]["correct"] == "contains":
         # define a count variable that will count the amount of strings the user needs to have versus amount they actually have
@@ -354,13 +336,13 @@ def recieve_code():
             count+=1
         # if the count of the amount of correct strings in the user code is equal to the length of the amount of strings in challenges.yaml, then mark the question as correct
         if count == len(yml.data[pageName]['page'][question]["contains"]):
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p><p>" + output + "</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
         else:
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p>").encode())
       # if none of this is true, then mark the question incomplete
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p><p>" + output + "</p>").encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p>").encode())
   # if there was an erorr anywhere, when display this error
   except:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())
@@ -553,4 +535,4 @@ threading.Thread(target=runPeriodically).start()
 # if "app.py" is the file being run, then go here
 if __name__ == "__main__":
   # run the Flask server on port 5555 with debug to False and no reloading when a file is edited
-  app.run(host="0.0.0.0", port=5555, debug=False, use_reloader=False)
+  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=False)
