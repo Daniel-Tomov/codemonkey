@@ -184,7 +184,7 @@ def registerForm():
     
     # otherwise, create a new instance of the verifications class with the username, email, and password
     verifications.verifications(username, email, password)
-    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input").encode())
+    return personalFunctions.base64encode(personalFunctions.replaceNewlines("Please check your email for a code to input. It may be in the spam folder.").encode())
   except:
     # this is returned if there was an error in anything above
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("There has been an error processing your information. Please try again now or later.").encode())
