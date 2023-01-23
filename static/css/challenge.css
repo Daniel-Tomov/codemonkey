@@ -1,6 +1,6 @@
 :root{
   --width:900px;
-  --height:350px;
+  --height:100px;
 }
 .responses, .response_outputs{
   background-color: lightgray; 
@@ -41,7 +41,7 @@ button{width:var(--width); margin:0 auto;}
   margin:20px 0;
   box-shadow: 10px 10px 5px var(--black);
   width: 100%;
-  height: fit-content;
+  height: 100px;
   color:white;
   padding: 2px;
 }
