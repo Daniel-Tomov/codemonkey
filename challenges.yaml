@@ -297,7 +297,20 @@ dictionaries:
   text: "Now you will be able to map words in the dictionary to their definitions and learn the dictionary!"
   page:
     text1: "A dictionary in Python is similar to a list in that it's a collection of \"things\" we can store together. Where it differs from a list is the format in which that information is stored and retrieved"
-    
+    text2: "If we wanted to represent some closed and open statistics, in a list we'd probably store it like this:"
+    codeblock1: "case_stats = [21, 12, 8]\nprint('Total cases: ' + str(case_stats[0]))\nprint('Solved cases: ' + str(case_stats[1]))\nprint('Unsolved cases: ' + str(case_stats[2]))"
+    text3: "This code generates the following output:"
+    codeblock2: "Total cases: 21\nSolved cases: 12\nUnsolved cases: 8"
+    text4: "This seems straightforward enough, but it's pretty fragile code. What if the list gets reordered or reversed? Or if a new stat gets added into the list? Then we'd have to update all our print functions that call on a specific index of our list for their data. ^lb^^lb^This is the kind of problem a dictionary is made for. It allows us to associate information together in helpful pairs called \"key-value pairs\", which helps in making our data more understandable as well as making it easier for us to get precisely the information we want from it without worrying about where it is in the list. ^lb^^lb^Using a dictionary, we'd represent the case statistics like this"
+    codeblock3: "case_stats = {'total': 21, 'solved': 12, 'unsolved': 8}"
+    text5: "Notice the difference between a list and a dictionary? The list uses square bracket notation [] whereas a dictionary uses curly bracket notation {}. The dictionary also uses a \"key: value\" notation: 'total', 'solved', and 'unsolved' are all keys, and 21, 12, and 8 are all values.^lb^^lb^The format for dictionaries is always the same: key: value. In the example above, since our key is a string, we've also wrapped our key in quotes (') while the values here are integers so they don't need quotes. Strings are always in quotes, even in dictionaries."
+    text6: "You can also use an integer as the key and a string as the value: this is a completely valid dictionary as well, though perhaps not as useful for us in this case (and we'll see why later in this section). But the below example won't cause an error. Keys and values are pretty flexible parts of a dictionary."
+    codeblock4: "case_stats = {21: 'total', 12: 'solved', 8: 'unsolved'}"
+    text7: "So how do we get data from our dictionary into our output?"
+    codeblock5: "case_stats = {'total': 21, 'solved': 12, 'unsolved': 8}\nprint('Total cases: ' + str(case_stats['total']))\nprint('Solved cases: ' + str(case_stats['solved']))\nprint('Unsolved cases: ' + str(case_stats['unsolved']))"
+    text8: "Instead of using the index number to find an item in our dictionary, we tell our output what key to look for, and it will output the value it finds associated with that key.^lb^^lb^This is great, because now it doesn't matter what order our items are stored in: as long as it has the same key, we'll always get the value we're looking for.^lb^^lb^These kinds of data structures are used in a lot of programming languages, especially high-level ones. Sometimes they go by different names: in PHP these are called \"associative arrays\", in Ruby they're known as \"hashes\", and in Java they're known as \"maps\". But they all behave more or less the same, and follow a similar structure of keyvalue pairing in the syntax."
+    codeblock6: ""
+
 
 #thirdCode:
 #  name: "Third Code"
