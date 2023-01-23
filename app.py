@@ -85,8 +85,9 @@ def runPeriodically():
 
     addNewCompletions()
     addNewCourseCompletions()
-    #print(personalFunctions.convertTime(personalFunctions.time()))
-    #print(accountManager.accounts)
+
+    yml.reloadChallenges()
+
     sleep(10)
 
 # a commonly used function used to send various security headers back to the user. 
