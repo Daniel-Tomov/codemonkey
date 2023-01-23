@@ -34,5 +34,6 @@ function runit(theCode, destination) {
    },
        function(err) {
        console.log(err.toString());
+       document.getElementById(destination).innerHTML = document.getElementById(destination).innerHTML + err.toString();
    });
 }
