@@ -26,7 +26,8 @@ def start_app():
 
 # various flask settings to remove whitespace in the HTML file sent to the client after the templating is done.
 # also has various security settings to ensure hackers can not use XSS attacks to get a user's session cookie
-app = start_app()
+#app = start_app()
+app = Flask(__name__)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 app.config.update(
