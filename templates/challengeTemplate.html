@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.css') }}" defer/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/challenge.css') }}" defer/>
-    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css"/>
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Anonymous+Pro" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/challenge.css') }}">
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Anonymous+Pro" >
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <meta name="keywords" content="Code, Python, Programming, Learn">
     <meta name="author" content="Daniel Tomov">
@@ -13,7 +13,7 @@
     <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
     
     <title>Challenge Page</title>
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}">
 
     <!-- Create a simple CodeMirror instance -->
     <script src="{{ url_for('static', filename='codemirror-5.65.11/lib/codemirror.js') }}"></script>
@@ -84,7 +84,7 @@
       </main>
     </div>
   </body>
-  <script defer>
+  <script>
     $("#header").load("{{ url_for('header') }}");
     $("#footer").load("{{ url_for('footer') }}");
   </script>
