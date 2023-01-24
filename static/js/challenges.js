@@ -73,7 +73,25 @@ async function submitChallenge(clicked_id){
       // then get the codeMirror object correspodning to that textarea.
       var the_code = codeMirrors[i].getValue();
       // evaluate code with Skulpt
-      await runit(the_code, (destination + "_output"));
+      var prog = the_code; 
+      var mypre = document.getElementById(destination + "_output"); 
+      mypre.innerHTML = '';
+      Sk.pre = destination;
+      Sk.configure({output:outf, read:builtinRead}); 
+      
+      var myPromise = Sk.misceval.asyncToPromise(function() {
+          return Sk.importMainWithBody("<stdin>", false, prog, true);
+      });
+   
+      myPromise.then(function(mod) {
+          console.log('success');
+      },
+          function(err) {
+          document.getElementById(destination).innerHTML = document.getElementById(destination).innerHTML + err.toString();
+      });
+
+
+
     }
   }
 

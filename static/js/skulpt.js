@@ -11,7 +11,7 @@ function builtinRead(x) {
             throw "File not found: '" + x + "'";
     return Sk.builtinFiles["files"][x];
 }
-
+/*
 function runit(theCode, destination) { 
    var prog = theCode; 
    var mypre = document.getElementById(destination); 
@@ -30,3 +30,4 @@ function runit(theCode, destination) {
        document.getElementById(destination).innerHTML = document.getElementById(destination).innerHTML + err.toString();
    });
 }
+*/
