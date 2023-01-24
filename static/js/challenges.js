@@ -60,7 +60,7 @@ function runCodeblock(clicked_id){
 
 }
 
-async function submitChallenge(clicked_id){
+function submitChallenge(clicked_id){
   var id = clicked_id.replace("submitButton", "");
   // the id has underscores in it
   var ids = id.split("_");
@@ -73,25 +73,7 @@ async function submitChallenge(clicked_id){
       // then get the codeMirror object correspodning to that textarea.
       var the_code = codeMirrors[i].getValue();
       // evaluate code with Skulpt
-      var prog = the_code; 
-      var mypre = document.getElementById(destination + "_output"); 
-      mypre.innerHTML = '';
-      Sk.pre = destination;
-      Sk.configure({output:outf, read:builtinRead}); 
-      
-      var myPromise = Sk.misceval.asyncToPromise(function() {
-          return Sk.importMainWithBody("<stdin>", false, prog, true);
-      });
-   
-      myPromise.then(function(mod) {
-          console.log('success');
-      },
-          function(err) {
-          document.getElementById(destination).innerHTML = document.getElementById(destination).innerHTML + err.toString();
-      });
-
-
-
+      runit(the_code, (destination + "_output"));
     }
   }
 
