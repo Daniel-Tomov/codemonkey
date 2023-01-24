@@ -17,7 +17,11 @@ function runit(theCode, destination) {
    var mypre = document.getElementById(destination); 
    mypre.innerHTML = ''; 
    Sk.pre = destination;
-   Sk.configure({output:outf, read:builtinRead}); 
+   Sk.configure({
+    output:outf,
+    read:builtinRead,
+    __future__: Sk.python3
+    }); 
    //alert(prog);
    var myPromise = Sk.misceval.asyncToPromise(function() {
        return Sk.importMainWithBody("<stdin>", false, prog, true);
