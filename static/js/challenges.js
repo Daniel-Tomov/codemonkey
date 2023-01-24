@@ -60,7 +60,7 @@ function runCodeblock(clicked_id){
 
 }
 
-function submitChallenge(clicked_id){
+async function submitChallenge(clicked_id){
   var id = clicked_id.replace("submitButton", "");
   // the id has underscores in it
   var ids = id.split("_");
@@ -73,7 +73,7 @@ function submitChallenge(clicked_id){
       // then get the codeMirror object correspodning to that textarea.
       var the_code = codeMirrors[i].getValue();
       // evaluate code with Skulpt
-      runit(the_code, (destination + "_output"));
+      await runit(the_code, (destination + "_output"));
     }
   }
 
