@@ -30,7 +30,10 @@ def start_app():
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-app.config.update(
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config.update(  
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Strict',
@@ -100,6 +103,8 @@ def setHeaders(resp, token=""):
   resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
   # set an expiration of the cookie of 10 minutes
   resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
+  # set the caching of js/css files to 1
+  resp.cache_control.max_age = 2
   return resp
 
 # set multiple routes for index.html as user may forget the exact URL
