@@ -1,6 +1,6 @@
 :root{
   --width:900px;
-  --height:100px;
+  --height:350px;
 }
 .responses, .response_outputs{
   background-color: lightgray; 
@@ -84,7 +84,7 @@ button{width:var(--width); margin:0 auto;}
 
 .codeblock{
   margin:10px auto;
-  height:350px;
+  height:var(--height);
   width:var(--width);
   padding:10px;
 }
