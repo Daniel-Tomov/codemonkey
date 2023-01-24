@@ -84,7 +84,7 @@ button{width:var(--width); margin:0 auto;}
 
 .codeblock{
   margin:10px auto;
-  height:fit-content;
+  height:350px;
   width:var(--width);
   padding:10px;
 }
