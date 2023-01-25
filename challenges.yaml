@@ -273,6 +273,20 @@ dictionaries:
     codeblock5: "case_stats = {'total': 21, 'solved': 12, 'unsolved': 8}\nprint('Total cases: ' + str(case_stats['total']))\nprint('Solved cases: ' + str(case_stats['solved']))\nprint('Unsolved cases: ' + str(case_stats['unsolved']))"
     text8: "Instead of using the index number to find an item in our dictionary, we tell our output what key to look for, and it will output the value it finds associated with that key.^lb^^lb^This is great because now it doesn't matter what order our items are stored in: as long as it has the same key, we'll always get the value we're looking for."
     codeblock6: ""
+conditionals:
+  name: "If Statements"
+  text: "Now you will be able to compare to items!\nDoes if(x == y): print(\"They are equal!\")"
+  page:
+    text1: "A conditional allows us to check if certain conitions are being met before we run certain parts of the program. They're ofoten referred to more casually as \"if statements\" or \"if tests\" and there's a very good reason for that: in most every programming language conditionals usually start out with an \"if\", as in \"if coffee is available, then Agent J will have a coffee.\" Let's see our simple \"if statements\" coffee example in Python."
+    codeblock1: "coffee_available = True \n if coffee_available == True: \n\t print(\"Agent J will have coffee.\")"
+    text2: "In this example, since we've set the <b>coffee_available</b> variable to <b>True</b>, our test passes, so the program prints out \"Agent J will have coffee.\". If we change the <b>coffee_available</b> to <b>False</b> and run the program again, nothing will be printed to the screen: since the conditions of our if statement aren't met, the code inside the if statement never runs."
+    text3: "Notice here when we write our if statement, we use a double equal sign (==) instead of a single equals sign. The single one is reserved for assigning values to variables, like we did in line 1. So when we want to say X = Y in a conditional if statement, we use the double equals syntax X == Y."
+    text4: "Note also the indentation in our conditional if statement: the line <b>print*\"Agent J will have coffee.\")</b> is indented from the line above it. This indentation structure is enforced by Python, and it's how Python knows which code below the if statement is <i>within</i> it and which code is <i>outside</i> it."
+    codeblock2: "coffee_available = True \n if coffee_available == True: \n print(\"Agent J will have coffee.\")"
+    text5: "When we run the code without the indentation, we get an error. We can see this inside vs outside structure more clearly when we run the following code, whcih includes 2 conditional statements one after the other, as well as some printed output outside the conditionsls."
+    codeblock3: "print(\"Agent J arrives at HQ in the morning.\") \n coffee_available = True \n if coffee_available == True: \n\t print(\"Agent J will have coffee.\") \n print(\"In the afternoon, Agent J goes to the HQ cafe.\") \n coffee_available = False \n if coffee_available == False: \n\t print(\"Agent J is shcoked to discover the cafe is out of coffee!\") \n print(\"Agent J goes home.\")"
+    text6: "In this example when we run our program, we get the following output."
+    text7: "Agent J arrives at HQ in the morning. \n Agent J will have coffee. \n In the afternoon, Agent J goes to the HQ cafe. \n Agent J is shocked to discover the cafe is out of coffee! \n Agent J goes home."
 
 
 #thirdCode:
