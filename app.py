@@ -343,8 +343,10 @@ def recieve_code():
             count+=1
         # if the count of the amount of correct strings in the user code is equal to the length of the amount of strings in challenges.yaml, then mark the question as correct
         if count == len(yml.data[pageName]['page'][question]["contains"]):
+          completions[currentSession.uid][chal_id][0] = "complete"
           return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
         else:
+          completions[currentSession.uid][chal_id][0] = "uncomplete"
           return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">Incorrect! Try again.</p>").encode())
       # if none of this is true, then mark the question incomplete
       else:
