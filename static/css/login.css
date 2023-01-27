@@ -69,7 +69,7 @@ form{
   
   #loginForm{
     width:750px;
-    margin: 75px auto 0 auto;
+    margin: 100px auto 0 auto;
   }
 
 
@@ -90,4 +90,40 @@ form{
 
 #wrongPassword > p{
   opacity: 2;
+}
+
+#message {
+  display:none;
+  background: #000000;
+  color: #ffffff;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10004;";
+}
+
+/* Add a red text color and an "x" icon when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10006;";
 }

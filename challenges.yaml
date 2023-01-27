@@ -275,21 +275,33 @@ dictionaries:
     codeblock6: ""
 conditionals:
   name: "If Statements"
-  text: "Now you will be able to compare to items!\nDoes if(x == y): print(\"They are equal!\")"
+  text: "Now you will be able to compare two values!\nDoes if(x == y): print(\"They are equal!\")"
   page:
     text1: "A conditional allows us to check if certain conitions are being met before we run certain parts of the program. They're ofoten referred to more casually as \"if statements\" or \"if tests\" and there's a very good reason for that: in most every programming language conditionals usually start out with an \"if\", as in \"if coffee is available, then Agent J will have a coffee.\" Let's see our simple \"if statements\" coffee example in Python."
     codeblock1: "coffee_available = True \nif coffee_available == True:\n\t print(\"Agent J will have coffee.\")"
     text2: "In this example, since we've set the <b>coffee_available</b> variable to <b>True</b>, our test passes, so the program prints out \"Agent J will have coffee.\". If we change the <b>coffee_available</b> to <b>False</b> and run the program again, nothing will be printed to the screen: since the conditions of our if statement aren't met, the code inside the if statement never runs."
     text3: "Notice here when we write our if statement, we use a double equal sign (==) instead of a single equals sign. The single one is reserved for assigning values to variables, like we did in line 1. So when we want to say X = Y in a conditional if statement, we use the double equals syntax X == Y."
-    text4: "Note also the indentation in our conditional if statement: the line <b>print*\"Agent J will have coffee.\")</b> is indented from the line above it. This indentation structure is enforced by Python, and it's how Python knows which code below the if statement is <i>within</i> it and which code is <i>outside</i> it."
-    codeblock2: "coffee_available = True \nif coffee_available == True: \n\tprint(\"Agent J will have coffee.\")"
+    text4: "Note also the indentation in our conditional if statement: the line <b>print(\"Agent J will have coffee.\")</b> is indented from the line above it. This indentation structure is enforced by Python, and it's how Python knows which code below the if statement is <i>within</i> it and which code is <i>outside</i> it."
+    codeblock2: "coffee_available = True \nif coffee_available == True: \nprint(\"Agent J will have coffee.\")"
     text5: "When we run the code without the indentation, we get an error. We can see this inside vs outside structure more clearly when we run the following code, whcih includes 2 conditional statements one after the other, as well as some printed output outside the conditionsls."
     codeblock3: "print(\"Agent J arrives at HQ in the morning.\") \ncoffee_available = True \nif coffee_available == True: \n\tprint(\"Agent J will have coffee.\") \nprint(\"In the afternoon, Agent J goes to the HQ cafe.\") \ncoffee_available = False \nif coffee_available == False: \n\tprint(\"Agent J is shcoked to discover the cafe is out of coffee!\") \nprint(\"Agent J goes home.\")"
     text6: "In this example when we run our program, we get the following output."
     text7: "Agent J arrives at HQ in the morning. \nAgent J will have coffee. \nIn the afternoon, Agent J goes to the HQ cafe. \nAgent J is shocked to discover the cafe is out of coffee! \nAgent J goes home."
+    question1:
+      name: "question1"
+      text: "Write an <b>if statement</b> to test if a variable <b>youAreLearning</b> is <b>True</b>. If they are both true, then print \"Yay! You are learning!\""
+      type: "textbox"
+      skeleton: "youAreLearning = True"
+      button: "submit"
+      correct: "contains"
+      contains:
+       - "True"
+       - "print(\"Yay! You are learning!\")"
+       - "if youAreLearning == True"
+      chal_id: "0011"
 conditionals2:
   name: "If Statements with Strings"
-  text: "Comparing strings"
+  text: "Comparing strings\nif string == \"hello\": print(\"Greetings\")"
   page:
     text1: "At their heart, all if statemetns can be evaluted as either <b>True</b> or <b>False</b>. That doesn't mean we can oly test a boolean variable, but it does mean that when the test is run it must result in either a <b>True</b> or <b>False</b> outcome."
     text2: "So we can create tests to see if 2 strings are the same, for example."
@@ -297,4 +309,15 @@ conditionals2:
     text3: "This example checks to see if the <b>drink_available</b> variable contains a string that matches 'coffee'. If it is, the statement evaluates to <b>True</b> and the print method inside the statement is executed. If the <b>drink_available</b> variable doesn't match, everything inside the if statement is skipped over, so nothing qould be printed."
     text4: "It's important to remember that case matters to computers! We may think of 'coffee', 'Coffee', and 'COFFEE', as being all the same thing in everday language, but to a computer all these strings are different. If we don't know what kind of letter case we'll get, but we want our conditional to consider 'coffee' and 'COFFEE' as a match, we need to tweak our code slightly."
     codeblock2: "drink_available = 'COFFEE' \nif drink_available.lower() == 'coffee': \n\tprint(\"Agent J will have coffee.\")"
-    text5: "Now we're transforming the value of <b>drink_available</b> to its lowercase version using the <b>lower()</b> method, which takes a string and changes any uppercase letters it finds within the string to their lowercase counterparts. Now our 2 strings match, so the statement evaluates to <b>True</b>, and our sentence will print out"
+    text5: "Now we're transforming the value of <b>drink_available</b> to its lowercase version using the <b>lower()</b> method, which takes a string and changes any uppercase letters it finds within the string to their lowercase counterparts. Now our 2 strings match, so the statement evaluates to <b>True</b>, and our sentence will print out."
+conditionals3:
+  name: "three if statements"
+  text: "Conditionsals 3"
+  page:
+    tex1: "Now let's compare numbers. Look at this example:"
+    codeblock1: "coffee_availablel = 4 \ncoffee_needed = 4 \nif coffee_needed == coffee_available: \n\tprint(\"There is enough coffee.\")"
+    text2: "Here we're comparing the values of 2 different variables, <b>coffee_available</b> and <b>coffee_needed</b>. If they are the same, then we print the sentence <b>There is enough coffee.</b> and if there isn't, then we don't print anything. In this example, 4 and 4 match, so the statemtn evaluates as true, printing out our sentence."
+    text3: "But what happens here:"
+    codeblock2: "coffee_available = \"4\" \ncoffee_needed = 4 \nif coffee_needed == coffee_availble: \n\tprint(\"There is enough coffee.\")"
+    text4: "We've set <b>coffee_available</b> to a string value of 4, and <b>coffee_needed</b> as an integer value of 4. They're both 4 so we might expect the statemetn would evalued to <b>True</b>, but when we run this program we find it doesn't, nothing gets printed out, telling us our statement evaluated to be <b>False</b>."
+  

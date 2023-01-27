@@ -42,6 +42,10 @@
   margin: 40px 0 0 0;
   color:var(--black);
   background-color:#e7e9eb;
+  font-family: "Courier";
+}
+.code{
+  font-family: "Courier";  
 }
 
 .codingLanguage > .exampleBox > h4{

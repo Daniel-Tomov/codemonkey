@@ -43,6 +43,10 @@ header{
   height: var(--header-height);
   position: relative;
   background-color:var(--second-color);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .avatar{
@@ -89,7 +93,7 @@ main{
   width: 100%;
   height: fit-content;
   padding-bottom: var(--footer-height);
-
+  margin: var(--header-height) 0 0 0;
 }
 
 /* Set a style for all buttons */

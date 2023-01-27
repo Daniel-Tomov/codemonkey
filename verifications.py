@@ -74,7 +74,7 @@ def sendVerification():
             i.emailSent = True
             
             # send the email. it is commented out because other servers do not have the mail.codemonkey.tk server setup
-            sendEmail.sendEmail(i.email, subject="Verify Email for Codemonkey", body=f'Verify email for Codemonkey\nYour link is https://codemonkey.tk/verify/{i.token}.')
+            #sendEmail.sendEmail(i.email, subject="Verify Email for Codemonkey", body=f'Verify email for Codemonkey\nYour link is https://codemonkey.tk/verify/{i.token}.')
 
 # removes verifications that have expired from the lists
 def removeVerifications():
