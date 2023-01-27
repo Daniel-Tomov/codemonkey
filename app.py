@@ -544,4 +544,4 @@ threading.Thread(target=runPeriodically).start()
 # if "app.py" is the file being run, then go here
 if __name__ == "__main__":
   # run the Flask server on port 5555 with debug to False and no reloading when a file is edited
-  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=False)
+  app.run(host="0.0.0.0", port=5555, debug=True, use_reloader=True)

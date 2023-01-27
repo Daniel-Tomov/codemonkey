@@ -74,12 +74,18 @@
           </div>
           {% endif %}
         {% endfor %}
-      
-        {% if courseCompletion[page] == "complete" %}
-          <button type="submit" id="completionButton" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}" disabled>Completed</button>
-        {% else %}
-          <button type="submit" id="completionButton" style="background-color:red" name="button" value="{{ page + '_complete'}}" disabled>Uncompleted</button>
-        {% endif %}
+        <div id="bottomBox">
+          <a id="back" href="/challenges">
+            <div>
+              <p>Go back</p>
+            </div>
+          </a>
+          {% if courseCompletion[page] == "complete" %}
+            <button type="submit" id="completionButton" style="background-color:green" name="button" value="{{ page + '_uncomplete'}}" disabled>Completed. Well Done!</button>
+          {% else %}
+            <button type="submit" id="completionButton" style="background-color:red" name="button" value="{{ page + '_complete'}}" disabled>Uncompleted</button>
+          {% endif %}
+        </div>
         <footer id="footer"></footer>
       </main>
     </div>

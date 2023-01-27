@@ -108,4 +108,29 @@ button{width:var(--width); margin:0 auto;}
   list-style-type: circle;
 }
 
-#completionButton{display: block; margin:0 auto;}
+#bottomBox{
+  width: var(--width);
+  height:60px;
+  margin: 0 auto;
+}
+
+#completionButton {
+  display: block;
+  margin: 0 auto;
+  float:right;
+  width: 800px;
+  height: 60px;
+}
+
+#back{
+  background-color: lightgreen;
+  width:100px;
+  height: 60px;
+  float: left;
+  text-align: center;
+  line-height: 60px;
+}
+
+#back > div > p {
+  color:black;
+}
