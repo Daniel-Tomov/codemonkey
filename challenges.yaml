@@ -287,4 +287,14 @@ conditionals:
     codeblock3: "print(\"Agent J arrives at HQ in the morning.\") \ncoffee_available = True \nif coffee_available == True: \n\tprint(\"Agent J will have coffee.\") \nprint(\"In the afternoon, Agent J goes to the HQ cafe.\") \ncoffee_available = False \nif coffee_available == False: \n\tprint(\"Agent J is shcoked to discover the cafe is out of coffee!\") \nprint(\"Agent J goes home.\")"
     text6: "In this example when we run our program, we get the following output."
     text7: "Agent J arrives at HQ in the morning. \nAgent J will have coffee. \nIn the afternoon, Agent J goes to the HQ cafe. \nAgent J is shocked to discover the cafe is out of coffee! \nAgent J goes home."
-    
+conditionals2:
+  name: "If Statements with Strings"
+  text: "Comparing strings"
+  page:
+    text1: "At their heart, all if statemetns can be evaluted as either <b>True</b> or <b>False</b>. That doesn't mean we can oly test a boolean variable, but it does mean that when the test is run it must result in either a <b>True</b> or <b>False</b> outcome."
+    text2: "So we can create tests to see if 2 strings are the same, for example."
+    codeblock1: "drink_available = 'coffee' \nif drink_available == 'coffee': \n\tprint(\"Agent J will have coffee.\")"
+    text3: "This example checks to see if the <b>drink_available</b> variable contains a string that matches 'coffee'. If it is, the statement evaluates to <b>True</b> and the print method inside the statement is executed. If the <b>drink_available</b> variable doesn't match, everything inside the if statement is skipped over, so nothing qould be printed."
+    text4: "It's important to remember that case matters to computers! We may think of 'coffee', 'Coffee', and 'COFFEE', as being all the same thing in everday language, but to a computer all these strings are different. If we don't know what kind of letter case we'll get, but we want our conditional to consider 'coffee' and 'COFFEE' as a match, we need to tweak our code slightly."
+    codeblock2: "drink_available = 'COFFEE' \nif drink_available.lower() == 'coffee': \n\tprint(\"Agent J will have coffee.\")"
+    text5: "Now we're transforming the value of <b>drink_available</b> to its lowercase version using the <b>lower()</b> method, which takes a string and changes any uppercase letters it finds within the string to their lowercase counterparts. Now our 2 strings match, so the statement evaluates to <b>True</b>, and our sentence will print out"
