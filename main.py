@@ -333,15 +333,17 @@ def recieve_code():
         else:
           completions[currentSession.uid][chal_id][0] = "uncomplete"
           print(4)
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><td><p>Change the code</p></td></tr></table>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>Change the code</p></td></tr></table>").encode())
       # the user can also be expected to have certain strings in their code. This is how it is checked.
       elif yml.data[pageName]['page'][question]["correct"] == "contains":
         # define a count variable that will count the amount of strings the user needs to have versus amount they actually have
         count = 0
+        lookingForStrings = ""
         # go through the list of strings in challenges.yaml for the specific question
         for i in yml.data[pageName]['page'][question]["contains"]:
           # if the specific string is in the user's code, then increment count
           if i in program:
+            lookingForStrings += i + "\n"
             count+=1
         # if the count of the amount of correct strings in the user code is equal to the length of the amount of strings in challenges.yaml, then mark the question as correct
         if count == len(yml.data[pageName]['page'][question]["contains"]):
@@ -352,12 +354,12 @@ def recieve_code():
         else:
           completions[currentSession.uid][chal_id][0] = "uncomplete"
           print(2)
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><td><p>{[i for i in yml.data[pageName]["page"][question]["contains"]]}</p></td></tr></table>').encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>{lookingForStrings}</p></td></tr></table>').encode())
       # if none of this is true, then mark the question incomplete
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         print(1)
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><td><p>{[i for i in yml.data[pageName]["page"][question]["contains"]]}</p></td></tr></table>').encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>{lookingForStrings}</p></td></tr></table>').encode())
   # if there was an erorr anywhere, when display this error
   except:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())
