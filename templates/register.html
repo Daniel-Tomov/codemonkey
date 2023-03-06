@@ -98,9 +98,13 @@
               if(myInput.value.length >= 8) {
                 length.classList.remove("invalid");
                 length.classList.add("valid");
+                
+                length.innerHTML = "&#x2713;" + length.innerHTML;
               } else {
                 length.classList.remove("valid");
                 length.classList.add("invalid");
+                
+                length.innerHTML = "&#x2715;" + length.innerHTML;
               }
             }
           </script>
