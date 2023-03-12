@@ -14,8 +14,8 @@ import survey
 import logging
 
 # Remove user page access to remove clutter from the console
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+#log = logging.getLogger('werkzeug')
+#log.setLevel(logging.ERROR)
 
 # use flask_compress to minify resources to make page loading faster on slower networks
 compress = Compress()
@@ -227,6 +227,12 @@ def admin():
   resp = setHeaders(resp, currentSession.token)
   return resp
 
+@app.route('/admin/status', methods=["POST", "GET"])
+def adminStatus():
+  return render_template('adminStatus.html', database=accountManager.accounts, items=yml.items)
+  return "Making course status page"
+
+
 # routes for challenge pages  
 @app.route('/challenges', methods=["POST", "GET"])
 @app.route('/challenge', methods=["POST", "GET"])
@@ -341,9 +347,9 @@ def recieve_code():
         lookingForStrings = ""
         # go through the list of strings in challenges.yaml for the specific question
         for i in yml.data[pageName]['page'][question]["contains"]:
+          lookingForStrings += i + "\n"
           # if the specific string is in the user's code, then increment count
           if i in program:
-            lookingForStrings += i + "\n"
             count+=1
         # if the count of the amount of correct strings in the user code is equal to the length of the amount of strings in challenges.yaml, then mark the question as correct
         if count == len(yml.data[pageName]['page'][question]["contains"]):
@@ -359,7 +365,7 @@ def recieve_code():
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
         print(1)
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>{lookingForStrings}</p></td></tr></table>').encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p></p></td></tr></table>').encode())
   # if there was an erorr anywhere, when display this error
   except:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())

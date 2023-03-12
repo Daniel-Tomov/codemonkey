@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Codemonkey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" defer/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" defer/>
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
+    <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <meta name="keywords" content="Code, Python, Programming, Learn">
+    <meta name="author" content="Daniel Tomov">
+    <title>Admin Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
+    <style>
+      th, p, td {color:white;}
+      
+    </style>
+  </head>
+  <body>
+    <div id="body">
+      <header id="header"></header>
+      <main id="adminMain">
+        {% for i in items %}
+          {{ i }}
+        {% endfor %}
+        <table>
+          <tr>
+            <th>Account Name</th>
+            {% for i in items %}
+            <th>{{ i["name"] }}</th>
+            {% endfor %}
+          </tr>         
+          {% for i in database %}
+          <tr>
+            <td>{{ i.username }}</td>        
+          </tr>
+          {% endfor %}           
+          </table>
+      </main>
+    </div>
+    <script defer>
+      $("#header").load("{{ url_for('header') }}");
+      $("#footer").load("{{ url_for('footer') }}");
+    </script>
+  </body>
+</html>
