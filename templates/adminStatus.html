@@ -69,7 +69,7 @@
             {% for account in database %}
               <tr>
                 <td>{{ account.username }}</td>
-                <td>{{ userCount[account.uid] * (courseCompletion[account.uid] | length) }}</td>
+                <td>{{ (userCount[account.uid] / (courseCompletion[account.uid] | length)) * 100 }}</td>
               </tr>
             {% endfor %}      
             </table>
@@ -85,7 +85,7 @@
             {% for module in moduleCount %}
               <tr>
                 <td>{{ data[module]['name'] }}</td>
-                <td>{{ moduleCount[module] * ( database | length) }}</td>
+                <td>{{ (moduleCount[module] / ( database | length)) * 100 }}</td>
               </tr>
             {% endfor %}      
             </table>
@@ -110,7 +110,7 @@
               <tr>
                 <td>{{ data }}</td>
                 {% for cell in surveyData[data] %}
-                  <td>{{ surveyData[data][cell] * ( database | length) }}</td>
+                  <td>{{ (surveyData[data][cell] / ( database | length)) * 100 }}</td>
                 {% endfor %}
                 </tr>
             {% endfor %}      
