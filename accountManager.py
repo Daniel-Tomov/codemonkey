@@ -6,7 +6,7 @@ import string
 # create array to store instances of the accountManager class
 accounts = []
 # used to compare preSurvey and postSurvey for completion of the respective surveys
-surveyDict = {"feeling":"","pursue":""}
+surveyDict = {"feeling":"0","pursue":"0"}
 
 # definition for accountManager class
 class accountManager:
@@ -14,8 +14,8 @@ class accountManager:
     self.username = username
     self.password = personalFunctions.hash(password)
     self.email = email
-    self.preSurvey = {"feeling":"","pursue":""}
-    self.postSurvey = {"feeling":"","pursue":""}
+    self.preSurvey = {"feeling":"0","pursue":"0"}
+    self.postSurvey = {"feeling":"0","pursue":"0"}
     self.finished = False
     self.free = 'false'
 
@@ -100,3 +100,11 @@ def loadAccounts():
 
 # load the accounts. Only used on startup
 loadAccounts()
+
+for account in accounts:
+  if account.preSurvey['feeling'] == "":
+    account.preSurvey['feeling'] = "0"
+    account.preSurvey['pursue'] = "0"
+  if account.postSurvey['feeling'] == "":
+    account.postSurvey['feeling'] = "0"
+    account.postSurvey['pursue'] = "0"

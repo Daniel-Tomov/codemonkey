@@ -7,41 +7,243 @@
     <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.png') }}" defer>
     <link rel="stylesheet" href="https://use.typekit.net/bsu0rwg.css" defer>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
     <meta name="keywords" content="Code, Python, Programming, Learn">
     <meta name="author" content="Daniel Tomov">
     <title>Admin Status</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Learn to Code with courses designed to change how programming is taught">
     <style>
-      th, p, td {color:white;}
-      
+      th, p, td {
+        color:white;
+        margin:0;
+      }
+      td, th {
+        min-width:100px;
+
+      }
+      th{
+        padding: 0 10px 0 10px;
+        border-color: white;
+        border-width: 1px;
+        border-style: solid;
+      }
+
+      .chart{
+        width: 550px;
+        height: 400px;
+        margin: 20px;
+        float:left;
+      }
     </style>
   </head>
   <body>
     <div id="body">
       <header id="header"></header>
       <main id="adminMain">
-        {% for i in items %}
-          {{ i }}
-        {% endfor %}
+
         <table>
           <tr>
             <th>Account Name</th>
-            {% for i in items %}
-            <th>{{ i["name"] }}</th>
+            {% for i in data %}
+              <th>{{ data[i]["name"] }}</th>
             {% endfor %}
           </tr>         
-          {% for i in database %}
-          <tr>
-            <td>{{ i.username }}</td>        
-          </tr>
-          {% endfor %}           
+          {% for account in database %}
+            <tr>
+              <td>{{ account.username }}</td>
+              {% for completion in courseCompletion[account.uid] %}
+                <td>{{ courseCompletion[account.uid][completion] }} </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}      
           </table>
+
+          <!--######################USER DATA TABLE########################################-->
+          <table id="userTableData" style="display:none">
+            <tr>
+              <th>Username</th>
+              <th>Percent</th>
+            </tr>
+            {% for account in database %}
+              <tr>
+                <td>{{ account.username }}</td>
+                <td>{{ userCount[account.uid] * (courseCompletion[account.uid] | length) }}</td>
+              </tr>
+            {% endfor %}      
+            </table>
+            <div id="userTableDisplay" class="chart"></div>
+            <!--############################USER DATA TABLE##################################-->
+
+           <!--############################MODULE DATA TABLE##################################-->
+           <table id="moduleTableData" style="display:none">
+            <tr>
+              <th>Username</th>
+              <th>Percent</th>
+            </tr>
+            {% for module in moduleCount %}
+              <tr>
+                <td>{{ data[module]['name'] }}</td>
+                <td>{{ moduleCount[module] * ( database | length) }}</td>
+              </tr>
+            {% endfor %}      
+            </table>
+            <div id="moduleTableDisplay" class="chart"></div>
+            <!--#######################MODULE DATA TABLE#######################################-->
+
+
+
+            <!--PRE SURVEY-->
+           <!--###########################PRESURVEY DATA TABLE###################################-->
+           <table id="surveyTableData" style="display:none;">
+            <tr>
+              <th>Rating</th>
+              <th>Not Answered</th>
+              <th>Really Not Excited</th>
+              <th>Not Excited</th>
+              <th>Neutral</th>
+              <th>Excited</th>
+              <th>Really Excited</th>
+            </tr>
+            {% for data in surveyData %}
+              <tr>
+                <td>{{ data }}</td>
+                {% for cell in surveyData[data] %}
+                  <td>{{ surveyData[data][cell] * ( database | length) }}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}      
+            </table>
+            <div id="surveyTableDisplay" class="chart"></div>
+            <!--#########################PRESURVEY DATA TABLE#####################################-->
+
       </main>
     </div>
     <script defer>
       $("#header").load("{{ url_for('header') }}");
       $("#footer").load("{{ url_for('footer') }}");
+    </script>
+
+    <script language="JavaScript">
+      $(document).ready(function() {
+        // ########## BEGIN USER TABLE ###################
+        var data = {
+            table: 'userTableData'
+        };
+        var chart = {
+            type: 'column'
+        };
+        var title = {
+            text: 'Percent of the Course Completed by Each User'
+        };
+        var yAxis = {
+            allowDecimals: false,
+            title: {
+                text: 'Percent Completed'
+            }
+        };
+        var tooltip = {
+            formatter: function() {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    this.point.y + ' ' + this.point.name.toLowerCase();
+            }
+        };
+        var credits = {
+            enabled: false
+        };
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.data = data;
+        json.yAxis = yAxis;
+        json.credits = credits;
+        json.tooltip = tooltip;
+        $('#userTableDisplay').highcharts(json);
+    });
+    // ############ END USER TABLE ##############
+
+
+
+    // ########## BEGIN MODULE TABLE ###################
+    $(document).ready(function() {
+        var data = {
+            table: 'moduleTableData'
+        };
+        var chart = {
+            type: 'column'
+        };
+        var title = {
+            text: 'Percent Completion of Each Module'
+        };
+        var yAxis = {
+            allowDecimals: false,
+            title: {
+                text: 'Percent Completed'
+            }
+        };
+        var tooltip = {
+            formatter: function() {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    this.point.y + ' ' + this.point.name.toLowerCase();
+            }
+        };
+        var credits = {
+            enabled: false
+        };
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.data = data;
+        json.yAxis = yAxis;
+        json.credits = credits;
+        json.tooltip = tooltip;
+        $('#moduleTableDisplay').highcharts(json);
+    });
+
+    // ################ END MODULE TABLE
+
+
+
+    $(document).ready(function() {
+        // ########## BEGIN PRESURVEY 1 TABLE ###################
+        var data = {
+            table: 'surveyTableData'
+        };
+        var chart = {
+            type: 'column'
+        };
+        var title = {
+            text: 'Percent of the Course Completed by Each User'
+        };
+        var yAxis = {
+            allowDecimals: false,
+            title: {
+                text: 'Percent Completed'
+            }
+        };
+        var tooltip = {
+            formatter: function() {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    this.point.y + ' ' + this.point.name.toLowerCase();
+            }
+        };
+        var credits = {
+            enabled: false
+        };
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.data = data;
+        json.yAxis = yAxis;
+        json.credits = credits;
+        json.tooltip = tooltip;
+        $('#surveyTableDisplay').highcharts(json);
+    });
+    // ############ END PRESURVEY 1 TABLE ##############
+
+
+
     </script>
   </body>
 </html>

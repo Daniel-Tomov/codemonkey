@@ -104,7 +104,7 @@ def setHeaders(resp, token=""):
   # set an expiration of the cookie of 10 minutes
   resp.set_cookie('token', token, max_age=600, secure=True, httponly=True, samesite='Strict')
   # set the caching of js/css files to 1
-  resp.cache_control.max_age = 2
+  resp.cache_control.max_age = 1
   return resp
 
 # set multiple routes for index.html as user may forget the exact URL
@@ -229,9 +229,40 @@ def admin():
 
 @app.route('/admin/status', methods=["POST", "GET"])
 def adminStatus():
-  return render_template('adminStatus.html', database=accountManager.accounts, items=yml.items)
-  return "Making course status page"
+  # get token and if it is not a valid session token, have the user login 
+  token = request.cookies.get('token')
+  if isSession(token) == False:
+    return invalidSession()
+  
+  # at this point, the session is valid
+  currentSession = getSession(token)
+  # get account associated with the session
+  currentAccount = accountManager.getAccountByUID(currentSession.uid)
+  if currentAccount.admin == True:
+    userCount = {}
+    moduleCount = {}
+    surveyData = {'preFeel': {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0}, 'prePursue': {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0}, 'postFeel': {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0}, 'postPursue': {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0}}
 
+    for account in accountManager.accounts:
+      surveyData['preFeel'][account.preSurvey['feeling']] += 1
+      surveyData['prePursue'][account.preSurvey['pursue']] += 1
+      surveyData['postFeel'][account.postSurvey['feeling']] += 1
+      surveyData['postPursue'][account.postSurvey['pursue']] += 1
+
+      userCount[account.uid] = 0
+      for completion in courseCompletions[account.uid]:
+        if courseCompletions[account.uid][completion] == 'complete':
+          userCount[account.uid] += 1
+    
+    for module in yml.data:
+      moduleCount[module] = 0
+      for uid in courseCompletions:
+        if courseCompletions[uid][module] == 'complete':
+          #print(f'The uid is {uid} the module is {module} and the completion is {completion} the final result is {courseCompletions[uid][completion]}')
+          moduleCount[module] += 1
+    
+    return render_template('adminStatus.html', database=accountManager.accounts, data=yml.data, courseCompletion=courseCompletions, userCount=userCount, moduleCount=moduleCount, surveyData=surveyData)
+  return invalidSession()
 
 # routes for challenge pages  
 @app.route('/challenges', methods=["POST", "GET"])
@@ -551,6 +582,10 @@ def about():
 @app.errorhandler(404)
 def not_found(e):
   return render_template("404.html")
+
+@app.route('/chart')
+def chart():
+  return render_template("chartTest.html")
 
 # start the thread that periodically runs the functions in the "runPeriodically" function
 threading.Thread(target=runPeriodically).start()
