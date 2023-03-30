@@ -460,7 +460,7 @@ def verify(id):
     courseCompletion(currentSession.uid)
 
     # if the data in the challenges.yaml has changed, then add that information to the completion and courseCompletions for the user
-    addNewCompletions()
+    addNewCourseCompletions()
     addNewCompletions()
 
     # send the user to the presurvey page
