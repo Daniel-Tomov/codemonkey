@@ -320,3 +320,10 @@ conditionals3:
     text3: "But what happens here:"
     codeblock2: "coffee_available = \"4\" \ncoffee_needed = 4 \nif coffee_needed == coffee_available: \n\tprint(\"There is enough coffee.\")"
     text4: "We've set <b>coffee_available</b> to a string value of 4, and <b>coffee_needed</b> as an integer value of 4. They're both 4 so we might expect the statemetn would evalued to <b>True</b>, but when we run this program we find it doesn't, nothing gets printed out, telling us our statement evaluated to be <b>False</b>."
+forLoops:
+  name: "For Loops"
+  text: "Go over your strings, arrays, dictionaries, and so much more!"
+  page:
+    text1: "In the previous module, we learned about lists and dictionaries, including how to add, remove, and generally modify the information in them. But so far we've done it very slowly, one item at a time. If we had a very long list we'd end up having to write a lot of repetitive code if we needed to update everything at once."
+    text2: "Loops are another tool that let us manage lists and dictionaries more efficiently, with just a few lines of code. We can run the same operation on multiple items in a list."
+    
