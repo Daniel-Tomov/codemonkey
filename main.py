@@ -250,8 +250,8 @@ def adminStatus():
       surveyData['postPursue'][account.postSurvey['pursue']] += 1
 
       userCount[account.uid] = 0
-      for completion in courseCompletions[account.uid]:
-        if courseCompletions[account.uid][completion] == 'complete':
+      for indivCompletion in courseCompletions[account.uid]:
+        if courseCompletions[account.uid][indivCompletion] == 'complete':
           userCount[account.uid] += 1
     
     for module in yml.data:
@@ -267,6 +267,8 @@ def adminStatus():
 # routes for challenge pages  
 @app.route('/challenges', methods=["POST", "GET"])
 @app.route('/challenge', methods=["POST", "GET"])
+@app.route('/module', methods=["POST", "GET"])
+@app.route('/modules', methods=["POST", "GET"])
 def challenge():
   # get token and if it is not a valid session token, have the user login 
   token = request.cookies.get('token')
