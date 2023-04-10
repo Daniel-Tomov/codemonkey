@@ -14,7 +14,7 @@ $(document).keydown(function(event) {
   if (activeElement.tagName != "TEXTAREA"){
     return;
   }
-  activeElement = activeElement.parentElement.parentElement.parentElement
+  activeElement = activeElement.parentElement.parentElement.parentElement;
 
   if (event.keyCode == 9) {  //tab pressed
     event.preventDefault(); // stops its action
