@@ -362,16 +362,15 @@ def recieve_code():
       # check if the output of the user code equal the expected code in challenges.yaml
       if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
         completions[currentSession.uid][chal_id][0] = "complete"
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"correct\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td>Correct!</td><td>" + yml.data[pageName]['page'][question]["correct"] + "</td></tr></table>").encode())
+      # "<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>Change the code</p></td></tr></table>"
       # if the user is expeced to change the code, then compare thier code to the originial skeleton
       elif yml.data[pageName]['page'][question]["correct"] == "change code":
         if yml.data[pageName]['page'][question]["skeleton"] != program:
           completions[currentSession.uid][chal_id][0] = "complete"
-          print(5)
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"correct\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"correct\">Correct!</p><td><p>Change the code</p></td></tr></table>").encode())
         else:
           completions[currentSession.uid][chal_id][0] = "uncomplete"
-          print(4)
           return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>Change the code</p></td></tr></table>").encode())
       # the user can also be expected to have certain strings in their code. This is how it is checked.
       elif yml.data[pageName]['page'][question]["correct"] == "contains":
@@ -387,17 +386,13 @@ def recieve_code():
         # if the count of the amount of correct strings in the user code is equal to the length of the amount of strings in challenges.yaml, then mark the question as correct
         if count == len(yml.data[pageName]['page'][question]["contains"]):
           completions[currentSession.uid][chal_id][0] = "complete"
-          
-          print(3)
-          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"correct\">Correct!</p>").encode())
+          return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"correct\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"correct\">Correct!</p><td><p>" + lookingForStrings + "</p></td></tr></table>").encode())
         else:
           completions[currentSession.uid][chal_id][0] = "uncomplete"
-          print(2)
           return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>{lookingForStrings}</p></td></tr></table>').encode())
       # if none of this is true, then mark the question incomplete
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
-        print(1)
         return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p></p></td></tr></table>').encode())
   # if there was an erorr anywhere, when display this error
   except:
@@ -585,11 +580,8 @@ def about():
 def not_found(e):
   return render_template("404.html")
 
-@app.route('/chart')
-def chart():
-  return render_template("chartTest.html")
-
 # start the thread that periodically runs the functions in the "runPeriodically" function
+
 threading.Thread(target=runPeriodically).start()
 
 # if "app.py" is the file being run, then go here
