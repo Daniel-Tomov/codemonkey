@@ -553,6 +553,7 @@ finalModule:
       item6: "Will automatically run away if it gets down to 1 health remaining"
       item7: "Once you have your classes and objects working, create constructors for each one so you can build them anytime you want with damage strength and starting health points that you choose."
     question1:
+      name: "question1"
       text: "Allow your program to accept user input so you can specify the stats of your hero, then have the program randomly assign values to the monster and have them fight, trading attacks back and forth, until the hero dies or the monster runs away."
       type: "textbox"
       skeleton: ""
