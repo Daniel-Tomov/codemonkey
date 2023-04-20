@@ -45,29 +45,8 @@ def invalidSession():
   resp.set_cookie('token', '')
   return resp
 
-# goes through the "programRuns" folder and removes all files that do not correspond to a session.
-def removeOldRuns():
-  # get the files
-  files = personalFunctions.getFiles('programRuns/')
-  for file in files:
-    # if the file is not a valid session, valid will stay false and will get deleted below
-    valid = False
-    for session in userSessions:
-      # need to have this filler or git will not upload the folder to github
-      if file == "filler.py":
-        valid = True
-        break
-      # break if the file is a valid session.
-      if session.token in file:
-        valid = True
-        break
-    if not valid:
-      # delete the file
-      personalFunctions.deleteFile("programRuns/" + file + ".py")
-
 # this function runs every ten seconds and does a couple of tasks:
 #   removes expired sessions
-#   removes runs that do not respond to a session token. Because expired sessions were recently removed, files that do not correspond to a session will also be removed.
 #   sends verification emails to users that have recently signed up
 #   removes varifications from the list of users that have verified their acount
 #   saves all user accounts to the database
@@ -75,10 +54,10 @@ def removeOldRuns():
 #   saves all user courseCompletions to the database
 #   adds new completions from the challenges.yml file to each user's completions if any are missing in their profile
 #   adds new courseCompletions from the challenges.yml file to each user's courseCompletions if there are any missing in their profile
+
 def runPeriodically():
   while True:
     removeInactiveSessions()
-    removeOldRuns()
     
     verifications.sendVerification()
     verifications.removeVerifications()
@@ -362,8 +341,7 @@ def recieve_code():
       # check if the output of the user code equal the expected code in challenges.yaml
       if yml.data[pageName]['page'][question]["correct"] + "\n" == output:
         completions[currentSession.uid][chal_id][0] = "complete"
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"correct\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td>Correct!</td><td>" + yml.data[pageName]['page'][question]["correct"] + "</td></tr></table>").encode())
-      # "<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p>Change the code</p></td></tr></table>"
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines("<table class=\"correct\"><tr><th>Program Output</th><th>Output should be</th></tr><tr><td>Correct!</td><td>" + yml.data[pageName]['page'][question]["correct"] + "</td></tr></table>").encode())
       # if the user is expeced to change the code, then compare thier code to the originial skeleton
       elif yml.data[pageName]['page'][question]["correct"] == "change code":
         if yml.data[pageName]['page'][question]["skeleton"] != program:
@@ -393,7 +371,7 @@ def recieve_code():
       # if none of this is true, then mark the question incomplete
       else:
         completions[currentSession.uid][chal_id][0] = "uncomplete"
-        return personalFunctions.base64encode(personalFunctions.replaceNewlines(f'<table class=\"incorrect\"><tr><th>Program Output</th><th>Looking for</th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td><p></p></td></tr></table>').encode())
+        return personalFunctions.base64encode(personalFunctions.replaceNewlines('<table class=\"incorrect\"><tr><th>Program Output</th><th></th></tr><tr><td><p class=\"incorrect\">Incorrect! Try again.</p><td></td></tr></table>').encode())
   # if there was an erorr anywhere, when display this error
   except:
     return personalFunctions.base64encode(personalFunctions.replaceNewlines("<p class=\"incorrect\">There has been an erorr in saving your code. Please try again now or later.</p>").encode())
