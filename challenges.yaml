@@ -11,7 +11,9 @@ printing:
       type: "textbox"
       skeleton: "print(\"\")"
       button: "submit"
-      correct: "Hello World!"
+      correct: "contains"
+      contains:
+       - "Hello World!"
       chal_id: "0001"
 variables:
   name: "Variables"
@@ -123,7 +125,13 @@ arithmetic:
       type: "textbox"
       skeleton: ""
       button: "submit"
-      correct: "2\n6\n5.0\n10.0\n16\n2"
+      correct: "contains"
+      contains:
+       - "2"
+       - "6"
+       - "5.0"
+       - "10.0"
+       - "16"
       chal_id: "0005"
 lists:
   name: "Lists"
@@ -299,8 +307,8 @@ dictionaries:
       button: "submit"
       correct: "contains"
       contains:
-      - "case_stats['unsolved'] +="
-      - "case_stats['unsolved']+="
+      - "case_stats['unsolved']"
+      - "+="
       chal_id: "0014"
     text12: "This will give us exactly the same output as before, but notice how we've modified lines 9 and 10. In line 9 we're setting case_stats['total'] to itself plus 1. The computer will first retrieve the current value of case_stats['total'], which is 21, then it will add 1 to that value to get 22, and finally it will set the new value of case_stats['total'] to be 22."
     text13: "There's actually a useful short-hand way of specifying exactly this kind of 'selfincrementing' behaviour so we don't have to write out case_stats['total'] + 1, which is a bit wordy. We can use the += notation in Python to help us out here."
@@ -434,7 +442,7 @@ forLoops:
       chal_id: "0016"
 whileLoops:
   name: "While Loops"
-  text: "Go over your strings, arrays, dictionaries <b>WHILE</b> a condition is true"
+  text: "Go over your strings, arrays, dictionaries WHILE a condition is true"
   page:
     text1: "In the previous section, we saw the for loop, which takes a collection of items and loops through them one by one, executing the same block of code on each of those items, until it runs out of items.^lb^But there's another kind of useful loop we can use: the while loop. Instead of giving the while loop a predetermined set of things to work through, we give it a condition: as long as that condition is true, the while loop will keep running.^lb^The simplest kind of while loop usually contains some kind of counter, so let's have a look at this first"
     codeblock1: "counter = 1\nwhile counter <= 3:\n\tprint(counter)\n\tcounter += 1\nprint('Loop complete!')"
@@ -452,8 +460,7 @@ whileLoops:
       correct: "contains"
       contains:
        - "while"
-       - "range"
-       - "0"
+       - "print("
        - ":"
       chal_id: "0019"
 functions:
