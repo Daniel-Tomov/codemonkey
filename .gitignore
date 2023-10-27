@@ -1,4 +1,5 @@
 programRuns/*.py
+doNotPushToGithub/*
 *.pyc
 .env
 *.pickle
